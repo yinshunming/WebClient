@@ -30,7 +30,7 @@
 			},
 			
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				
+				alert("updating error! Please try again");
 			},
 			
 			complete: function (XMLHttpRequest, textStatus) {
@@ -91,14 +91,17 @@
 					
 					$("#managedBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
 							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + "<button id=status_" + buginfo.id + " onclick= " + "javascript:updateStatus('" + buginfo.id + "','" + buginfo.bugId + "') class='btn btn-default'>update</button>" + "<label id=label_status_" + buginfo.id + ">"  + buginfo.status + "</label>" + "</td>" + "</tr>");
+				
 				});
 				
 				$.each(dataObj.ownerList, function(i,buginfo) {
 					
 					$("#ownerBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
 							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + "<button id=status_" + buginfo.id + " onclick= " + "javascript:updateStatus('" + buginfo.id + "','" + buginfo.bugId + "') class='btn btn-default'>update</button>"  +  "<label id=label_status_" + buginfo.id + ">" + buginfo.status + "</label>" + "</td>" + "</tr>");
+				
 				});
 			},
+			
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				
 			},
@@ -107,6 +110,120 @@
 				
 			}
 		});
+		
+		var updateAllOwnerListBtn = $("#updateAllOwnerListBtn");
+		updateAllOwnerListBtn.click(function(){
+			updateAllOwnerListBtn.button('loading');
+			var table = $("#ownerBugTableBody");
+			var _map = new Object();
+			
+			var i = 0;
+			
+			table.find('tr').each(function(index, row)
+			{
+				var allCells = $(row).find('td');
+				var anchor = allCells[0].getElementsByTagName("a")[0];
+				var bugId = anchor.innerHTML;
+				var id = anchor.getAttribute("href").split("id=")[1];
+				
+
+				var btn = $("#status_" + id);
+				btn.button('loading');
+
+				_map[ id ] = bugId;
+				i++;
+			
+			});
+			
+			
+			$.ajax({
+				type: "post",
+				url: "/BugTrackingSystem/api/bugStatus",
+				data: _map,
+				
+				success: function (data) {
+					var dataObj = data;
+					$.each(dataObj, function(i, obj) {
+						for (var id in obj) {
+							var newStatus = obj[id];
+							var btn = $("#status_" + id);
+							btn.button('reset');
+							$("#label_status_" + id).text(newStatus);
+						}
+					});
+					
+						
+				},
+				
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("updating error! Please try again");
+				},
+				
+				complete: function (XMLHttpRequest, textStatus) {
+					updateAllOwnerListBtn.button('reset');
+				}
+			});
+			
+			
+		});
+		
+		
+		var updateAllManagedListBtn = $("#updateAllManagedListBtn");
+		updateAllManagedListBtn.click(function(){
+			updateAllManagedListBtn.button('loading');
+			var table = $("#managedBugTableBody");
+			var _map = new Object();
+			
+			var i = 0;
+			
+			table.find('tr').each(function(index, row)
+			{
+				var allCells = $(row).find('td');
+				var anchor = allCells[0].getElementsByTagName("a")[0];
+				var bugId = anchor.innerHTML;
+				var id = anchor.getAttribute("href").split("id=")[1];
+				
+
+				var btn = $("#status_" + id);
+				btn.button('loading');
+
+				_map[ id ] = bugId;
+				i++;
+			
+			});
+			
+			
+			$.ajax({
+				type: "post",
+				url: "/BugTrackingSystem/api/bugStatus",
+				data: _map,
+				
+				success: function (data) {
+					var dataObj = data;
+					$.each(dataObj, function(i, obj) {
+						for (var id in obj) {
+							var newStatus = obj[id];
+							var btn = $("#status_" + id);
+							btn.button('reset');
+							$("#label_status_" + id).text(newStatus);
+						}
+					});
+					
+						
+				},
+				
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("updating error! Please try again");
+				},
+				
+				complete: function (XMLHttpRequest, textStatus) {
+					updateAllManagedListBtn.button('reset');
+				}
+			});
+			
+			
+		});
+		
 		
 		
 		var refreshBtn = $("#refreshBtn");
@@ -188,12 +305,16 @@
 			    		  <h3>OwnerBugList</h3>
 			    	  </div>
 			    	  
-			    	  <div class="col-lg-8" style="padding-top:20px">
+			    	  <div class="col-lg-6" style="padding-top:20px">
 	 					<input id="search" type="text" class="input-medium search-query" placeholder="input search info" >
 					  </div>
+					  
+					   <div class="col-lg-2" style="padding-top:20px">
+					  		<button id="updateAllOwnerListBtn" name="updateAllOwnerListBtn" class="btn btn-default" data-loading-text="Loading...">update all</button>
+					   </div>
 					 	
-					 	<div>
-					 	<br/>
+					 <div>
+					 <br/>
 		    		  <table id="ownerBugTable" class="table">
 		    		  
 				        <thead>
@@ -223,9 +344,13 @@
 		    			<h3>ManagedBugList</h3>
 		    		</div>
 		    		
-		    		<div class="col-lg-8" style="padding-top:20px">
+		    		<div class="col-lg-6" style="padding-top:20px">
 	 					<input id="search2" type="text" class="input-medium search-query" placeholder="input search info" >
-					 </div>
+					</div>
+					
+					<div class="col-lg-2" style="padding-top:20px">
+					  		<button id="updateAllManagedListBtn" name="updateAllManagedListBtn" class="btn btn-default" data-loading-text="Loading...">update all</button>
+					</div>
 					 
 					<div >
 					<br/>

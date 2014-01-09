@@ -81,12 +81,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 	}
 	
-	function deleteOwnerBugs(id) {
+	function deleteOwnerBugs(managedBugId, id) {
 		var deleteBtn = $("#deleteOwnerBtn_" + id);
 		deleteBtn.button('loading');
 		$.ajax({
 			type: "delete",
-			url: "/BugTrackingSystem/api/owner?id=" + id,
+			url: "/BugTrackingSystem/api/owner?managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
 			
 			success: function (data) {
@@ -104,13 +104,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 	}
 	
-	function operateOwnerBugs(id, operate) {
+	function operateOwnerBugs(managedBugId, id, operate) {
 		var operateOwnerBtn = $("#operateOwnerBtn_" + id);
 		operateOwnerBtn.button('loading');
 		
 		$.ajax({
 			type: "post",
-			url: "/BugTrackingSystem/api/owner?method=put&operate=" + operate + "&id=" + id,
+			url: "/BugTrackingSystem/api/owner?method=put&operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
 			
 			success: function (data) {
@@ -130,6 +130,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	var ingoreCmd = "ingore";
 	var restoreCmd = "restore";
+	
+	var managedText = "managed";
+	var notManagedText = "not-managed";
 	
 	$(document).ready(function(){
 		$("#historyBugsJSPNav").addClass("active");
@@ -154,17 +157,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 					var buginfo = warppedBuginfo.buginfo;
 					var operationBtn = "";
+					var managedDisplay = "";
 					
 					if (warppedBuginfo.status == 0) {
 						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
+						managedDisplay = managedText;
 					} else {
 						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" +  restoreCmd + "')>Restore</button>";
+						managedDisplay = notManagedText;
 					}
 					
 					$("#historyBugsTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>"  + "<td>" + warppedBuginfo.status + "</td><td>" 
+							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>"  + "<td>" + managedDisplay + "</td><td>" 
 							+ operationBtn + "<button class='btn btn-default' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>" + "</td>" + "</tr>");
-
+					
 				});
 			}
 		});
@@ -176,18 +182,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			success: function (data) {
 				var dataObj = data;
-			
-				$.each(dataObj, function(i,buginfo) {
+				
+				$.each(dataObj, function(i,warppedBuginfo) {
+					var buginfo = warppedBuginfo.buginfo;
+					var operationBtn = "";
+					var managedDisplay = "";
 					
-					if (buginfo.managedStatus == 0) {
-						operationBtn = "<button id = 'operateOwnerBtn_" +  buginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
+					if (warppedBuginfo.status == 0) {
+						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
+						managedDisplay = managedText;
 					} else {
-						operationBtn = "<button id = 'operateOwenerBtn_" +  buginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
+						operationBtn = "<button id = 'operateOwenerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
+						managedDisplay = notManagedText;
 					} 
 					
 					$("#ownerBugsTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>"  +  "<td>" + buginfo.managedStatus + "</td>" +"<td>" 
-							+ operationBtn + "<button class='btn btn-default' type='button' id='deleteOwnerBtn_" + buginfo.id +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteOwnerBugs('" + buginfo.id + "')>Delete</button>" + "</td>" + "</tr>");
+							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>"  +  "<td>" + managedDisplay  + "</td>" +"<td>" 
+							+ operationBtn + "<button class='btn btn-default' type='button' id='deleteOwnerBtn_" + buginfo.id +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>" + "</td>" + "</tr>");
 
 				});
 			}

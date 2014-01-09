@@ -55,10 +55,14 @@
 		
 		logoutFormButton.click(function() {
 			
-			logoutFormButton.button('loading');
-		
-			window.location.href="http://logout@" + location.hostname + ":" + location.port + "/WebClient/logout.jsp";
 			
+			logoutFormButton.button('loading');
+			
+			//document.execCommand("ClearAuthenticationCache");
+      		//window.location.href='http://localhost:8080/WebCliet/logout.jsp';
+            
+			window.location.href = "http://logout@" + location.hostname + ":" + location.port + "/WebClient/logout.jsp";
+
 			/*
 			try{
 			  var agt=navigator.userAgent.toLowerCase();

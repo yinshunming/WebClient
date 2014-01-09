@@ -119,7 +119,39 @@
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-2" for="component">Component</label>
 					  		    <div class="col-lg-8">
+					  		    	<!-- 
 					  		    	<input class="form-control" id="component" name="component" type="text" value=""/> 
+					  		    	-->
+					  		    	<select id="component" name="component" class="form-control">
+					  		    		<option value="DDC-ADIdentity Service">DDC-ADIdentity Service</option>
+					  		    		<option value="DDC-Broker Service">DDC-Broker Service</option>
+					  		    		<option value="DDC-Configuration Service">DDC-Configuration Service</option>
+					  		    		<option value="DDC-Configuration Logging Service">DDC-Configuration Logging Service</option>
+					  		    		<option value="DDC-Delegated Admin Service">DDC-Delegated Admin Service</option>
+					  		    		<option value="DDC-Event Test Service">DDC-Event Test Service</option>
+					  		    		<option value="DDC-Host Service">DDC-Host Service</option>
+					  		    		<option value="DDC-Machine Creation Service">DDC-Machine Creation Service</option>
+					  		    		<option value="DDC-Scout(Taas)">DDC-Scout(Taas)</option>
+					  		    		<option value="VDA-Broker Agent(VDA)">VDA-Broker Agent(VDA)</option>
+					  		    		<option value="VDA-Machine Identity Service Agent">VDA-Machine Identity Service Agent</option>
+					  		    		<option value="HDX-ICA HostCore">HDX-ICA HostCore</option>
+					  		    		<option value="HDX-ICA Graphics">HDX-ICA Graphics</option>
+					  		    		<option value="HDX-ICA Integration">HDX-ICA Integration</option>
+					  		    		<option value="HDX-ICA IO">HDX-ICA IO</option>
+					  		    		<option value="HDX-ICA Multimedia">HDX-ICA Multimedia</option>
+					  		    		<option value="HDX-ICA Printing">HDX-ICA Printing</option>
+					  		    		<option value="HDX-ICA Packaging">HDX-ICA Packaging</option>
+					  		    		<option value="Director">Director</option>
+					  		    		<option value="Group Policy">Group Policy</option>
+					  		    		<option value="Studio">Studio</option>
+					  		    		<option value="Licensing">Licensing</option>
+					  		    		<option value="Monitoring Service">Monitoring Service</option>
+					  		    		<option value="StoreFront">StoreFront</option>
+					  		    		<option value="MetaInstaller">MetaInstaller</option>
+					  		    		<option value="AppV">AppV</option>
+					  		    		<option value="PVD">PVD</option>
+					  		    		<option value="PVS">PVS</option>
+					  		    	</select>
 					  		    </div>
 					  		</div>
 					  		
