@@ -100,6 +100,17 @@
 							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + "<button id=status_" + buginfo.id + " onclick= " + "javascript:updateStatus('" + buginfo.id + "','" + buginfo.bugId + "') class='btn btn-default'>update</button>"  +  "<label id=label_status_" + buginfo.id + ">" + buginfo.status + "</label>" + "</td>" + "</tr>");
 				
 				});
+				
+				$.each(dataObj.changedList, function(i,warppedBuginfo) {
+					var buginfo = warppedBuginfo.buginfo;
+					$("#differentBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
+							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>" +
+							"<td>  <label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"  
+							+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>  </td> </tr>" );
+						
+					});
+					
+					$("#modifyBtnDiv").append("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading...'>modify</button>");
 			},
 			
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -223,9 +234,10 @@
 			
 			
 		});
+
 		
 		
-		
+		/*
 		var refreshBtn = $("#refreshBtn");
 		refreshBtn.click(function(){
 			refreshBtn.button('loading');
@@ -259,7 +271,7 @@
 				}
 			});
 		});
-		
+		*/
 	
 	});
 	
@@ -413,9 +425,9 @@
 	    			</form>
 	    			
 	    			
-	    			
+	    			<!--  
 	    			<button id="refreshBtn" name="refreshBtn" type="button" value="refresh" class="btn btn-default" data-loading-text="Loading...">refresh</button>  
-		    		
+		    		-->
 		    	</div>
 	    	</div>
     	</div>
