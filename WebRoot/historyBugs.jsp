@@ -21,27 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	<script type="text/javascript">
    	var ownerBugDataTable;
 	var managerBugDataTable;
-   	function deleteManagedBugs(managedBugId, id) {
-   		var deleteBtn = $("#deleteManagedBtn_" + managedBugId);
-   		deleteBtn.button('loading');
-   		$.ajax({
-			type: "delete",
-			url: "/BugTrackingSystem/api/managed?managedBugId=" + managedBugId + "&id=" + id,
-			data: "",
-			success: function (data) {
-				alert(data);
-				//window.location.reload();
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-					
-				},
-				
-				complete: function (XMLHttpRequest, textStatus) {
-					deleteBtn.button('reset');
-				}
-		});
-	}
-   	
+	
    	function operateManagedBugs(managedBugId, id, operate) {
    		var operateManagedBtn = $("#operateManagedBtn_" + managedBugId);
 		var buttonStr=operateManagedBtn.html();
@@ -77,34 +57,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
    	} 
    	
-	
-	
-	
+
 	function deleteOwnerBugs(managedBugId, id) {
-		var deleteBtn = $("#deleteOwnerBtn_" + id);
-		deleteBtn.button('loading');
-		$.ajax({
-			type: "delete",
-			url: "/BugTrackingSystem/api/owner?managedBugId=" + managedBugId + "&id=" + id,
-			data: "",
-			
-			success: function (data) {
-				alert(data);
-				//window.location.reload();
-			},
-			
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-					
-			},
-				
-			complete: function (XMLHttpRequest, textStatus) {
-				deleteBtn.button('reset');
-			}
-		});
+		
 	}
 	
 	function operateOwnerBugs(managedBugId, id, operate) {
-		var operateOwnerBtn = $("#operateOwnerBtn_" + id);
+		var operateOwnerBtn = $("#operateOwenerBtn_" + managedBugId);
 		var buttonStr=operateOwnerBtn.html();
 		if(buttonStr=='Ignore'){
 			operate=ingoreCmd;
@@ -156,6 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			success: function (data) {
 				var dataObj = data;
 				var  managedRecordList=[];
+			
 				$.each(dataObj, function(i,warppedBuginfo) {
 					
 					var buginfo = warppedBuginfo.buginfo;
@@ -177,7 +137,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					record.push(buginfo.owner);
 					record.push(buginfo.status);
 					record.push(managedDisplay);
-					record.push(operationBtn + "<button class='btn btn-default' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>");
+					record.push(operationBtn + "<button class='btn btn-default historyDelete' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
 					managedRecordList.push(record);
 					
 					
@@ -233,7 +193,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					record.push(buginfo.owner);
 					record.push(buginfo.status);
 					record.push(managedDisplay);
-					record.push(operationBtn + "<button class='btn btn-default' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>");
+					//record.push(operationBtn + "<button class='btn btn-default ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>");
+					record.push(operationBtn + "<button class='btn btn-default owernerDelete' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
 					ownerRecordList.push(record);
 					
 				});
@@ -334,7 +295,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			return sOut;
 		}
 
-						
+		$(document).delegate('.historyDelete','click',function () {
+						var managedBugId=$(this).attr("data-manageid");
+						var id=$(this).attr("data-bugid");
+						var row = $(this).closest("tr").get(0);
+						var rowId=managerBugDataTable.fnGetPosition(row);
+						var deleteBtn = $("#deleteManagedBtn_" + managedBugId);
+						deleteBtn.button('loading');
+						$.ajax({
+							type: "delete",
+							url: "/BugTrackingSystem/api/managed?managedBugId=" + managedBugId + "&id=" + id,
+							data: "",
+							success: function (data) {
+								alert(data);
+								
+								//window.location.reload();
+							},
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+									
+								},
+								
+								complete: function (XMLHttpRequest, textStatus) {
+									deleteBtn.button('reset');
+									managerBugDataTable.fnDeleteRow(rowId);
+								}
+						});
+				       				
+		} );	
+		$(document).delegate('.owernerDelete','click',function () {
+						var managedBugId=$(this).attr("data-manageid");
+						var id=$(this).attr("data-bugid");
+						var row = $(this).closest("tr").get(0);
+						var rowId=managerBugDataTable.fnGetPosition(row);
+						var deleteBtn = $("#deleteOwnerBtn_" + id);
+						deleteBtn.button('loading');
+						$.ajax({
+							type: "delete",
+							url: "/BugTrackingSystem/api/owner?managedBugId=" + managedBugId + "&id=" + id,
+							data: "",
+							
+							success: function (data) {
+								alert(data);
+								//window.location.reload();
+							},
+							
+							error : function(XMLHttpRequest, textStatus, errorThrown) {
+									
+							},
+								
+							complete: function (XMLHttpRequest, textStatus) {
+								deleteBtn.button('reset');
+								ownerBugDataTable.fnDeleteRow(rowId);
+							}
+						});
+				       				
+		} );			
 	});
 	</script>
 
