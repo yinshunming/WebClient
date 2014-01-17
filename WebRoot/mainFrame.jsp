@@ -1,437 +1,669 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!DOCTYPE HTML>
 <html>
-  <head>
-  
-    <title>Main Frame</title>
-    
-	
-	<!--
+<head>
+
+<title>Main Frame</title>
+
+
+<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-	<script src="jquery/jquery-1.10.2.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js" ></script>
-	<script type="text/javascript">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="datatables/css/demo_page.css" />
+<link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
+<link rel="stylesheet"
+	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+<script src="jquery/jquery-1.10.2.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="datatables/js/jquery.dataTables.js">
 	
+</script>
+<script type="text/javascript">
+	var ownerBugDataTable;
+	var managerBugDataTable;
+	var differentBugDataTable;
+
 	function updateStatus(id, bugId) {
 		var updateBtn = $("#status_" + id);
 		updateBtn.button('loading');
-		
+
 		$.ajax({
-			type: "get",
-			url: "/BugTrackingSystem/api/bugStatus?id=" + id + "&bugId=" + bugId,
-			data: "",
-			
-			success: function (data) {
-				$("#label_status_" + id).text(data);		
+			type : "get",
+			url : "/BugTrackingSystem/api/bugStatus?id=" + id + "&bugId="
+					+ bugId,
+			data : "",
+
+			success : function(data) {
+				$("#label_status_" + id).text(data);
 			},
-			
+
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				alert("updating error! Please try again");
 			},
-			
-			complete: function (XMLHttpRequest, textStatus) {
+
+			complete : function(XMLHttpRequest, textStatus) {
 				updateBtn.button('reset');
 			}
 		});
-		
+
 	}
+
+
+	$(document)
+			.ready(
+					function() {
+												
+					
+						$("#mainFrameJSPNav").addClass("active");
+
+						$.ajax({
+									type : "get",
+									url : "/BugTrackingSystem/api/mainFrame",
+									data : "",
+									success : function(data) {
+										var dataObj = data;
+										var  managedRecordList=[];
+										$.each(dataObj.managedList,
+														function(i, buginfo) {
+															var record = [];
+															record.push("<img src='datatables/images/details_open.png' >");
+															record.push("<a href=bugDetail.jsp?id="
+																					+ buginfo.id
+																					+ ">"
+																					+ buginfo.bugId
+																					+ "</a>");
+															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+																					+ buginfo.bugId
+																					+ "&Template=view&TableId=1000'>"
+																					+ buginfo.title
+																					+ "</a>");
+															record.push(buginfo.project);
+															record.push(buginfo.owner);
+															record.push("<label id=label_status_" + buginfo.id + ">"
+																					+ buginfo.status
+																					+ "</label>");
+															record.push("<button id=status_"
+																					+ buginfo.id
+																					+ " onclick= "
+																					+ "javascript:updateStatus('"
+																					+ buginfo.id
+																					+ "','"
+																					+ buginfo.bugId
+																					+ "') class='btn btn-default'>update</button>"
+																					);
+															 managedRecordList.push(record);
+														});
+													
+										managerBugDataTable = $('#managedBugTable').dataTable( {
+											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
+											"bProcessing": true,
+											"aoColumnDefs": [
+												{ "bSortable": false, "aTargets": [ 0 ] }
+											], 
+											"aaSorting": [[1, 'asc']],
+											"bJQueryUI": true,
+											"sPaginationType": "full_numbers",
+											"aaData": managedRecordList,
+											"aoColumns": [
+									            { sWidth: '5%' },
+									            { sWidth: '10%' },
+									            { sWidth: '30%' },
+									            { sWidth: '10%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            ]
+										});						
+										$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
+										$(".managedButtonPlaceholder").css("width","15%");
+										$(".managedButtonPlaceholder").css("float","right");
+										
+										var  ownerRecordList=[];
+										$.each(
+														dataObj.ownerList,
+														function(i, buginfo) {
+															var record = [];
+															record.push("<img src='datatables/images/details_open.png' >");
+															record.push("<a href=bugDetail.jsp?id="
+																					+ buginfo.id
+																					+ ">"
+																					+ buginfo.bugId
+																					+ "</a>");
+														    record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+																					+ buginfo.bugId
+																					+ "&Template=view&TableId=1000'>"
+																					+ buginfo.title
+																					+ "</a>");
+														    record.push(buginfo.project);
+														    record.push( buginfo.owner);
+														    record.push(
+																				   "<label id=label_status_" + buginfo.id + ">"
+																					+ buginfo.status
+																					+ "</label>");
+															record.push("<button id=status_"
+																					+ buginfo.id
+																					+ " onclick= "
+																					+ "javascript:updateStatus('"
+																					+ buginfo.id
+																					+ "','"
+																					+ buginfo.bugId
+																					+ "') class='btn btn-default'>update</button>");
+														    ownerRecordList.push(record);
+																														
+														});
+														
+										
+										
+
+										/*
+										 * Initialse DataTables, with no sorting on the 'details' column
+										 */
+										ownerBugDataTable = $('#ownerBugTable').dataTable( {
+											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"ownerButtonPlaceholder">p>',
+											//"sDom": 'R<C><"ownerButtonPlaceholder">H<"clear">',
+											"bProcessing": true,
+											"aoColumnDefs": [
+												{ "bSortable": false, "aTargets": [ 0 ] }
+											], 
+											"aaSorting": [[1, 'asc']],
+											"bJQueryUI": true,
+											"sPaginationType": "full_numbers",
+											"aaData": ownerRecordList,
+											"aoColumns": [
+									            { sWidth: '5%' },
+									            { sWidth: '10%' },
+									            { sWidth: '30%' },
+									            { sWidth: '10%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            ]
+										});
+				
+										$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
+										$(".ownerButtonPlaceholder").css("width","15%");
+										$(".ownerButtonPlaceholder").css("float","right");
+
+										var  differentRecordList=[];				
+										$.each(
+														dataObj.changedList,
+														function(i,
+																warppedBuginfo) {
+															var buginfo = warppedBuginfo.buginfo;
+															var record=[];
+															record.push("<img src='datatables/images/details_open.png' >");
+															record.push("<a href=bugDetail.jsp?id="
+																					+ buginfo.id																				
+																					+ ">"
+																					+ buginfo.bugId
+																					+ "</a>");
+															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+																					+ buginfo.bugId
+																					+ "&Template=view&TableId=1000'>"
+																					+ buginfo.title
+																					+ "</a>");
+															record.push(buginfo.project);
+															record.push(buginfo.owner);
+															record.push(buginfo.status);
+															record.push("<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
+																					+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
+															
+															differentRecordList.push(record);
+															
+														});
+										differentBugDataTable = $('#differentBugTable').dataTable( {
+											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
+											"bProcessing": true,
+											"aoColumnDefs": [
+												{ "bSortable": false, "aTargets": [ 0 ] }
+											], 
+											"aaSorting": [[1, 'asc']],
+											"bJQueryUI": true,
+											"sPaginationType": "full_numbers",
+											"aaData": differentRecordList,
+											"aoColumns": [
+									            { sWidth: '5%' },
+									            { sWidth: '10%' },
+									            { sWidth: '30%' },
+									            { sWidth: '10%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            { sWidth: '15%' },
+									            ]
+										});
+										$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
+										$(".diffentButtonPlaceholder").css("width","15%");
+										$(".diffentButtonPlaceholder").css("float","right");
+
+									},
+
+									error : function(XMLHttpRequest,
+											textStatus, errorThrown) {
+
+									},
+
+									complete : function(XMLHttpRequest,
+											textStatus) {
+
+									}
+								});
+
+						var updateAllOwnerListBtn = $("#updateAllOwnerListBtn");
+						$(document).delegate('#updateAllOwnerListBtn','click',function () {
+									updateAllOwnerListBtn.button('loading');
+									var table = $("#ownerBugTableBody");
+									var _map = new Object();
+
+									var i = 0;
+
+									table.find('tr').each(
+													function(index, row) {
+														var allCells = $(row)
+																.find('td');
+														var anchor = allCells[1]
+																.getElementsByTagName("a")[0];
+														var bugId = anchor.innerHTML;
+														var id = anchor
+																.getAttribute(
+																		"href")
+																.split("id=")[1];
+
+														var btn = $("#status_"
+																+ id);
+														btn.button('loading');
+
+														_map[id] = bugId;
+														i++;
+
+													});
+
+									$.ajax({
+												type : "post",
+												url : "/BugTrackingSystem/api/bugStatus",
+												data : _map,
+
+												success : function(data) {
+													var dataObj = data;
+													$.each(
+																	dataObj,
+																	function(i,
+																			obj) {
+																		for ( var id in obj) {
+																			var newStatus = obj[id];
+																			var btn = $("#status_"
+																					+ id);
+																			btn
+																					.button('reset');
+																			$(
+																					"#label_status_"
+																							+ id)
+																					.text(
+																							newStatus);
+																		}
+																	});
+
+												},
+
+												error : function(
+														XMLHttpRequest,
+														textStatus, errorThrown) {
+													alert("updating error! Please try again");
+												},
+
+												complete : function(
+														XMLHttpRequest,
+														textStatus) {
+													updateAllOwnerListBtn
+															.button('reset');
+												}
+											});
+
+								});
+
+						var updateAllManagedListBtn = $("#updateAllManagedListBtn");
+						$(document).delegate('#updateAllManagedListBtn','click',function () {
+									updateAllManagedListBtn.button('loading');
+									var table = $("#managedBugTableBody");
+									var _map = new Object();
+
+									var i = 0;
+
+									table
+											.find('tr')
+											.each(
+													function(index, row) {
+														var allCells = $(row)
+																.find('td');
+														var anchor = allCells[1]
+																.getElementsByTagName("a")[0];
+														var bugId = anchor.innerHTML;
+														var id = anchor
+																.getAttribute(
+																		"href")
+																.split("id=")[1];
+
+														var btn = $("#status_"
+																+ id);
+														btn.button('loading');
+
+														_map[id] = bugId;
+														i++;
+
+													});
+
+									$.ajax({
+												type : "post",
+												url : "/BugTrackingSystem/api/bugStatus",
+												data : _map,
+
+												success : function(data) {
+													var dataObj = data;
+													$
+															.each(
+																	dataObj,
+																	function(i,
+																			obj) {
+																		for ( var id in obj) {
+																			var newStatus = obj[id];
+																			var btn = $("#status_"
+																					+ id);
+																			btn
+																					.button('reset');
+																			$(
+																					"#label_status_"
+																							+ id)
+																					.text(
+																							newStatus);
+																		}
+																	});
+
+												},
+
+												error : function(
+														XMLHttpRequest,
+														textStatus, errorThrown) {
+													alert("updating error! Please try again");
+												},
+
+												complete : function(
+														XMLHttpRequest,
+														textStatus) {
+													updateAllManagedListBtn
+															.button('reset');
+												}
+											});
+
+								});
+
+
+					$(document).delegate('#ownerBugTable tbody td img','click',function () {
+						var nTr = $(this).parents('tr')[0];
+					  	var id = nTr.childNodes[1].childNodes[0].attributes[0].value.split("id=")[1];
+						
+				       		//alert("hello");
+							if ( ownerBugDataTable.fnIsOpen(nTr) )
+							{
+								//This row is already open - close it
+								this.src = "datatables/images/details_open.png";
+								ownerBugDataTable.fnClose( nTr );
+							}
+							else
+							{
+								//Open this row
+								this.src = "datatables/images/details_close.png";
+								$.ajax({
+									type: "get",
+									url: "/BugTrackingSystem/api/bug?id=" + id,
+									data: "",
+									success: function (data) {
+										bugInfo = data;
+									    var sOut= getBugInfoTable(bugInfo);										
+										ownerBugDataTable.fnOpen( nTr, sOut, 'details' );
+										
+										}
+									});
+							}							
+						} );
+						
+					
 	
-	function searchTable(inputVal, tableId)
-	{
-		var table = $('#' + tableId);
-		table.find('tr').each(function(index, row)
-		{
-			var allCells = $(row).find('td');
-			if(allCells.length > 0)
-			{
-				var found = false;
-				allCells.each(function(index, td)
-				{
-					var regExp = new RegExp(inputVal, 'i');
-					if(regExp.test($(td).text()))
-					{
-						found = true;
-						return false;
-					}
-				});
-				if(found == true)$(row).show();else $(row).hide();
-			}
-		});
+					$(document).delegate('#managedBugTable tbody td img','click',function () {
+						var nTr = $(this).parents('tr')[0];
+					  	var id = nTr.childNodes[1].childNodes[0].attributes[0].value.split("id=")[1];
+						
+				       		
+							if ( managerBugDataTable.fnIsOpen(nTr) )
+							{
+								//alert("hello");
+								//This row is already open - close it
+								this.src = "datatables/images/details_open.png";
+								managerBugDataTable.fnClose( nTr );
+							}
+							else
+							{
+								//Open this row
+								this.src = "datatables/images/details_close.png";
+								$.ajax({
+									type: "get",
+									url: "/BugTrackingSystem/api/bug?id=" + id,
+									data: "",
+									success: function (data) {
+										bugInfo = data;
+									    var sOut= getBugInfoTable(bugInfo);										
+										managerBugDataTable.fnOpen( nTr, sOut, 'details' );
+										
+										}
+									});
+							}							
+						} );
+						
+						
+						$(document).delegate('#differentBugTable tbody td img','click',function () {
+						var nTr = $(this).parents('tr')[0];
+					  	var id = nTr.childNodes[1].childNodes[0].attributes[0].value.split("id=")[1];
+						
+				       		//alert("hello");
+							if ( differentBugDataTable.fnIsOpen(nTr) )
+							{
+								//This row is already open - close it
+								this.src = "datatables/images/details_open.png";
+								differentBugDataTable.fnClose( nTr );
+							}
+							else
+							{
+								//Open this row
+								this.src = "datatables/images/details_close.png";
+								$.ajax({
+									type: "get",
+									url: "/BugTrackingSystem/api/bug?id=" + id,
+									data: "",
+									success: function (data) {
+										bugInfo = data;
+									    var sOut= getBugInfoTable(bugInfo);										
+										differentBugDataTable.fnOpen( nTr, sOut, 'details' );
+										
+										}
+									});
+							}							
+						} );
+						
+			});
+	
+	
+		function  getBugInfoTable(bugInfo){
+			var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+			sOut += '<tr><td>Component:</td><td>'+bugInfo.component+'</td></tr>';
+			sOut += '<tr><td>BugId:</td><td>'+bugInfo.bugId+'</td></tr>';
+			sOut += '<tr><td>Title:</td><td>'+bugInfo.title+'</td></tr>';
+			sOut += '<tr><td>Project:</td><td>'+bugInfo.project+'</td></tr>';
+			sOut += '<tr><td>Type:</td><td>'+bugInfo.type+'</td></tr>';
+			sOut += '<tr><td>Status:</td><td>'+bugInfo.status+'</td></tr>';
+			sOut += '<tr><td>Description:</td><td>'+bugInfo.description+'</td></tr>';
+			sOut += '<tr><td>Owner:</td><td>'+bugInfo.owner+'</td></tr>';
+			sOut += '<tr><td>Submitter:</td><td>'+bugInfo.submitter+'</td></tr>';
+			sOut += '<tr><td>SubmitData:</td><td>'+bugInfo.submitData+'</td></tr>';
+			sOut += '<tr><td>Severity:</td><td>'+bugInfo.severity+'</td></tr>';
+			sOut += '<tr><td>Tags:</td><td>'+bugInfo.tags+'</td></tr>';
+			sOut += '<tr><td>Regression:</td><td>'+bugInfo.regression+'</td></tr>';									
+			sOut += '</table>';
+			return sOut;
 	}
-	
-	
-	$(document).ready(function(){
-		$("#mainFrameJSPNav").addClass("active");
-		
-		$('#search').keyup(function()
-		{
-			searchTable($(this).val(), "ownerBugTable");
-		});
-		
-		$('#search2').keyup(function(){
-			searchTable($(this).val(), "managedBugTable");
-		});
-		
-		$('#search3').keyup(function(){
-			searchTable($(this).val(), "differentBugTable");
-		});
-		
-		$.ajax({
-			type: "get",
-			url: "/BugTrackingSystem/api/mainFrame",
-			data: "",
-			success: function (data) {
 
-				var dataObj = data;
-				$.each(dataObj.managedList, function(i,buginfo) {
-					
-					$("#managedBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + "<button id=status_" + buginfo.id + " onclick= " + "javascript:updateStatus('" + buginfo.id + "','" + buginfo.bugId + "') class='btn btn-default'>update</button>" + "<label id=label_status_" + buginfo.id + ">"  + buginfo.status + "</label>" + "</td>" + "</tr>");
-				
-				});
-				
-				$.each(dataObj.ownerList, function(i,buginfo) {
-					
-					$("#ownerBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + "<button id=status_" + buginfo.id + " onclick= " + "javascript:updateStatus('" + buginfo.id + "','" + buginfo.bugId + "') class='btn btn-default'>update</button>"  +  "<label id=label_status_" + buginfo.id + ">" + buginfo.status + "</label>" + "</td>" + "</tr>");
-				
-				});
-				
-				$.each(dataObj.changedList, function(i,warppedBuginfo) {
-					var buginfo = warppedBuginfo.buginfo;
-					$("#differentBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>" +
-							"<td>  <label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"  
-							+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>  </td> </tr>" );
-						
-					});
-					
-					$("#modifyBtnDiv").append("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading...'>modify</button>");
-			},
-			
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				
-			},
-			
-			complete: function (XMLHttpRequest, textStatus) {
-				
-			}
-		});
-		
-		var updateAllOwnerListBtn = $("#updateAllOwnerListBtn");
-		updateAllOwnerListBtn.click(function(){
-			updateAllOwnerListBtn.button('loading');
-			var table = $("#ownerBugTableBody");
-			var _map = new Object();
-			
-			var i = 0;
-			
-			table.find('tr').each(function(index, row)
-			{
-				var allCells = $(row).find('td');
-				var anchor = allCells[0].getElementsByTagName("a")[0];
-				var bugId = anchor.innerHTML;
-				var id = anchor.getAttribute("href").split("id=")[1];
-				
-
-				var btn = $("#status_" + id);
-				btn.button('loading');
-
-				_map[ id ] = bugId;
-				i++;
-			
-			});
-			
-			
-			$.ajax({
-				type: "post",
-				url: "/BugTrackingSystem/api/bugStatus",
-				data: _map,
-				
-				success: function (data) {
-					var dataObj = data;
-					$.each(dataObj, function(i, obj) {
-						for (var id in obj) {
-							var newStatus = obj[id];
-							var btn = $("#status_" + id);
-							btn.button('reset');
-							$("#label_status_" + id).text(newStatus);
-						}
-					});
-					
-						
-				},
-				
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("updating error! Please try again");
-				},
-				
-				complete: function (XMLHttpRequest, textStatus) {
-					updateAllOwnerListBtn.button('reset');
-				}
-			});
-			
-			
-		});
-		
-		
-		var updateAllManagedListBtn = $("#updateAllManagedListBtn");
-		updateAllManagedListBtn.click(function(){
-			updateAllManagedListBtn.button('loading');
-			var table = $("#managedBugTableBody");
-			var _map = new Object();
-			
-			var i = 0;
-			
-			table.find('tr').each(function(index, row)
-			{
-				var allCells = $(row).find('td');
-				var anchor = allCells[0].getElementsByTagName("a")[0];
-				var bugId = anchor.innerHTML;
-				var id = anchor.getAttribute("href").split("id=")[1];
-				
-
-				var btn = $("#status_" + id);
-				btn.button('loading');
-
-				_map[ id ] = bugId;
-				i++;
-			
-			});
-			
-			
-			$.ajax({
-				type: "post",
-				url: "/BugTrackingSystem/api/bugStatus",
-				data: _map,
-				
-				success: function (data) {
-					var dataObj = data;
-					$.each(dataObj, function(i, obj) {
-						for (var id in obj) {
-							var newStatus = obj[id];
-							var btn = $("#status_" + id);
-							btn.button('reset');
-							$("#label_status_" + id).text(newStatus);
-						}
-					});
-					
-						
-				},
-				
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("updating error! Please try again");
-				},
-				
-				complete: function (XMLHttpRequest, textStatus) {
-					updateAllManagedListBtn.button('reset');
-				}
-			});
-			
-			
-		});
-
-		
-		
-		/*
-		var refreshBtn = $("#refreshBtn");
-		refreshBtn.click(function(){
-			refreshBtn.button('loading');
-			$.ajax({
-				type: "get",
-				url: "/BugTrackingSystem/api/refresh",
-				data: "",
-				success: function (data) {
-					var dataObj = data;
-					$("#differentDiv").css("display","block");
-					$("#differentBugTableBody").empty();
-					$("#modifyBtnDiv").empty();
-					
-					$.each(dataObj, function(i,buginfo) {
-						
-						$("#differentBugTableBody").append("<tr> <td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a></td><td><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a></td><td>" 
-							+ buginfo.project + "</td><td>" + buginfo.owner + "</td><td>" + buginfo.status + "</td>" +
-							"<td>  <label class='radio'><input type='radio' name='radio_" + buginfo.id + "' value='manage' \/\>manage</label>"  
-							+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "' value='ingore' \/\>ingore </label>  </td> </tr>" );
-						
-					});
-					
-					$("#modifyBtnDiv").append("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading...'>modify</button>");
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					
-				},
-				
-				complete: function (XMLHttpRequest, textStatus) {
-					refreshBtn.button('reset');
-				}
-			});
-		});
-		*/
-	
-	});
-	
+				       
 	function modifyBtnClick() {
 		var modifyBtn = $("#modifyBtn");
 		var differentFrame = $("#differentForm");
 
-			modifyBtn.button('loading');
-			$.ajax({
-				method: differentFrame.attr('method'),
-				url: differentFrame.attr('action'),
-				data: differentFrame.serialize(),
-				success: function (data) {
-					alert(data);
-					window.location.reload();
-				},
-				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					
-				},
-				
-				complete: function (XMLHttpRequest, textStatus) {
-					modifyBtn.button('reset');
-				}
-			});
+		modifyBtn.button('loading');
+		$.ajax({
+			method : differentFrame.attr('method'),
+			url : differentFrame.attr('action'),
+			data : differentFrame.serialize(),
+			success : function(data) {
+				alert(data);
+				window.location.reload();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+			},
+
+			complete : function(XMLHttpRequest, textStatus) {
+				modifyBtn.button('reset');
+			}
+		});
 	}
 	
-	</script>
+	
+	
+</script>
 
-  </head>
-  
-  <body>
-  
+</head>
 
-		<%@ include file="navigation.jsp" %>
+<body>
 
 
-  		<div class="container" style="padding-top:70px" >
-	  		<div class="row" >
-		    	<div id="ownerBugDiv" class="col-lg-10" >
+	<%@ include file="navigation.jsp"%>
 
-		    	
-		    		  <div class="col-lg-4">
-			    		  <h3>OwnerBugList</h3>
-			    	  </div>
-			    	  
-			    	  <div class="col-lg-6" style="padding-top:20px">
-	 					<input id="search" type="text" class="input-medium search-query" placeholder="input search info" >
-					  </div>
-					  
-					   <div class="col-lg-2" style="padding-top:20px">
-					  		<button id="updateAllOwnerListBtn" name="updateAllOwnerListBtn" class="btn btn-default" data-loading-text="Loading...">update all</button>
-					   </div>
-					 	
-					 <div>
-					 <br/>
-		    		  <table id="ownerBugTable" class="table">
-		    		  
-				        <thead>
-				          <tr>
-				            <th>BugId</th>
-				            <th>Title</th>
-				            <th>Project</th>
-				            <th>Owner</th>
-				            <th>Status</th>
-				          </tr>
-				        </thead>
-				        <tbody id="ownerBugTableBody">
-				          
-				        </tbody>
-				      </table>
-				      </div>
-		    	</div>		    	
-	    	</div>
-    	</div>
-    	
-    	<hr/>
-    	
-    	<div class="container">
-    	<div class="row">
-    			<div id="managedBugDiv" class="col-lg-10" >
-    				<div class="col-lg-4">
-		    			<h3>ManagedBugList</h3>
-		    		</div>
-		    		
-		    		<div class="col-lg-6" style="padding-top:20px">
-	 					<input id="search2" type="text" class="input-medium search-query" placeholder="input search info" >
-					</div>
-					
-					<div class="col-lg-2" style="padding-top:20px">
-					  		<button id="updateAllManagedListBtn" name="updateAllManagedListBtn" class="btn btn-default" data-loading-text="Loading...">update all</button>
-					</div>
-					 
-					<div >
-					<br/>
-		    		 <table id="managedBugTable" class="table">
-				        <thead>
-				          <tr>
-				            <th>BugId</th>
-				            <th>Title</th>
-				            <th>Project</th>
-				            <th>Owner</th>
-				            <th>Status</th>
-				          </tr>
-				        </thead>
-				        <tbody id="managedBugTableBody">
-				          
-				        </tbody>
-				      </table>
-				      </div>
-		    	</div>
-    	</div>
-    	</div>
-    	
-    	<hr/>
-    	
-    	<div class="container">
-    	<div class="row" >
-	    	<div class="col-lg-10">
-	    		<div class="col-lg-4">
-	    			<h3>ChangedBugList</h3>
-	    		</div>
-	    		
-	    		<div class="col-lg-8" style="padding-top:20px">
-	 				<input id="search3" type="text" class="input-medium search-query" placeholder="input search info" >
+
+	<div class="container" style="padding-top:70px">
+		<div class="row">
+			<div id="ownerBugDiv" class="col-lg-12">
+
+
+				<div class="col-lg-4">
+					<h3>OwnerBugList</h3>
 				</div>
-	    		 
-	    		
-		    	<div id="differentDiv">
-					
-	    			<form id="differentForm" name="differentForm" action="/BugTrackingSystem/api/bugs?method=put" method="post">
-	    				<br/>
-	    				<table id="differentBugTable" class="table">
-				        
-				        <thead>
-				          <tr>
-				            <th>BugId</th>
-				            <th>Title</th>
-				            <th>Project</th>
-				            <th>NewOwner</th>
-				            <th>Status</th>
-				            <th>Operation</th>
-				          </tr>
-				        </thead>
-				        <tbody id="differentBugTableBody">
-				          
-				        </tbody>
-				      </table>
-				      <div id='modifyBtnDiv'>
-	    				
-	    			  </div>
-	    			</form>
-	    			
-	    			
-	    			<!--  
-	    			<button id="refreshBtn" name="refreshBtn" type="button" value="refresh" class="btn btn-default" data-loading-text="Loading...">refresh</button>  
+
+				<div>
+					<br />
+					<table id="ownerBugTable" class="table display" cellpadding="0"
+						cellspacing="0" border="0">
+
+						<thead>
+							<tr>
+								<th>Detail</th>
+								<th>BugId</th>
+								<th>Title</th>
+								<th>Project</th>
+								<th>Owner</th>
+								<th>Status</th>
+								<th>Operation</th>
+							</tr>
+						</thead>
+						<tbody id="ownerBugTableBody">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="container">
+		<div class="row">
+			<div id="managedBugDiv" class="col-lg-12">
+				<div class="col-lg-4">
+					<h3>ManagedBugList</h3>
+				</div>
+				<div>
+					<br />
+					<table id="managedBugTable"  class="table display" cellpadding="0"
+						cellspacing="0" border="0">
+						<thead>
+							<tr>
+								<th>Detail</th>
+								<th>BugId</th>
+								<th>Title</th>
+								<th>Project</th>
+								<th>Owner</th>
+								<th>Status</th>
+								<th>Operation</th>
+							</tr>
+						</thead>
+						<tbody id="managedBugTableBody">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="col-lg-4">
+					<h3>ChangedBugList</h3>
+				</div>
+
+<!-- 				<div class="col-lg-8" style="padding-top:20px">
+					<input id="search3" type="text" class="input-medium search-query"
+						placeholder="input search info">
+				</div> -->
+
+
+				<div id="differentDiv">
+
+					<form id="differentForm" name="differentForm"
+						action="/BugTrackingSystem/api/bugs?method=put" method="post">
+						<br />
+						<table id="differentBugTable"  class="table display" cellpadding="0"
+						cellspacing="0" border="0">
+
+							<thead>
+								<tr>
+									<th>Detail</th>
+									<th>BugId</th>
+									<th>Title</th>
+									<th>Project</th>
+									<th>NewOwner</th>
+									<th>Status</th>
+									<th>Operation</th>
+								</tr>
+							</thead>
+							<tbody id="differentBugTableBody">
+
+							</tbody>
+						</table>
+						<div id='modifyBtnDiv'></div>
+					</form>
+
+
+					<!--  
+	    			<button id="refreshBtn" name="refreshBtn" type="button" value="refresh" class="btn btn-default" data-loading-text="Loading">refresh</button>  
 		    		-->
-		    	</div>
-	    	</div>
-    	</div>
-    	</div>
-    
-  </body>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+</body>
 </html>
