@@ -18,9 +18,7 @@
 	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="datatables/js/jquery.dataTables.js">
-	
-</script>
+<script src="datatables/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 	var ownerBugDataTable;
 	var managerBugDataTable;

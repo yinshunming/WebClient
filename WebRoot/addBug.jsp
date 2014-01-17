@@ -89,6 +89,7 @@
 			
  			<div class="container" style="padding-top:70px" >
  				<div class="row">
+				
 	 				<div id ="addFormDiv" class="col-lg-4" >
 	 					<h4>Please enter your bugId(such as:0405135)</h4>
 				    	<form id="addForm" name="addForm" action="/BugTrackingSystem/api/bugs" method="get" class="well form-horizontal">
@@ -108,7 +109,7 @@
 				  		</form>
 				  		
 	  				</div>
-
+			
   
 			  		<div id="bugInfoDiv" style="display:none" class="col-lg-8">
 			  		
