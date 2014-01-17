@@ -4,7 +4,9 @@
 		var addForm = $("#addForm");
 		var addFormButton = $("#addFormSb");
 		addFormButton.click(function() {
-		
+		    if($("#addBugInput").val()==""){
+			return;
+			}
 			$('#myModal').modal('show');
 			
 			addFormButton.button('loading');
@@ -44,6 +46,7 @@
 				complete: function (XMLHttpRequest, textStatus) {
 					//alert("complete");
 					addFormButton.button('reset');
+					$("#addBugInput").val("");
 				}
 			});
 		});
@@ -61,6 +64,7 @@
 					//alert(dataObj);
 					//$('#myModal').modal('show')
 					window.location.reload();
+				  
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
 					
@@ -68,6 +72,19 @@
 				
 				complete: function (XMLHttpRequest, textStatus) {
 					buginfoFormButton.button('reset');
+				   $("#component").val("");
+				   $("#bugId").val("");
+				   $("#title").val("");
+				   $("#project").val("");
+				   $("#type").val("");
+				   $("#status").val("");
+				   $("#description").val("");
+				   $("#owner").val("");
+				   $("#submitter").val("");
+				   $("#submitData").val("");
+				   $("#severity").val("");
+				   $("#tags").val("");
+				   $("#regression").val("");
 				}
 			});		
 		});  
@@ -99,7 +116,7 @@
 			
 			<form id="addForm" name="addForm" action="/BugTrackingSystem/api/bugs" method="get" class="navbar-form navbar-left" role="Search" style="margin-left:50px">
 			  <div class="form-group">
-				<input type="text" class="form-control" name="bugId" placeholder="BugID:0405135">				
+				<input type="text" class="form-control" name="bugId" placeholder="BugID:0405135" id="addBugInput">				
 			  </div>
 			  
 			  <button class="btn btn-default" type="button" id="addFormSb" name="addFormSb" data-toggle="modal"  data-loading-text="Loading...">Add</button>
