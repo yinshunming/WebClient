@@ -16,10 +16,10 @@
 				type: addForm.attr('method'),
 				url: addForm.attr('action'),
 				data: addForm.serialize(),
-				
+				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
-					//alert("OK");
+					alert("OK");
 					$("#myModalLabel").html("Please verify the info of this bug and input its' component info:");
 					$("#bugInfoFormSb").prop('disabled', false);
 					if (dataObj != null) {
@@ -59,11 +59,13 @@
 				type: buginfoForm.attr('method'),
 				url: buginfoForm.attr('action'),
 				data: buginfoForm.serialize(),
+				cache : false,
 				success: function (data) {
 					var dataObj = data;
 					//alert(dataObj);
 					//$('#myModal').modal('show')
-					window.location.reload();
+					
+					window.location.reload(true);
 				  
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -114,12 +116,12 @@
 				<li id="registerJSPNav"><a href="register.jsp">Register</a></li>
 			</ul>
 			
-			<form id="addForm" name="addForm" action="/BugTrackingSystem/api/bugs" method="get" class="navbar-form navbar-left" role="Search" style="margin-left:50px">
-			  <div class="form-group">
-				<input type="text" class="form-control" name="bugId" placeholder="BugID:0405135" id="addBugInput">				
+			<form id="addForm" name="addForm" action="/BugTrackingSystem/api/bugs" method="get" class="navbar-form navbar-left" role="Search" style="margin-left:50px;height:34px">
+			  <div class="form-group" style="float:left ;width:177px">
+				<input type="text" class="form-control" name="bugId" placeholder="BugID:0405135" id="addBugInput" >				
 			  </div>
 			  
-			  <button class="btn btn-default" type="button" id="addFormSb" name="addFormSb" data-toggle="modal"  data-loading-text="Loading...">Add</button>
+			  <button class="btn btn-default" type="button" id="addFormSb" name="addFormSb" data-toggle="modal"  data-loading-text="Loading..."  style="float:left ; margin-left:5px">Add</button>
 			  <!--data-target="#myModal"-->
 			</form>
 			

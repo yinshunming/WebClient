@@ -4,16 +4,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <meta http-equiv="cache-control" content="max-age=0" >
+<meta http-equiv="cache-control" content="no-cache" >
+<meta http-equiv="expires" content="0" >
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" >
+<meta http-equiv="pragma" content="no-cache" > -->
 <title>Register Page</title>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-
+	<!--[if lte IE 6]>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+	<![endif]-->
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 
 	<script src="jquery/jquery.validate.min.js" ></script>
 	<script src="jquery/additional-methods.min.js" ></script>
 	
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
-	
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="js/respond.min.js"></script>
+	<![endif]-->
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#registerJSPNav").addClass("active");
@@ -47,6 +59,7 @@
 						type: registerForm.attr('method'),
 						url: registerForm.attr('action'),
 						data: registerForm.serialize(),
+						cache : false,
 						success: function (data) {
 							var dataObj = data;
 							alert(dataObj);
@@ -121,4 +134,8 @@
 	  		</div>
 	 </div>
 </body>
+ <!-- jQuery 1.7.2 or higher -->
+  <!--[if lte IE 6]>
+  <script type="text/javascript" src="js/bootstrap-ie.js"></script>
+  <![endif]-->
 </html>

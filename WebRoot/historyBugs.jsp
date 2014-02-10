@@ -9,18 +9,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     <title>History Bugs</title>
-    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--     <meta http-equiv="cache-control" content="max-age=0" >
+	<meta http-equiv="cache-control" content="no-cache" >
+	<meta http-equiv="expires" content="0" >
+	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" >
+	<meta http-equiv="pragma" content="no-cache" > -->
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <!--[if lte IE 6]>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+	<![endif]-->
     <link rel="stylesheet" href="datatables/css/demo_page.css" />
 	<link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
-	<link rel="stylesheet"
-		href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+	<link rel="stylesheet" href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
 	<script src="datatables/js/jquery.dataTables.js"></script>
+    <script src="datatables/js/ColReorderWithResize.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="js/respond.min.js"></script>
+	<![endif]-->
    	<script type="text/javascript">
    	var ownerBugDataTable;
 	var managerBugDataTable;
+	
+	function ellipsis(text, n) {
+	    if(text.length>n)
+	        return text.substring(0,n)+"...";
+	    else
+	        return text;
+    }
+
+    function truncatTextReder( nRow, aData, iDisplayIndex) 
+    {
+        var $cell=$('td:eq(2)', nRow);
+        var text=ellipsis($cell.text(),80);
+        var html= $cell.html().replace($cell.text(),text);
+        $cell.html(html);
+        return nRow;
+    }
 	
    	function operateManagedBugs(managedBugId, id, operate) {
    		var operateManagedBtn = $("#operateManagedBtn_" + managedBugId);
@@ -37,6 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			type: "post",
 			url: "/BugTrackingSystem/api/managed?method=put&operate=" +  operate + "&managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
+			cache : false,
 			success: function (data) {
 				alert(data);
 			},
@@ -44,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 				},
 				
-				complete: function (XMLHttpRequest, textStatus) {
+			complete: function (XMLHttpRequest, textStatus) {
 					 operateManagedBtn.button("reset");
 					 if(operate==ingoreCmd){				
 						operateManagedBtn.html('Restore');
@@ -76,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			type: "post",
 			url: "/BugTrackingSystem/api/owner?method=put&operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
-			
+			cache : false,
 			success: function (data) {
 			
 				alert(data);
@@ -112,6 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			type: "get",
 			url: "/BugTrackingSystem/api/managed",
 			data: "",
+			cache : false,
 			success: function (data) {
 				var dataObj = data;
 				var  managedRecordList=[];
@@ -131,8 +164,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 					var record = [];
 					record.push("<img src='datatables/images/details_open.png' >");
-					record.push("<td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a>");
-					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a>");
+					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
+					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window'>" + buginfo.title + "</a>");
 					record.push(buginfo.project);
 					record.push(buginfo.owner);
 					record.push(buginfo.status);
@@ -144,6 +177,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				managerBugDataTable = $('#historyBugsTable').dataTable( {
 											"bProcessing": true,
+											"fnRowCallback":  truncatTextReder,
+											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
 											], 
@@ -159,9 +194,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
-									            { sWidth: '15%' },
+									            { sWidth: '15%' }
 									            ]
 										});		
+				//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#historyBugsTable");
 			}	
 		});
 					
@@ -170,6 +206,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			type: "get",
 			url: "/BugTrackingSystem/api/owner",
 			data: "",
+			cache : false,
 			success: function (data) {
 				var dataObj = data;
 				var ownerRecordList=[];
@@ -187,8 +224,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						managedDisplay = notManagedText;
 					} 
 					record.push("<img src='datatables/images/details_open.png' >");
-					record.push("<td><a href=bugDetail.jsp?id=" + buginfo.id + ">" + buginfo.bugId + "</a>");
-					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000'>" + buginfo.title + "</a>");
+					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
+					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window'>" + buginfo.title  + "</a>");
 					record.push(buginfo.project);
 					record.push(buginfo.owner);
 					record.push(buginfo.status);
@@ -200,6 +237,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				ownerBugDataTable = $('#ownerBugsTable').dataTable( {
 											"bProcessing": true,
+											"fnRowCallback":  truncatTextReder,
+											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
 											], 
@@ -215,14 +254,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
-									            { sWidth: '15%' },
+									            { sWidth: '15%' }
 									            ]
 										});		
+			  // if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#ownerBugsTable");
 			}
 		});
 		$(document).delegate('#historyBugsTable tbody td img','click',function () {
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes[0].value.split("id=")[1];
+					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( managerBugDataTable.fnIsOpen(nTr) )
@@ -239,6 +279,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									type: "get",
 									url: "/BugTrackingSystem/api/bug?id=" + id,
 									data: "",
+									cache : false,
 									success: function (data) {
 										bugInfo = data;
 									    var sOut= getBugInfoTable(bugInfo);										
@@ -250,7 +291,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		} );
 		$(document).delegate('#ownerBugsTable tbody td img','click',function () {
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes[0].value.split("id=")[1];
+					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( ownerBugDataTable.fnIsOpen(nTr) )
@@ -267,6 +308,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									type: "get",
 									url: "/BugTrackingSystem/api/bug?id=" + id,
 									data: "",
+									cache: false,
 									success: function (data) {
 										bugInfo = data;
 									    var sOut= getBugInfoTable(bugInfo);										
@@ -306,6 +348,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							type: "delete",
 							url: "/BugTrackingSystem/api/managed?managedBugId=" + managedBugId + "&id=" + id,
 							data: "",
+							cache : false,
 							success: function (data) {
 								alert(data);
 								
@@ -315,7 +358,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									
 								},
 								
-								complete: function (XMLHttpRequest, textStatus) {
+							complete: function (XMLHttpRequest, textStatus) {
 									deleteBtn.button('reset');
 									managerBugDataTable.fnDeleteRow(rowId);
 								}
@@ -333,7 +376,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							type: "delete",
 							url: "/BugTrackingSystem/api/owner?managedBugId=" + managedBugId + "&id=" + id,
 							data: "",
-							
+							cache : false,
 							success: function (data) {
 								alert(data);
 								//window.location.reload();
@@ -430,4 +473,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     
   </body>
+   <!-- jQuery 1.7.2 or higher -->
+  <!--[if lte IE 6]>
+  <script type="text/javascript" src="js/bootstrap-ie.js"></script>
+  <![endif]-->
 </html>

@@ -12,9 +12,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <title>BugDetail</title>
     
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+	<!--[if lte IE 6]>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+	<![endif]-->
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
-	
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="js/respond.min.js"></script>
+	<![endif]-->
 	<script type="text/javascript">
 	  function getUrlParam(name) {
           var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -173,4 +181,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        </div>
     </div>
   </body>
+  <!-- jQuery 1.7.2 or higher -->
+  <!--[if lte IE 6]>
+  <script type="text/javascript" src="js/bootstrap-ie.js"></script>
+  <![endif]-->
 </html>
