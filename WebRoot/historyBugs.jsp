@@ -27,6 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
 	<script src="datatables/js/jquery.dataTables.js"></script>
+	<script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
     <script src="datatables/js/ColReorderWithResize.js"></script>
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -184,6 +185,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				managerBugDataTable = $('#historyBugsTable').dataTable( {
 											"bProcessing": true,
+											"bLengthChange":false,
+											"bPaginate":false,
 											"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
@@ -197,14 +200,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									            { sWidth: '5%' },
 									            { sWidth: '10%' },
 									            { sWidth: '30%' },
-									            { sWidth: '10%' },
+									            { sWidth: '10%' ,
+									            "bVisible":    false },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '15%' }
 									            ]
 										});		
-				//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#historyBugsTable");
+				managerBugDataTable.rowGrouping({
+					iGroupingColumnIndex:3,
+					bExpandableGrouping: true,
+				});
 			}	
 		});
 					
@@ -244,6 +251,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				ownerBugDataTable = $('#ownerBugsTable').dataTable( {
 											"bProcessing": true,
+											"bLengthChange":false,
+											"bPaginate":false,
 											"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
@@ -257,19 +266,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									            { sWidth: '5%' },
 									            { sWidth: '10%' },
 									            { sWidth: '30%' },
-									            { sWidth: '10%' },
+									            { sWidth: '10%' ,
+									            "bVisible":    false },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '15%' }
 									            ]
 										});		
-			  // if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#ownerBugsTable");
+				ownerBugDataTable.rowGrouping({
+					iGroupingColumnIndex:3,
+					bExpandableGrouping: true,
+				});
 			}
 		});
 		$(document).delegate('#historyBugsTable tbody td img','click',function () {
+						var heads=$("#historyBugsTable th");
+					    var index;
+					    $.each(heads,function(n,value){
+					      
+					      if(value.childNodes[0].childNodes[0].data=="BugId"){
+					        index=n;
+					        return false;
+					      }
+					      else 
+					         return true;
+					    
+					    });
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
+					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( managerBugDataTable.fnIsOpen(nTr) )
@@ -297,8 +322,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							}							
 		} );
 		$(document).delegate('#ownerBugsTable tbody td img','click',function () {
+						var heads=$("#ownerBugsTable th");
+					    var index;
+					    $.each(heads,function(n,value){
+					      
+					      if(value.childNodes[0].childNodes[0].data=="BugId"){
+					        index=n;
+					        return false;
+					      }
+					      else 
+					         return true;
+					    
+					    });
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
+					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( ownerBugDataTable.fnIsOpen(nTr) )

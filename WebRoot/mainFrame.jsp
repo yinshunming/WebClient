@@ -31,6 +31,7 @@
 
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="datatables/js/jquery.dataTables.js"></script>
+<script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
 <script src="datatables/js/ColReorderWithResize.js"></script>
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -141,6 +142,8 @@
 										managerBugDataTable = $('#managedBugTable').dataTable( {
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
 											"bProcessing": true,
+											"bLengthChange":false,
+											"bPaginate":false,
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -152,17 +155,18 @@
 											"aoColumns": [
 									            { sWidth: '5%'  },
 									            { sWidth: '10%' },
-									            { sWidth: '30%' /*,
-									               fnRender : function(oObj){								       
-									                return "abc"; 
-									              }*/
-									            },
-									            { sWidth: '10%' },
+									            { sWidth: '39%' },
+									            { sWidth: '1%' ,
+									            "bVisible":    false },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' }
 									            ]
-										});						
+										});	
+										managerBugDataTable.rowGrouping({
+											iGroupingColumnIndex:3,
+											bExpandableGrouping: true,
+										});					
 										$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
 										$(".managedButtonPlaceholder").css("width","15%");
 										$(".managedButtonPlaceholder").css("float","right");
@@ -214,6 +218,8 @@
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"ownerButtonPlaceholder">p>',
 											//"sDom": 'R<C><"ownerButtonPlaceholder">H<"clear">',
 											"bProcessing": true,
+											"bLengthChange":false,
+											"bPaginate":false,
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -225,14 +231,20 @@
 											"aoColumns": [
 									            { sWidth: '5%' },
 									            { sWidth: '10%' },
-									            { sWidth: '30%' },
-									            { sWidth: '10%' },
+									            { sWidth: '39%' },
+									            { sWidth: '1%',
+									            "bVisible":    false  },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' }
 									            ]
 										});
-				
+										
+										ownerBugDataTable.rowGrouping({
+											iGroupingColumnIndex:3,
+											bExpandableGrouping: true,
+										});
+											
 										$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
 										$(".ownerButtonPlaceholder").css("width","15%");
 										$(".ownerButtonPlaceholder").css("float","right");
@@ -268,6 +280,8 @@
 										differentBugDataTable = $('#differentBugTable').dataTable( {
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
 											"bProcessing": true,
+											"bLengthChange":false,
+											"bPaginate":false,
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -279,13 +293,20 @@
 											"aoColumns": [
 									            { sWidth: '5%' },
 									            { sWidth: '10%' },
-									            { sWidth: '30%' },
-									            { sWidth: '10%' },
+									            { sWidth: '39%' },
+									            { sWidth: '1%',
+									            "bVisible":    false  },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' },
 									            { sWidth: '15%' }
 									            ]
 										});
+										
+										differentBugDataTable.rowGrouping({
+											iGroupingColumnIndex:3,
+											bExpandableGrouping: true,
+										});
+										
 										$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
 										$(".diffentButtonPlaceholder").css("width","15%");
 										$(".diffentButtonPlaceholder").css("float","right");
@@ -453,8 +474,21 @@
 
 
 					$(document).delegate('#ownerBugTable tbody td img','click',function () {
+					    var heads=$("#ownerBugTable th");
+					    var index;
+					    $.each(heads,function(n,value){
+					      
+					      if(value.childNodes[0].childNodes[0].data=="BugId"){
+					        index=n;
+					        return false;
+					      }
+					      else 
+					         return true;
+					    
+					    });
+					   
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
+					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( ownerBugDataTable.fnIsOpen(nTr) )
@@ -485,8 +519,20 @@
 					
 	
 					$(document).delegate('#managedBugTable tbody td img','click',function () {
+					 var heads=$("#managedBugTable th");
+					    var index;
+					    $.each(heads,function(n,value){
+					      
+					      if(value.childNodes[0].childNodes[0].data=="BugId"){
+					        index=n;
+					        return false;
+					      }
+					      else 
+					         return true;
+					    
+					    });
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
+					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
 						
 				       		
 							if ( managerBugDataTable.fnIsOpen(nTr) )
@@ -517,8 +563,20 @@
 						
 						
 						$(document).delegate('#differentBugTable tbody td img','click',function () {
+						var heads=$("#differentBugTable th");
+					    var index;
+					    $.each(heads,function(n,value){
+					      
+					      if(value.childNodes[0].childNodes[0].data=="BugId"){
+					        index=n;
+					        return false;
+					      }
+					      else 
+					         return true;
+					    
+					    });
 						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[1].childNodes[0].attributes['data-id'].value;
+					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
 						
 				       		//alert("hello");
 							if ( differentBugDataTable.fnIsOpen(nTr) )
@@ -639,7 +697,7 @@
 		</div>
 	</div>
 
-	<hr />
+<!-- 	<hr /> -->
 
 	<div class="container">
 		<div class="row">
@@ -671,7 +729,7 @@
 		</div>
 	</div>
 
-	<hr />
+<!-- 	<hr /> -->
 
 	<div class="container">
 		<div class="row">
