@@ -78,8 +78,15 @@
     function truncatTextReder( nRow, aData, iDisplayIndex) 
     {
         var $cell=$('td:eq(2)', nRow);
-        var text=ellipsis($cell.text(),80);
-        var html= $cell.html().replace($cell.text(),text);
+        var text=ellipsis($cell.text(),100);
+        var slices=$cell.html().split($cell.text());
+        var html;
+        if(slices.length>2)
+        {
+          html=slices[0]+$cell.text()+slices[1]+text+slices[2];
+        }else {
+          html = $cell.html().replace($cell.text(),text);
+        }
         $cell.html(html);
         return nRow;
     }
@@ -110,7 +117,8 @@
 																					+ "</a>");
 															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000' target='view_window'>"
+																					+ "&Template=view&TableId=1000' target='view_window' title='"
+																					+buginfo.title+"'>"
 																					+ buginfo.title
 																					+ "</a>");
 															record.push(buginfo.project);
@@ -174,7 +182,8 @@
 																					+ "</a>");
 														    record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000'  target='view_window'>"
+																					+ "&Template=view&TableId=1000'  target='view_window' title='"
+																					+buginfo.title+"'>"
 																					+ buginfo.title
 																					+ "</a>");
 														    record.push(buginfo.project);
@@ -243,7 +252,8 @@
 																					+ "</a>");
 															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000'  target='view_window'>"
+																					+ "&Template=view&TableId=1000'  target='view_window' title='"
+																					+buginfo.title+"'>"
 																					+ buginfo.title
 																					+ "</a>");
 															record.push(buginfo.project);
