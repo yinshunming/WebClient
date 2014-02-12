@@ -26,17 +26,19 @@
 <link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
 <link rel="stylesheet"
 	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
-
+<link rel="stylesheet" href="css/placeholder.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
 
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="datatables/js/jquery.dataTables.js"></script>
 <script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
 <script src="datatables/js/ColReorderWithResize.js"></script>
+<!-- <script src="js/placeholders.min.js"></script> -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <script src="js/respond.min.js"></script>
+
 <![endif]-->
 <script type="text/javascript">
 	var ownerBugDataTable;
@@ -142,8 +144,8 @@
 										managerBugDataTable = $('#managedBugTable').dataTable( {
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
 											"bProcessing": true,
-											"bLengthChange":false,
-											"bPaginate":false,
+											/* "bLengthChange":false,
+											"bPaginate":false, */
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -218,8 +220,8 @@
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"ownerButtonPlaceholder">p>',
 											//"sDom": 'R<C><"ownerButtonPlaceholder">H<"clear">',
 											"bProcessing": true,
-											"bLengthChange":false,
-											"bPaginate":false,
+											/* "bLengthChange":false,
+											"bPaginate":false, */
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -280,8 +282,8 @@
 										differentBugDataTable = $('#differentBugTable').dataTable( {
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
 											"bProcessing": true,
-											"bLengthChange":false,
-											"bPaginate":false,
+											/* "bLengthChange":false,
+											"bPaginate":false, */
 											"fnRowCallback":  truncatTextReder,
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }

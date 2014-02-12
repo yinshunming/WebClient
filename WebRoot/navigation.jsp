@@ -1,6 +1,10 @@
 
+<script src="jquery/jquery.validate.min.js" ></script>
+<script src="jquery/jquery.placeholder.js" ></script>
 <script type="text/javascript">	
 	 $(document).ready(function(){
+	    // Invoke the placeholder plugin
+		$('input, textarea').placeholder();	   
 		var addForm = $("#addForm");
 		var addFormButton = $("#addFormSb");
 		addFormButton.click(function() {

@@ -11,6 +11,7 @@
 <meta http-equiv="pragma" content="no-cache" > -->
 <title>Register Page</title>
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/placeholder.css" />
 	<!--[if lte IE 6]>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
@@ -21,6 +22,7 @@
 	<script src="jquery/additional-methods.min.js" ></script>
 	
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
+
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

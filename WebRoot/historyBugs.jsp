@@ -23,12 +23,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="datatables/css/demo_page.css" />
 	<link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
 	<link rel="stylesheet" href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
-
+	<link rel="stylesheet" href="css/placeholder.css" />
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
 	<script src="datatables/js/jquery.dataTables.js"></script>
 	<script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
     <script src="datatables/js/ColReorderWithResize.js"></script>
+<!--     <script src="js/placeholders.min.js"></script> -->
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -185,8 +186,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				managerBugDataTable = $('#historyBugsTable').dataTable( {
 											"bProcessing": true,
-											"bLengthChange":false,
-											"bPaginate":false,
+											/* "bLengthChange":false,
+											"bPaginate":false, */
 											"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
@@ -251,8 +252,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 				ownerBugDataTable = $('#ownerBugsTable').dataTable( {
 											"bProcessing": true,
-											"bLengthChange":false,
-											"bPaginate":false,
+											/* "bLengthChange":false,
+											"bPaginate":false, */
 											"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
