@@ -776,12 +776,16 @@
 									<th>Operation</th>
 								</tr>
 							</thead>
+							
 							<form id="differentForm" name="differentForm"
 								action="/BugTrackingSystem/api/bugs?method=put" method="post">
-							<tbody id="differentBugTableBody">
-
-							</tbody>
+								
+									<tbody id="differentBugTableBody">
+		
+									</tbody>
+								
 							</form>
+							
 						</table>
 						<div id='modifyBtnDiv'></div>
 					
