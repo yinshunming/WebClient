@@ -278,8 +278,8 @@
 															record.push(buginfo.project);
 															record.push(buginfo.owner);
 															record.push(buginfo.status);
-															record.push("<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
-																					+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
+															record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
+																					+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
 															
 															differentRecordList.push(record);
 															
@@ -759,8 +759,9 @@
 
 
 				<div id="differentDiv">
-
-					
+					<form id="differentForm" name="differentForm"
+								action="/BugTrackingSystem/api/bugs?method=put" method="post">
+					</form>
 						<br />
 						<table id="differentBugTable"  class="table display" cellpadding="0"
 						cellspacing="0" border="0">
@@ -776,12 +777,11 @@
 									<th>Operation</th>
 								</tr>
 							</thead>
-							<form id="differentForm" name="differentForm"
-								action="/BugTrackingSystem/api/bugs?method=put" method="post">
+							
 							<tbody id="differentBugTableBody">
 
 							</tbody>
-							</form>
+							
 						</table>
 						<div id='modifyBtnDiv'></div>
 					
