@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
 <link rel="stylesheet"
 	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 <link rel="stylesheet" href="css/placeholder.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
 
@@ -82,7 +83,12 @@
     {
         var $cell=$('td:eq(2)', nRow);
         var text=ellipsis($cell.text(),100);
-        var slices=$cell.html().split($cell.text());
+        var srcText =$cell.text().replace(/&/g, '&amp;')
+           .replace(/"/g, '&quot;')
+           .replace(/'/g, '&#39;')
+           .replace(/</g, '&lt;')
+           .replace(/>/g, '&gt;');
+       	var slices=$cell.html().split(srcText);      
         var html;
         if(slices.length>2)
         {
@@ -273,8 +279,8 @@
 															record.push(buginfo.project);
 															record.push(buginfo.owner);
 															record.push(buginfo.status);
-															record.push("<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
-																					+ "<label class='radio'><input type='radio' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
+															record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
+																					+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
 															
 															differentRecordList.push(record);
 															
@@ -339,21 +345,25 @@
 													function(index, row) {
 														var allCells = $(row)
 																.find('td');
-														var anchor = allCells[1]
+													    // ignore the group row which only has one row data
+														if(allCells.length>1){
+															var anchor = allCells[1]
 																.getElementsByTagName("a")[0];
-														var bugId = anchor.innerHTML;
-														var id = anchor
-																.getAttribute(
-																		"href")
-																.split("id=")[1];
+															var bugId = anchor.innerHTML;
+															var id = anchor
+																	.getAttribute(
+																			"data-id");
 
-														var btn = $("#status_"
-																+ id);
-														btn.button('loading');
+	
+															var btn = $("#status_"
+																	+ id);
+															btn.button('loading');
+	
+															_map[id] = bugId;
+															i++;
 
-														_map[id] = bugId;
-														i++;
-
+														}
+														
 													});
 
 									$.ajax({
@@ -413,21 +423,24 @@
 													function(index, row) {
 														var allCells = $(row)
 																.find('td');
-														var anchor = allCells[1]
+														if(allCells.length>1){
+															var anchor = allCells[1]
 																.getElementsByTagName("a")[0];
-														var bugId = anchor.innerHTML;
-														var id = anchor
-																.getAttribute(
-																		"href")
-																.split("id=")[1];
-
-														var btn = $("#status_"
-																+ id);
-														btn.button('loading');
-
-														_map[id] = bugId;
-														i++;
-
+															var bugId = anchor.innerHTML;
+															var id = anchor
+																	.getAttribute(
+																			"data-id");
+	
+															var btn = $("#status_"
+																	+ id);
+															btn.button('loading');
+	
+															_map[id] = bugId;
+															i++;
+															
+														
+														}
+														
 													});
 
 									$.ajax({
@@ -749,7 +762,8 @@
 				<div id="differentDiv">
 
 					<form id="differentForm" name="differentForm"
-						action="/BugTrackingSystem/api/bugs?method=put" method="post">
+								action="/BugTrackingSystem/api/bugs?method=put" method="post">
+					</form>
 						<br />
 						<table id="differentBugTable"  class="table display" cellpadding="0"
 						cellspacing="0" border="0">
@@ -765,12 +779,17 @@
 									<th>Operation</th>
 								</tr>
 							</thead>
-							<tbody id="differentBugTableBody">
+							
+								
+									<tbody id="differentBugTableBody">
+		
+									</tbody>
+								
 
-							</tbody>
+							
 						</table>
 						<div id='modifyBtnDiv'></div>
-					</form>
+					
 
 
 					<!--  

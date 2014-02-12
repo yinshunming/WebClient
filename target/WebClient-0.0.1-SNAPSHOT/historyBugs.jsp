@@ -23,6 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="datatables/css/demo_page.css" />
 	<link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
 	<link rel="stylesheet" href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
@@ -451,43 +452,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <%@ include file="navigation.jsp" %>
-    <div class="container" style="padding-top:70px" >
-    	   <div class="row" >
-	    	<div class="col-lg-12">
-	    	
-	    	<div class="col-lg-4">
-	    		<h3>HistoryManagedBugsList</h3>
-	    	</div>
-	    	
-
-			
-		    	<div id="historyBugsDiv">
-		    			<br/>
-	    				<table id="historyBugsTable" class="table display" cellpadding="0"
-						cellspacing="0" border="0">
-				        <thead>
-				          <tr>
-				          	<th>Detail</th>
-				            <th>BugId</th>
-				            <th>Title</th>
-				            <th>Project</th>
-				            <th>Owner</th>
-				            <th>Status</th>
-				            <th>Managed</th>
-				            <th>Operation</th>
-				          </tr>
-				        </thead>
-				        <tbody id="historyBugsTableBody">
-				          
-				        </tbody>
-				      </table>
-	    
-		    	</div>
-	    	</div>
-    	</div>
-    </div>
     
-    <div class="container">
+   
+    
+    <div class="container" style="padding-top:70px">
      <div class="row" >
 	    	<div class="col-lg-12">
 	    	
@@ -522,7 +490,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	</div>
 	    	</div>
     </div>
-    
+     <div class="container"  >
+    	   <div class="row" >
+	    	<div class="col-lg-12">
+	    	
+	    	<div class="col-lg-4">
+	    		<h3>HistoryManagedBugsList</h3>
+	    	</div>
+	    	
+
+			
+		    	<div id="historyBugsDiv">
+		    			<br/>
+	    				<table id="historyBugsTable" class="table display" cellpadding="0"
+						cellspacing="0" border="0">
+				        <thead>
+				          <tr>
+				          	<th>Detail</th>
+				            <th>BugId</th>
+				            <th>Title</th>
+				            <th>Project</th>
+				            <th>Owner</th>
+				            <th>Status</th>
+				            <th>Managed</th>
+				            <th>Operation</th>
+				          </tr>
+				        </thead>
+				        <tbody id="historyBugsTableBody">
+				          
+				        </tbody>
+				      </table>
+	    
+		    	</div>
+	    	</div>
+    	</div>
+    </div>
   </body>
    <!-- jQuery 1.7.2 or higher -->
   <!--[if lte IE 6]>

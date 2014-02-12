@@ -13,6 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
 	<!--[if lte IE 6]>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">

@@ -2,15 +2,38 @@
 <script src="jquery/jquery.validate.min.js" ></script>
 <script src="jquery/jquery.placeholder.js" ></script>
 <script type="text/javascript">	
+	$.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input."
+	);
+		
 	 $(document).ready(function(){
 	    // Invoke the placeholder plugin
 		$('input, textarea').placeholder();	   
 		var addForm = $("#addForm");
 		var addFormButton = $("#addFormSb");
-		addFormButton.click(function() {
+		
+		function  addButtonClick() {
 		    if($("#addBugInput").val()==""){
 			return;
 			}
+			$("#component").val("");
+				   $("#bugId").val("");
+				   $("#title").val("");
+				   $("#project").val("");
+				   $("#type").val("");
+				   $("#status").val("");
+				   $("#description").val("");
+				   $("#owner").val("");
+				   $("#submitter").val("");
+				   $("#submitData").val("");
+				   $("#severity").val("");
+				   $("#tags").val("");
+				   $("#regression").val("");
 			$('#myModal').modal('show');
 			
 			addFormButton.button('loading');
@@ -19,7 +42,7 @@
 			$.ajax({
 				type: addForm.attr('method'),
 				url: addForm.attr('action'),
-				data: addForm.serialize(),
+				data: addForm.serialize().replace(/^bugId=(bug|BUG)?/,"bugId="),
 				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
@@ -34,6 +57,7 @@
 						   $("#project").val(dataObj.project);
 						   $("#type").val(dataObj.type);
 						   $("#status").val(dataObj.status);
+						   dataObj.description=dataObj.description.replace(/<br ?\/?>/g, "\n");
 						   $("#description").val(dataObj.description);
 						   $("#owner").val(dataObj.owner);
 						   $("#submitter").val(dataObj.submitter);
@@ -53,9 +77,33 @@
 					$("#addBugInput").val("");
 				}
 			});
+		}
+		
+		//addFormButton.click(addButtonClick);
+		
+		addForm.validate({
+			rules: {
+				bugId : {
+					 regex: '^(bug|BUG)?[0-9]{6,7}',
+					 required :true
+				}
+			} , 
+			submitHandler: function(form) {
+			    
+				 addButtonClick();
+			}
+			,
+			highlight: function(element) {
+				$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			},
+			success: function(element) {
+				element
+				.addClass('valid_nav') 
+				.closest('.form-group').removeClass('has-error').addClass('has-success');
+			} 
 		});
 		
-		 var buginfoForm  = $("#bugInfoForm");
+		var buginfoForm  = $("#bugInfoForm");
 		var buginfoFormButton = $("#bugInfoFormSb");
 		buginfoFormButton.click(function(){
 			buginfoFormButton.button('loading');
@@ -125,18 +173,18 @@
 				<input type="text" class="form-control" name="bugId" placeholder="BugID:0405135" id="addBugInput" >				
 			  </div>
 			  
-			  <button class="btn btn-default" type="button" id="addFormSb" name="addFormSb" data-toggle="modal"  data-loading-text="Loading..."  style="float:left ; margin-left:5px">Add</button>
-			  <!--data-target="#myModal"-->
+			  <button class="btn btn-default" type="submit" id="addFormSb" name="addFormSb"   data-loading-text="Loading..."  style="float:left ; margin-left:5px">Add</button>
+			  <!--data-target="#myModal"  data-toggle="modal"-->
 			</form>
 			
 		</div>
 	</div>
 </nav>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal  fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" id="bug-modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title " id="myModalLabel">Please verify the info of this bug and input its' component info:</h4>
       </div>
@@ -227,7 +275,7 @@
 					  			<label class="control-label col-lg-2" for="description">Description</label>
 					  			
 					  			<div class="col-lg-8">
-					  			<input class="form-control" id="description" readonly="true" name="description" type="text" value=""/>
+					  			<textarea  class="form-control" id="description" readonly="true" name="description" type="text" rows="3" value=""></textarea>
 					  			</div>
 					  		</div>
 					  		
@@ -279,7 +327,7 @@
 						</form>
       </div>
 	  <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-primary" id="bugInfoFormSb" data-loading-text="Loading...">OK</button>
       </div>
       

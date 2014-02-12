@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="datatables/css/demo_table_jui.css" />
 <link rel="stylesheet"
 	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 <link rel="stylesheet" href="css/placeholder.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
 
