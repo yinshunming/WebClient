@@ -49,8 +49,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function truncatTextReder( nRow, aData, iDisplayIndex) 
     {
         var $cell=$('td:eq(2)', nRow);
+        // truncated text
         var text=ellipsis($cell.text(),100);
-        var slices=$cell.html().split($cell.text());
+        var srcText =$cell.text().replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        var slices=$cell.html().split(srcText);
         var html;
         if(slices.length>2)
         {
@@ -445,43 +451,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <%@ include file="navigation.jsp" %>
-    <div class="container" style="padding-top:70px" >
-    	   <div class="row" >
-	    	<div class="col-lg-12">
-	    	
-	    	<div class="col-lg-4">
-	    		<h3>HistoryManagedBugsList</h3>
-	    	</div>
-	    	
-
-			
-		    	<div id="historyBugsDiv">
-		    			<br/>
-	    				<table id="historyBugsTable" class="table display" cellpadding="0"
-						cellspacing="0" border="0">
-				        <thead>
-				          <tr>
-				          	<th>Detail</th>
-				            <th>BugId</th>
-				            <th>Title</th>
-				            <th>Project</th>
-				            <th>Owner</th>
-				            <th>Status</th>
-				            <th>Managed</th>
-				            <th>Operation</th>
-				          </tr>
-				        </thead>
-				        <tbody id="historyBugsTableBody">
-				          
-				        </tbody>
-				      </table>
-	    
-		    	</div>
-	    	</div>
-    	</div>
-    </div>
     
-    <div class="container">
+   
+    
+    <div class="container" style="padding-top:70px">
      <div class="row" >
 	    	<div class="col-lg-12">
 	    	
@@ -516,7 +489,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	</div>
 	    	</div>
     </div>
-    
+     <div class="container"  >
+    	   <div class="row" >
+	    	<div class="col-lg-12">
+	    	
+	    	<div class="col-lg-4">
+	    		<h3>HistoryManagedBugsList</h3>
+	    	</div>
+	    	
+
+			
+		    	<div id="historyBugsDiv">
+		    			<br/>
+	    				<table id="historyBugsTable" class="table display" cellpadding="0"
+						cellspacing="0" border="0">
+				        <thead>
+				          <tr>
+				          	<th>Detail</th>
+				            <th>BugId</th>
+				            <th>Title</th>
+				            <th>Project</th>
+				            <th>Owner</th>
+				            <th>Status</th>
+				            <th>Managed</th>
+				            <th>Operation</th>
+				          </tr>
+				        </thead>
+				        <tbody id="historyBugsTableBody">
+				          
+				        </tbody>
+				      </table>
+	    
+		    	</div>
+	    	</div>
+    	</div>
+    </div>
   </body>
    <!-- jQuery 1.7.2 or higher -->
   <!--[if lte IE 6]>

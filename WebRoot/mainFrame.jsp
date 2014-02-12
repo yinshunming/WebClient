@@ -82,7 +82,12 @@
     {
         var $cell=$('td:eq(2)', nRow);
         var text=ellipsis($cell.text(),100);
-        var slices=$cell.html().split($cell.text());
+        var srcText =$cell.text().replace(/&/g, '&amp;')
+           .replace(/"/g, '&quot;')
+           .replace(/'/g, '&#39;')
+           .replace(/</g, '&lt;')
+           .replace(/>/g, '&gt;');
+       	var slices=$cell.html().split(srcText);      
         var html;
         if(slices.length>2)
         {
@@ -339,21 +344,25 @@
 													function(index, row) {
 														var allCells = $(row)
 																.find('td');
-														var anchor = allCells[1]
+													    // ignore the group row which only has one row data
+														if(allCells.length>1){
+															var anchor = allCells[1]
 																.getElementsByTagName("a")[0];
-														var bugId = anchor.innerHTML;
-														var id = anchor
-																.getAttribute(
-																		"href")
-																.split("id=")[1];
+															var bugId = anchor.innerHTML;
+															var id = anchor
+																	.getAttribute(
+																			"data-id");
 
-														var btn = $("#status_"
-																+ id);
-														btn.button('loading');
+	
+															var btn = $("#status_"
+																	+ id);
+															btn.button('loading');
+	
+															_map[id] = bugId;
+															i++;
 
-														_map[id] = bugId;
-														i++;
-
+														}
+														
 													});
 
 									$.ajax({
@@ -413,21 +422,24 @@
 													function(index, row) {
 														var allCells = $(row)
 																.find('td');
-														var anchor = allCells[1]
+														if(allCells.length>1){
+															var anchor = allCells[1]
 																.getElementsByTagName("a")[0];
-														var bugId = anchor.innerHTML;
-														var id = anchor
-																.getAttribute(
-																		"href")
-																.split("id=")[1];
-
-														var btn = $("#status_"
-																+ id);
-														btn.button('loading');
-
-														_map[id] = bugId;
-														i++;
-
+															var bugId = anchor.innerHTML;
+															var id = anchor
+																	.getAttribute(
+																			"data-id");
+	
+															var btn = $("#status_"
+																	+ id);
+															btn.button('loading');
+	
+															_map[id] = bugId;
+															i++;
+															
+														
+														}
+														
 													});
 
 									$.ajax({
@@ -748,8 +760,7 @@
 
 				<div id="differentDiv">
 
-					<form id="differentForm" name="differentForm"
-						action="/BugTrackingSystem/api/bugs?method=put" method="post">
+					
 						<br />
 						<table id="differentBugTable"  class="table display" cellpadding="0"
 						cellspacing="0" border="0">
@@ -765,12 +776,15 @@
 									<th>Operation</th>
 								</tr>
 							</thead>
+							<form id="differentForm" name="differentForm"
+								action="/BugTrackingSystem/api/bugs?method=put" method="post">
 							<tbody id="differentBugTableBody">
 
 							</tbody>
+							</form>
 						</table>
 						<div id='modifyBtnDiv'></div>
-					</form>
+					
 
 
 					<!--  
