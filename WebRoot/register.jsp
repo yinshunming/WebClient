@@ -38,6 +38,7 @@
 		var registerForm = $("#registerForm");
 		
 		registerForm.validate({
+			ignore: [],
 			rules: {
 				username : {
 					 required: true
@@ -49,7 +50,6 @@
 				password: {
 					required: true,
 					minlength: 4
-					
 				},
 				password2: {
 					required: true,
@@ -111,14 +111,14 @@
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input id="password" class="form-control col-lg-9" type="password" name="password" placeholder="Password" style="width:80%"> 
+					  		    <input id="password" class="form-control col-lg-9 " type="password" name="password" placeholder="Password" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password Again</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input class="form-control col-lg-9" type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
+					  		    <input class="form-control col-lg-9 " type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    

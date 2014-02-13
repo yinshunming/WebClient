@@ -84,7 +84,7 @@
 		addForm.validate({
 			rules: {
 				bugId : {
-					 regex: '^(bug|BUG)?[0-9]{6,7}',
+					 regex: '^(bug|BUG)?[0-9]{6,7}$',
 					 required :true
 				}
 			} , 
@@ -98,7 +98,8 @@
 			},
 			success: function(element) {
 				element
-				.addClass('valid_nav') 
+				.addClass('valid') 
+				.addClass('background_none')
 				.closest('.form-group').removeClass('has-error').addClass('has-success');
 			} 
 		});
