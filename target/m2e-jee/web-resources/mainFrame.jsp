@@ -29,9 +29,10 @@
 <link rel="stylesheet" href="bootstrap/css/validation.css"/>
 <link rel="stylesheet" href="css/placeholder.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
-
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="datatables/js/jquery.dataTables.js"></script>
+<script src="datatables/js/jquery.dataTables.editable.js"></script>
+<script src="datatables/js/jquery.jeditable.js"></script>
 <script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
 <script src="datatables/js/ColReorderWithResize.js"></script>
 <!-- <script src="js/placeholders.min.js"></script> -->
@@ -131,6 +132,7 @@
 																					+ buginfo.title
 																					+ "</a>");
 															record.push(buginfo.project);
+															record.push(buginfo.component);
 															record.push(buginfo.owner);
 															record.push("<label id=label_status_" + buginfo.id + ">"
 																					+ buginfo.status
@@ -167,20 +169,73 @@
 									            { sWidth: '1%' ,
 									            "bVisible":    false },
 									            { sWidth: '15%' },
-									            { sWidth: '15%' },
-									            { sWidth: '15%' }
+									            { sWidth: '10%' },
+									            { sWidth: '10%' },
+									            { sWidth: '10%' }
 									            ]
 										});	
 										managerBugDataTable.rowGrouping({
 											iGroupingColumnIndex:3,
 											bExpandableGrouping: true,
-										});					
+										});		
+										 managerBugDataTable.makeEditable({
+											sUpdateURL: function(value, settings)
+											{
+		                             			return(value); //Simulation of server-side response using a callback function
+											},
+											"aoColumns": 
+											[
+											  null,
+											  null,
+											  null,
+											  {
+											    cssclass:"required",
+											  	indicator: 'Saving component...',
+											  	tooltip: 'Double click to modify component',
+											  	loadtext: 'loading...',
+											  	 type: 'select',
+											  	 onblur: 'submit',
+											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+											  	 sUpdateURL:  function(value, settings)
+						                                {
+						                                		var heads=$("#managedBugTable th");
+															    var index;
+															    $.each(heads,function(n,value){
+															      
+															      if(value.childNodes[0].childNodes[0].data=="BugId"){
+															        index=n;
+															        return false;
+															      }
+															      else 
+															         return true;
+															    
+															    });
+															   
+																var nTr = $(this).parents('tr')[0];
+															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+						                                		
+						                                		$.ajax({
+																	type : "post",
+																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	success : function(data) {
+   																    		 alert(data) ;  }
+																	});
+						                                        return(value);
+						                                }
+												
+											  },
+											  null,
+											  null,
+											  null
+											]
+										
+										}); 
 										$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
-										$(".managedButtonPlaceholder").css("width","15%");
+										$(".managedButtonPlaceholder").css("width","10%");
 										$(".managedButtonPlaceholder").css("float","right");
 										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#managedBugTable");
-										
-										
+																			
 										var  ownerRecordList=[];
 										$.each(
 														dataObj.ownerList,
@@ -199,6 +254,7 @@
 																					+ buginfo.title
 																					+ "</a>");
 														    record.push(buginfo.project);
+														    record.push(buginfo.component);
 														    record.push( buginfo.owner);
 														    record.push(
 																				   "<label id=label_status_" + buginfo.id + ">"
@@ -243,18 +299,75 @@
 									            { sWidth: '1%',
 									            "bVisible":    false  },
 									            { sWidth: '15%' },
-									            { sWidth: '15%' },
-									            { sWidth: '15%' }
+									            { sWidth: '10%' },
+									            { sWidth: '10%' },
+									            { sWidth: '10%' }
 									            ]
 										});
+										
+										
 										
 										ownerBugDataTable.rowGrouping({
 											iGroupingColumnIndex:3,
 											bExpandableGrouping: true,
 										});
-											
+										
+										ownerBugDataTable.makeEditable({
+											sUpdateURL: function(value, settings)
+											{
+		                             			return(value); //Simulation of server-side response using a callback function
+											},
+											"aoColumns": 
+											[
+											  null,
+											  null,
+											  null,
+											  {
+											    cssclass:"required",
+											  	indicator: 'Saving component...',
+											  	tooltip: 'Double click to modify component',
+											  	loadtext: 'loading...',
+											  	 type: 'select',
+											  	 onblur: 'submit',
+											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+											  	 sUpdateURL:  function(value, settings)
+						                                {
+						                                		var heads=$("#ownerBugTable th");
+															    var index;
+															    $.each(heads,function(n,value){
+															      
+															      if(value.childNodes[0].childNodes[0].data=="BugId"){
+															        index=n;
+															        return false;
+															      }
+															      else 
+															         return true;
+															    
+															    });
+															   
+																var nTr = $(this).parents('tr')[0];
+															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+						                                		
+						                                		$.ajax({
+																	type : "post",
+																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	success : function(data) {
+   																    		 alert(data) ;  }
+																	});
+						                                        return(value);
+						                                }
+												
+											  },
+											  null,
+											  null,
+											  null
+											]
+										
+										}); 
+										
 										$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
-										$(".ownerButtonPlaceholder").css("width","15%");
+										$(".ownerButtonPlaceholder").css("width","10%");
 										$(".ownerButtonPlaceholder").css("float","right");
 										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#ownerBugTable");
 										var  differentRecordList=[];				
@@ -277,6 +390,7 @@
 																					+ buginfo.title
 																					+ "</a>");
 															record.push(buginfo.project);
+															record.push(buginfo.component);
 															record.push(buginfo.owner);
 															record.push(buginfo.status);
 															record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
@@ -305,8 +419,9 @@
 									            { sWidth: '1%',
 									            "bVisible":    false  },
 									            { sWidth: '15%' },
-									            { sWidth: '15%' },
-									            { sWidth: '15%' }
+									            { sWidth: '10%' },
+									            { sWidth: '10%' },
+									            { sWidth: '10%' }
 									            ]
 										});
 										
@@ -315,8 +430,62 @@
 											bExpandableGrouping: true,
 										});
 										
+										differentBugDataTable.makeEditable({
+											sUpdateURL: function(value, settings)
+											{
+		                             			return(value); //Simulation of server-side response using a callback function
+											},
+											"aoColumns": 
+											[
+											  null,
+											  null,
+											  null,
+											  {
+											    cssclass:"required",
+											  	indicator: 'Saving component...',
+											  	tooltip: 'Double click to modify component',
+											  	loadtext: 'loading...',
+											  	 type: 'select',
+											  	 onblur: 'submit',
+											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+											  	 sUpdateURL:  function(value, settings)
+						                                {
+						                                		var heads=$("#differentBugTable th");
+															    var index;
+															    $.each(heads,function(n,value){
+															      
+															      if(value.childNodes[0].childNodes[0].data=="BugId"){
+															        index=n;
+															        return false;
+															      }
+															      else 
+															         return true;
+															    
+															    });
+															   
+																var nTr = $(this).parents('tr')[0];
+															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+						                                		
+						                                		$.ajax({
+																	type : "post",
+																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	success : function(data) {
+   																    		 alert(data) ;  }
+																	});
+						                                        return(value);
+						                                }
+												
+											  },
+											  null,
+											  null,
+											  null
+											]
+										
+										}); 
+										
 										$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
-										$(".diffentButtonPlaceholder").css("width","15%");
+										$(".diffentButtonPlaceholder").css("width","10%");
 										$(".diffentButtonPlaceholder").css("float","right");
 										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#differentBugTable");
 
@@ -698,6 +867,7 @@
 								<th>BugId</th>
 								<th>Title</th>
 								<th>Project</th>
+								<th>Compoment</th>
 								<th>Owner</th>
 								<th>Status</th>
 								<th>Operation</th>
@@ -730,6 +900,7 @@
 								<th>BugId</th>
 								<th>Title</th>
 								<th>Project</th>
+								<th>Compoment</th>
 								<th>Owner</th>
 								<th>Status</th>
 								<th>Operation</th>
@@ -774,6 +945,7 @@
 									<th>BugId</th>
 									<th>Title</th>
 									<th>Project</th>
+									<th>Compoment</th>
 									<th>NewOwner</th>
 									<th>Status</th>
 									<th>Operation</th>

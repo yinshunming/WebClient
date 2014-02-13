@@ -199,7 +199,8 @@
 					  		    	<input class="form-control" id="component" name="component" type="text" value=""/> 
 					  		    	-->
 					  		    	<select id="component" name="component" class="form-control">
-					  		    		<option value="DDC-ADIdentity Service">DDC-ADIdentity Service</option>
+					  		    		<option value="None" title="None">None</option>
+					  		    		<option value="DDC-ADIdentity Service" title="DDC-ADIdentity Service">DDC-ADIdentity Service</option>
 					  		    		<option value="DDC-Broker Service">DDC-Broker Service</option>
 					  		    		<option value="DDC-Configuration Service">DDC-Configuration Service</option>
 					  		    		<option value="DDC-Configuration Logging Service">DDC-Configuration Logging Service</option>
