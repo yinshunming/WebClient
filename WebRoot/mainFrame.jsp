@@ -217,7 +217,7 @@
 						                                		
 						                                		$.ajax({
 																	type : "post",
-																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
    																    		 alert(data) ;  }
 																	});
@@ -469,7 +469,7 @@
 						                                		
 						                                		$.ajax({
 																	type : "post",
-																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
    																    		 alert(data) ;  }
 																	});
