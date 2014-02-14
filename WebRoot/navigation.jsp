@@ -51,7 +51,10 @@
 					$("#bugInfoFormSb").prop('disabled', false);
 					if (dataObj != null) {
 						   $("#bugInfoDiv").css("display","block");
-						   $("#component").val(dataObj.component);
+						   if(dataObj.component){
+						  	 $("#component").val(dataObj.component);
+						   }
+						   
 						   $("#bugId").val(dataObj.bugId);
 						   $("#title").val(dataObj.title);
 						   $("#project").val(dataObj.project);
