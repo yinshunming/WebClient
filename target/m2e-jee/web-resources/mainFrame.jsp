@@ -28,15 +28,13 @@
 	href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
 <link rel="stylesheet" href="bootstrap/css/validation.css"/>
 <link rel="stylesheet" href="css/placeholder.css" />
-<link rel="stylesheet" href="alertify/css/alertify.core.css" />
-<link rel="stylesheet" href="alertify/css/alertify.default.css" />
 <script src="jquery/jquery-1.10.2.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="datatables/js/jquery.dataTables.js"></script>
 <script src="datatables/js/jquery.dataTables.editable.js"></script>
 <script src="datatables/js/jquery.jeditable.js"></script>
 <script src="datatables/js/jquery.dataTables.rowGrouping.js"></script>
-<script src="alertify/js/alertify.min.js"></script>
+<script src="datatables/js/ColReorderWithResize.js"></script>
 <!-- <script src="js/placeholders.min.js"></script> -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -66,8 +64,7 @@
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				//alert("updating error! Please try again");
-				alertify.log( "updating error! Please try again" ,"error");
+				alert("updating error! Please try again");
 			},
 
 			complete : function(XMLHttpRequest, textStatus) {
@@ -220,11 +217,9 @@
 						                                		
 						                                		$.ajax({
 																	type : "post",
-																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
-   																    		 //alert(data) ; 
-   																    		  }
+   																    		 alert(data) ;  }
 																	});
 						                                        return(value);
 						                                }
@@ -358,9 +353,7 @@
 																	type : "post",
 																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
-   																    		 //alert(data) ;  
-   																    		}
+   																    		 alert(data) ;  }
 																	});
 						                                        return(value);
 						                                }
@@ -476,11 +469,9 @@
 						                                		
 						                                		$.ajax({
 																	type : "post",
-																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	url : "/BugTrackingSystem/api/managed?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
-   																    		// alert(data) ;  
-   																    		}
+   																    		 alert(data) ;  }
 																	});
 						                                        return(value);
 						                                }
@@ -574,8 +565,7 @@
 												error : function(
 														XMLHttpRequest,
 														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again","error");
-													//alert("updating error! Please try again");
+													alert("updating error! Please try again");
 												},
 
 												complete : function(
@@ -653,8 +643,7 @@
 												error : function(
 														XMLHttpRequest,
 														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again","error");
-													//alert("updating error! Please try again");
+													alert("updating error! Please try again");
 												},
 
 												complete : function(
@@ -833,8 +822,7 @@
 			data : differentFrame.serialize(),
 			cache : false,
 			success : function(data) {
-			    alertify.log(data);
-				//alert(data);
+				alert(data);
 				window.location.reload();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {

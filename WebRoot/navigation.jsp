@@ -72,7 +72,7 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alertify.log("error","error");
+					alertify.log("error");
 					//alert("error");
 				},
 				

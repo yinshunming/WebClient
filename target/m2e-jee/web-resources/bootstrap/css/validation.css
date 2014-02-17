@@ -17,7 +17,3 @@ label.valid_nav {
   display: inline-block;
   text-indent: -9999px;
 }
-
-label.background_none {
-background: none;
-}

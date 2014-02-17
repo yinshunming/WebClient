@@ -15,8 +15,6 @@
 	<link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
 	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
-	<link rel="stylesheet" href="alertify/css/alertify.core.css" />
-	<link rel="stylesheet" href="alertify/css/alertify.default.css" />
 	<!--[if lte IE 6]>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
@@ -31,7 +29,6 @@
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	  <script src="js/respond.min.js"></script>
 	<![endif]-->
-	<script src="alertify/js/alertify.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -41,7 +38,6 @@
 		var registerForm = $("#registerForm");
 		
 		registerForm.validate({
-			ignore: [],
 			rules: {
 				username : {
 					 required: true
@@ -53,6 +49,7 @@
 				password: {
 					required: true,
 					minlength: 4
+					
 				},
 				password2: {
 					required: true,
@@ -71,8 +68,7 @@
 						cache : false,
 						success: function (data) {
 							var dataObj = data;
-							alertify.log(dataObj);
-							//alert(dataObj);
+							alert(dataObj);
 							window.location.reload();
 						},
 						error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -115,14 +111,14 @@
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input id="password" class="form-control col-lg-9 " type="password" name="password" placeholder="Password" style="width:80%"> 
+					  		    <input id="password" class="form-control col-lg-9" type="password" name="password" placeholder="Password" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password Again</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input class="form-control col-lg-9 " type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
+					  		    <input class="form-control col-lg-9" type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    

@@ -46,16 +46,12 @@
 				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
-					alertify.log("OK");
-					//alert("OK");
+					alert("OK");
 					$("#myModalLabel").html("Please verify the info of this bug and input its' component info:");
 					$("#bugInfoFormSb").prop('disabled', false);
 					if (dataObj != null) {
 						   $("#bugInfoDiv").css("display","block");
-						   if(dataObj.component){
-						  	 $("#component").val(dataObj.component);
-						   }
-						   
+						   $("#component").val(dataObj.component);
 						   $("#bugId").val(dataObj.bugId);
 						   $("#title").val(dataObj.title);
 						   $("#project").val(dataObj.project);
@@ -72,8 +68,7 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alertify.log("error","error");
-					//alert("error");
+					alert("error");
 				},
 				
 				complete: function (XMLHttpRequest, textStatus) {
@@ -89,7 +84,7 @@
 		addForm.validate({
 			rules: {
 				bugId : {
-					 regex: '^(bug|BUG)?[0-9]{6,7}$',
+					 regex: '^(bug|BUG)?[0-9]{6,7}',
 					 required :true
 				}
 			} , 
@@ -103,8 +98,7 @@
 			},
 			success: function(element) {
 				element
-				.addClass('valid') 
-				.addClass('background_none')
+				.addClass('valid_nav') 
 				.closest('.form-group').removeClass('has-error').addClass('has-success');
 			} 
 		});
@@ -205,8 +199,7 @@
 					  		    	<input class="form-control" id="component" name="component" type="text" value=""/> 
 					  		    	-->
 					  		    	<select id="component" name="component" class="form-control">
-					  		    		<option value="None" title="None">None</option>
-					  		    		<option value="DDC-ADIdentity Service" title="DDC-ADIdentity Service">DDC-ADIdentity Service</option>
+					  		    		<option value="DDC-ADIdentity Service">DDC-ADIdentity Service</option>
 					  		    		<option value="DDC-Broker Service">DDC-Broker Service</option>
 					  		    		<option value="DDC-Configuration Service">DDC-Configuration Service</option>
 					  		    		<option value="DDC-Configuration Logging Service">DDC-Configuration Logging Service</option>
