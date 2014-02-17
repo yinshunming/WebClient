@@ -46,7 +46,7 @@
 				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
-					alertify.log("OK");
+					alertify.log("Get bug info success!","success");
 					//alert("OK");
 					$("#myModalLabel").html("Please verify the info of this bug and input its' component info:");
 					$("#bugInfoFormSb").prop('disabled', false);
@@ -72,7 +72,7 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alertify.log("Get bug info failed","error");
+					alertify.log("Get bug info failed!","error");
 					//alert("error");
 				},
 				

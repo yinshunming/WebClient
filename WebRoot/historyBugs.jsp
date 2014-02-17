@@ -89,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-			    alertify.log(data);
+			    alertify.log(data,"success");
 				//alert(data);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -130,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-				alertify.log(data);
+				alertify.log(data,"success");
 				//alert(data);
 				//window.location.reload();
 			},
@@ -406,7 +406,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-							    alertify.log(data);
+							    alertify.log(data,"success");
 								//alert(data);
 								
 								//window.location.reload();
@@ -435,7 +435,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-								alertify.log(data);
+								alertify.log(data,"success");
 								//alert(data);
 								//window.location.reload();
 							},

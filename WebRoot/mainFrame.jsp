@@ -222,7 +222,7 @@
 																	type : "post",
 																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
+																			 alertify.log(data,"success");
    																    		 //alert(data) ; 
    																    		  }
 																	});
@@ -358,7 +358,7 @@
 																	type : "post",
 																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
+																			 alertify.log(data,"success");
    																    		 //alert(data) ;  
    																    		}
 																	});
@@ -478,7 +478,7 @@
 																	type : "post",
 																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
-																			 alertify.log(data);
+																			 alertify.log(data,"success");
    																    		// alert(data) ;  
    																    		}
 																	});
@@ -833,7 +833,7 @@
 			data : differentFrame.serialize(),
 			cache : false,
 			success : function(data) {
-			    alertify.log(data);
+			    alertify.log(data,"success");
 				//alert(data);
 				window.location.reload();
 			},

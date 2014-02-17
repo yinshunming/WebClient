@@ -71,7 +71,7 @@
 						cache : false,
 						success: function (data) {
 							var dataObj = data;
-							alertify.log(dataObj);
+							alertify.log(dataObj,"success");
 							//alert(dataObj);
 							window.location.reload();
 						},
