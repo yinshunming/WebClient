@@ -67,7 +67,7 @@
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				//alert("updating error! Please try again");
-				alertify.log( "updating error! Please try again" );
+				alertify.log( "updating error! Please try again" ,"error");
 			},
 
 			complete : function(XMLHttpRequest, textStatus) {
@@ -574,7 +574,7 @@
 												error : function(
 														XMLHttpRequest,
 														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again");
+													alertify.log("updating error! Please try again","error");
 													//alert("updating error! Please try again");
 												},
 
@@ -653,7 +653,7 @@
 												error : function(
 														XMLHttpRequest,
 														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again");
+													alertify.log("updating error! Please try again","error");
 													//alert("updating error! Please try again");
 												},
 
