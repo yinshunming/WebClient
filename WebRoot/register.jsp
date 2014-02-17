@@ -15,6 +15,8 @@
 	<link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
 	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.default.css" />
 	<!--[if lte IE 6]>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
@@ -29,6 +31,7 @@
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	  <script src="js/respond.min.js"></script>
 	<![endif]-->
+	<script src="alertify/js/alertify.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -68,7 +71,8 @@
 						cache : false,
 						success: function (data) {
 							var dataObj = data;
-							alert(dataObj);
+							alertify.log(dataObj);
+							//alert(dataObj);
 							window.location.reload();
 						},
 						error : function(XMLHttpRequest, textStatus, errorThrown) {

@@ -46,7 +46,8 @@
 				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
-					alert("OK");
+					alertify.log("OK");
+					//alert("OK");
 					$("#myModalLabel").html("Please verify the info of this bug and input its' component info:");
 					$("#bugInfoFormSb").prop('disabled', false);
 					if (dataObj != null) {
@@ -71,7 +72,8 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("error");
+					alertify.log("error");
+					//alert("error");
 				},
 				
 				complete: function (XMLHttpRequest, textStatus) {

@@ -25,6 +25,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
 	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.default.css" />
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
 	<script src="datatables/js/jquery.dataTables.js"></script>
@@ -36,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	  <script src="js/respond.min.js"></script>
 	<![endif]-->
+	<script src="alertify/js/alertify.min.js"></script>
    	<script type="text/javascript">
    	var ownerBugDataTable;
 	var managerBugDataTable;
@@ -86,7 +89,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-				alert(data);
+			    alertify.log(data);
+				//alert(data);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 					
@@ -126,8 +130,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-			
-				alert(data);
+				alertify.log(data);
+				//alert(data);
 				//window.location.reload();
 			},
 			
@@ -402,7 +406,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-								alert(data);
+							    alertify.log(data);
+								//alert(data);
 								
 								//window.location.reload();
 							},
@@ -430,7 +435,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-								alert(data);
+								alertify.log(data);
+								//alert(data);
 								//window.location.reload();
 							},
 							
