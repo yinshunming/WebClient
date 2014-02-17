@@ -72,7 +72,7 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alertify.log("error");
+					alertify.log("Get bug info failed","error");
 					//alert("error");
 				},
 				

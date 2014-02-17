@@ -68,12 +68,12 @@
 	background: rgba(0,0,0,.9);
 	padding: 15px;
 	border-radius: 4px;
-	color: #FFF;
+	color: #FFEFEF;
 	text-shadow: -1px -1px 0 rgba(0,0,0,.5);
 }
 	.alertify-log-error {
 		background: #FE1A00;
-		background: rgba(254,26,0,.9);
+		background: rgba(184, 59, 28, 0.901961);
 	}
 	.alertify-log-success {
 		background: #5CB811;
