@@ -46,12 +46,16 @@
 				cache : false,
 				success: function (data, textStatus) {	
 					var dataObj = data;
-					alert("OK");
+					alertify.log("Get bug info success!","success");
+					//alert("OK");
 					$("#myModalLabel").html("Please verify the info of this bug and input its' component info:");
 					$("#bugInfoFormSb").prop('disabled', false);
 					if (dataObj != null) {
 						   $("#bugInfoDiv").css("display","block");
-						   $("#component").val(dataObj.component);
+						   if(dataObj.component){
+						  	 $("#component").val(dataObj.component);
+						   }
+						   
 						   $("#bugId").val(dataObj.bugId);
 						   $("#title").val(dataObj.title);
 						   $("#project").val(dataObj.project);
@@ -68,7 +72,8 @@
 						} 
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("error");
+					alertify.log("Get bug info failed!","error");
+					//alert("error");
 				},
 				
 				complete: function (XMLHttpRequest, textStatus) {
@@ -84,7 +89,7 @@
 		addForm.validate({
 			rules: {
 				bugId : {
-					 regex: '^(bug|BUG)?[0-9]{6,7}',
+					 regex: '^(bug|BUG)?[0-9]{6,7}$',
 					 required :true
 				}
 			} , 
@@ -98,7 +103,8 @@
 			},
 			success: function(element) {
 				element
-				.addClass('valid_nav') 
+				.addClass('valid') 
+				.addClass('background_none')
 				.closest('.form-group').removeClass('has-error').addClass('has-success');
 			} 
 		});
