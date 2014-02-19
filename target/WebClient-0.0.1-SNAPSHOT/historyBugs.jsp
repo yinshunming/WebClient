@@ -25,6 +25,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
 	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
 	<link rel="stylesheet" href="css/placeholder.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.default.css" />
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
 	<script src="datatables/js/jquery.dataTables.js"></script>
@@ -36,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	  <script src="js/respond.min.js"></script>
 	<![endif]-->
+	<script src="alertify/js/alertify.min.js"></script>
    	<script type="text/javascript">
    	var ownerBugDataTable;
 	var managerBugDataTable;
@@ -86,7 +89,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-				alert(data);
+			    alertify.log(data,"success");
+				//alert(data);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 					
@@ -111,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	function operateOwnerBugs(managedBugId, id, operate) {
-		var operateOwnerBtn = $("#operateOwenerBtn_" + managedBugId);
+		var operateOwnerBtn = $("#operateOwnerBtn_" + managedBugId);
 		var buttonStr=operateOwnerBtn.html();
 		if(buttonStr=='Ignore'){
 			operate=ingoreCmd;
@@ -126,8 +130,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data: "",
 			cache : false,
 			success: function (data) {
-			
-				alert(data);
+				alertify.log(data,"success");
+				//alert(data);
 				//window.location.reload();
 			},
 			
@@ -242,7 +246,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
 						managedDisplay = managedText;
 					} else {
-						operationBtn = "<button id = 'operateOwenerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
+						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
 						managedDisplay = notManagedText;
 					} 
 					record.push("<img src='datatables/images/details_open.png' >");
@@ -402,7 +406,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-								alert(data);
+							    alertify.log(data,"success");
+								//alert(data);
 								
 								//window.location.reload();
 							},
@@ -430,7 +435,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							data: "",
 							cache : false,
 							success: function (data) {
-								alert(data);
+								alertify.log(data,"success");
+								//alert(data);
 								//window.location.reload();
 							},
 							

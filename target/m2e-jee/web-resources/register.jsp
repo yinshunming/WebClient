@@ -4,94 +4,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- <meta http-equiv="cache-control" content="max-age=0" >
-<meta http-equiv="cache-control" content="no-cache" >
-<meta http-equiv="expires" content="0" >
-<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" >
-<meta http-equiv="pragma" content="no-cache" > -->
 <title>Register Page</title>
 
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
-	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
-	<link rel="stylesheet" href="css/placeholder.css" />
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap-responsive.min.css"/>
+	<link rel="stylesheet" href="assets/bootstrap/css/validation.css"/>
+	<link rel="stylesheet" href="assets/custom/css/placeholder.css" />
+	<link rel="stylesheet" href="assets/alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="assets/alertify/css/alertify.default.css" />
 	<!--[if lte IE 6]>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap-ie6.css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/ie.css">
 	<![endif]-->
-	<script src="jquery/jquery-1.10.2.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js" ></script>
-	<script src="jquery/jquery.validate.min.js" ></script>
-	<script src="jquery/additional-methods.min.js" ></script>
 	
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	  <script src="js/respond.min.js"></script>
-	<![endif]-->
-	<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$("#registerJSPNav").addClass("active");
-		var registerBtn = $("#registerFormSb");
-		
-		var registerForm = $("#registerForm");
-		
-		registerForm.validate({
-			rules: {
-				username : {
-					 required: true
-				}, 
-				email : {
-					required: true,
-					email: true
-				},
-				password: {
-					required: true,
-					minlength: 4
-					
-				},
-				password2: {
-					required: true,
-					equalTo: "#password"
-				},
-				oneBugFullName: {
-					required: true,
-				}
-			}, 
-			 submitHandler: function(form) {
-				 registerBtn.button('loading');
-					$.ajax({
-						type: registerForm.attr('method'),
-						url: registerForm.attr('action'),
-						data: registerForm.serialize(),
-						cache : false,
-						success: function (data) {
-							var dataObj = data;
-							alert(dataObj);
-							window.location.reload();
-						},
-						error : function(XMLHttpRequest, textStatus, errorThrown) {
-							
-						},
-						
-						complete: function (XMLHttpRequest, textStatus) {
-							registerBtn.button('reset');
-						}
-					});	
-			},
-			highlight: function(element) {
-				$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-			},
-			success: function(element) {
-				element
-				.text('OK!').addClass('valid')
-				.closest('.form-group').removeClass('has-error').addClass('has-success');
-			}
-		});
-		
-		}); 
-	</script>
 </head>
 <body>
 	 <%@ include file="navigation.jsp" %>
@@ -111,14 +36,14 @@
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input id="password" class="form-control col-lg-9" type="password" name="password" placeholder="Password" style="width:80%"> 
+					  		    <input id="password" class="form-control col-lg-9 " type="password" name="password" placeholder="Password" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    
 				  		    <div class="form-group">
 					  		    <label class="control-label col-lg-3">Password Again</label> 
 					  		   	<div class="col-lg-9">
-					  		    <input class="form-control col-lg-9" type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
+					  		    <input class="form-control col-lg-9 " type="password" name="password2"   placeholder="ConfirmPassword" style="width:80%"> 
 					  		    </div>
 				  		    </div>
 				  		    
@@ -149,9 +74,20 @@
 	  		
 			 </div>
 	 </div>
+	<script src="assets/jquery/jquery-1.10.2.min.js"></script>
+	<script src="assets/jquery/jquery.validate.min.js" ></script>
+	<script src="assets/jquery/jquery.placeholder.js" ></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js" ></script>	
+	<script src="assets/alertify/js/alertify.min.js"></script>
+	<script src="assets/custom/js/navigation.js"></script>
+	<script src="assets/custom/js/register.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="assets/custom/js/respond.min.js"></script>
+	<![endif]-->
+	<!--[if lte IE 6]>
+    <script type="text/javascript" src="assets/custom/js/bootstrap-ie.js"></script>
+    <![endif]-->
 </body>
- <!-- jQuery 1.7.2 or higher -->
-  <!--[if lte IE 6]>
-  <script type="text/javascript" src="js/bootstrap-ie.js"></script>
-  <![endif]-->
 </html>
