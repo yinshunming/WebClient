@@ -4,23 +4,17 @@
 <html>
   <head>
     <title>Add New Bug</title>
-<!--     <meta http-equiv="cache-control" content="max-age=0" >
-	<meta http-equiv="cache-control" content="no-cache" >
-	<meta http-equiv="expires" content="0" >
-	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" >
-	<meta http-equiv="pragma" content="no-cache" > -->
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="bootstrap/css/validation.css"/>
-	<link rel="stylesheet" href="css/placeholder.css" />
-	<link rel="stylesheet" href="alertify/css/alertify.core.css" />
-	<link rel="stylesheet" href="alertify/css/alertify.default.css" />
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="assets/bootstrap/css/validation.css"/>
+	<link rel="stylesheet" href="assets/custom/css/placeholder.css" />
+	<link rel="stylesheet" href="assets/alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="assets/alertify/css/alertify.default.css" />
 	<!--[if lte IE 6]>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap-ie6.css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/ie.css">
 	<![endif]-->
+<<<<<<< HEAD
+<<<<<<< HEAD
 	<script src="jquery/jquery-1.10.2.min.js"></script>
 	
 	<script src="bootstrap/js/bootstrap.min.js" ></script>
@@ -171,40 +165,53 @@
 	
 	</script>
 	
+=======
+>>>>>>> 51ff6549d63d130c01286aa0cb2c2ace292756e8
+=======
+>>>>>>> 51ff6549d63d130c01286aa0cb2c2ace292756e8
   </head>
  	
-  <body>
+  <body>	
+	<%@ include file="navigation.jsp" %>
+		
+	<div class="container" style="padding-top:70px" >
+		<div class="row">
+				
+			<div id="userNameDiv" class="col-lg-4" >
+				<h4>Current Logged User:</h4>
+				<form id="logoutForm" name="logoutForm" method="post" action="/BugTrackingSystem/api/logout" class="well form-horizontal">
+					<div class="form-group">
+			  		    <label class="control-label col-lg-4">Username</label> 
+			  		   	<div class="col-lg-8">
+			  		    <input class="form-control" type="text" id="username" name="username" placeholder="UserName" readonly="true"> 
+			  		    </div>
+		  		    </div>
+	  		    
+		  		    <div class="form-group">
+				  		<div class="col-lg-offset-4 col-lg-8">
 
-		
-  		<%@ include file="navigation.jsp" %>
-			
- 			<div class="container" style="padding-top:70px" >
- 				<div class="row">
- 						
-						<div id="userNameDiv" class="col-lg-4" >
-							<h4>Current Logged User:</h4>
-							<form id="logoutForm" name="logoutForm" method="post" action="/BugTrackingSystem/api/logout" class="well form-horizontal">
-								<div class="form-group">
-						  		    <label class="control-label col-lg-4">Username</label> 
-						  		   	<div class="col-lg-8">
-						  		    <input class="form-control" type="text" id="username" name="username" placeholder="UserName" readonly="true"> 
-						  		    </div>
-					  		    </div>
-				  		    
-					  		    <div class="form-group">
-							  		<div class="col-lg-offset-4 col-lg-8">
-		
-						  		    <button class="btn btn-default" type="button" id="logoutFormSb" name="logoutFormSb" data-loading-text="Loading...">Logout</button>
-						  		    </div>
-					  		    </div>
-							</form>
-						</div>
-		        </div>
+			  		    <button class="btn btn-default" type="button" id="logoutFormSb" name="logoutFormSb" data-loading-text="Loading...">Logout</button>
+			  		    </div>
+		  		    </div>
+				</form>
 			</div>
-
+       	</div>
+	</div>
+	<script src="assets/jquery/jquery-1.10.2.min.js"></script>
+	<script src="assets/jquery/jquery.validate.min.js" ></script>
+	<script src="assets/jquery/jquery.placeholder.js" ></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js" ></script>
+	<script src="assets/alertify/js/alertify.min.js"></script>
+	<script src="assets/custom/js/navigation.js"></script>
+	<script src="assets/custom/js/logout.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <script src="assets/custom/js/respond.min.js"></script>
+	<![endif]-->
+	<!--[if lte IE 6]>
+ 	 <script type="text/javascript" src="assets/custom/js/bootstrap-ie.js"></script>
+ 	<![endif]-->
   </body>
- <!-- jQuery 1.7.2 or higher -->
-  <!--[if lte IE 6]>
-  <script type="text/javascript" src="js/bootstrap-ie.js"></script>
-  <![endif]-->
+  
 </html>
