@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="assets/bootstrap/css/validation.css"/>
 <link rel="stylesheet" href="assets/datatables/css/demo_page.css" />
 <link rel="stylesheet" href="assets/datatables/css/demo_table_jui.css" />
-<link rel="stylesheet"
-	href="assets/datatables/themes/smoothness/jquery-ui-1.8.4.custom.css" />
+<link rel="stylesheet" href="assets/jquery/css/jquery-ui-1.8.4.custom.css" />
 <link rel="stylesheet" href="assets/custom/css/placeholder.css" />
 <link rel="stylesheet" href="assets/alertify/css/alertify.core.css" />
 <link rel="stylesheet" href="assets/alertify/css/alertify.default.css" />
@@ -138,14 +137,15 @@
 	</div>
 
 
-<script src="assets/jquery/jquery-1.10.2.min.js"></script>
-<script src="assets/jquery/jquery.validate.min.js" ></script>
-<script src="assets/jquery/jquery.placeholder.js" ></script>
+<script src="assets/jquery/js/jquery-1.10.2.min.js"></script>
+<script src="assets/jquery/js/jquery.validate.min.js" ></script>
+<script src="assets/jquery/js/jquery.placeholder.js" ></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/datatables/js/jquery.dataTables.js"></script>
 <script src="assets/datatables/js/jquery.dataTables.editable.js"></script>
 <script src="assets/datatables/js/jquery.jeditable.js"></script>
 <script src="assets/datatables/js/jquery.dataTables.rowGrouping.js"></script>
+<script src="assets/datatables/js/jquery.dataTables.colReorderWithResize.js"></script>
 <script src="assets/alertify/js/alertify.min.js"></script>
 <script src="assets/custom/js/navigation.js"></script>
 <script src="assets/custom/js/mainFrame.js"></script>

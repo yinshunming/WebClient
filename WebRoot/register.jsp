@@ -74,9 +74,9 @@
 	  		
 			 </div>
 	 </div>
-	<script src="assets/jquery/jquery-1.10.2.min.js"></script>
-	<script src="assets/jquery/jquery.validate.min.js" ></script>
-	<script src="assets/jquery/jquery.placeholder.js" ></script>
+	<script src="assets/jquery/js/jquery-1.10.2.min.js"></script>
+	<script src="assets/jquery/js/jquery.validate.min.js" ></script>
+	<script src="assets/jquery/js/jquery.placeholder.js" ></script>
 	<script src="assets/bootstrap/js/bootstrap.min.js" ></script>	
 	<script src="assets/alertify/js/alertify.min.js"></script>
 	<script src="assets/custom/js/navigation.js"></script>
