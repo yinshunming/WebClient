@@ -8,18 +8,7 @@
 <title>Main Frame</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" href="assets/bootstrap/css/validation.css"/>
-<link rel="stylesheet" href="assets/datatables/css/demo_page.css" />
-<link rel="stylesheet" href="assets/datatables/css/demo_table_jui.css" />
-<link rel="stylesheet" href="assets/jquery/css/jquery-ui-1.8.4.custom.css" />
-<link rel="stylesheet" href="assets/custom/css/placeholder.css" />
-<link rel="stylesheet" href="assets/alertify/css/alertify.core.css" />
-<link rel="stylesheet" href="assets/alertify/css/alertify.default.css" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap-ie6.css">
-<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/ie.css">
-<![endif]-->
+	<link rel="stylesheet" href="assets/css/mainFrame.min.css" />
 </head>
 
 <body>
@@ -136,27 +125,11 @@
 		</div>
 	</div>
 
-
-<script src="assets/jquery/js/jquery-1.10.2.min.js"></script>
-<script src="assets/jquery/js/jquery.validate.min.js" ></script>
-<script src="assets/jquery/js/jquery.placeholder.js" ></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/datatables/js/jquery.dataTables.js"></script>
-<script src="assets/datatables/js/jquery.dataTables.editable.js"></script>
-<script src="assets/datatables/js/jquery.jeditable.js"></script>
-<script src="assets/datatables/js/jquery.dataTables.rowGrouping.js"></script>
-<script src="assets/datatables/js/jquery.dataTables.colReorderWithResize.js"></script>
-<script src="assets/alertify/js/alertify.min.js"></script>
-<script src="assets/custom/js/navigation.js"></script>
-<script src="assets/custom/js/mainFrame.js"></script>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <script src="assets/custom/js/respond.min.js"></script>
-<![endif]-->
- <!--[if lte IE 6]>
- <script type="text/javascript" src="assets/custom/js/bootstrap-ie.js"></script>
- <![endif]-->
-
+	<script src="assets/js/mainFrame.min.js"></script>
+	<!--[if lt IE 9]>
+	 	 <script src="assets/js/ltIE9.min.js"></script>
+	<![endif]-->
+	 	 
+ 	 
 </body>
 </html>

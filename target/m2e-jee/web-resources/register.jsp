@@ -5,17 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Register Page</title>
-
-	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap-responsive.min.css"/>
-	<link rel="stylesheet" href="assets/bootstrap/css/validation.css"/>
-	<link rel="stylesheet" href="assets/custom/css/placeholder.css" />
-	<link rel="stylesheet" href="assets/alertify/css/alertify.core.css" />
-	<link rel="stylesheet" href="assets/alertify/css/alertify.default.css" />
-	<!--[if lte IE 6]>
-	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap-ie6.css">
-	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/ie.css">
-	<![endif]-->
+	<link rel="stylesheet" href="assets/css/register.min.css" />
 	
 </head>
 <body>
@@ -74,20 +64,13 @@
 	  		
 			 </div>
 	 </div>
-	<script src="assets/jquery/js/jquery-1.10.2.min.js"></script>
-	<script src="assets/jquery/js/jquery.validate.min.js" ></script>
-	<script src="assets/jquery/js/jquery.placeholder.js" ></script>
-	<script src="assets/bootstrap/js/bootstrap.min.js" ></script>	
-	<script src="assets/alertify/js/alertify.min.js"></script>
-	<script src="assets/custom/js/navigation.js"></script>
-	<script src="assets/custom/js/register.js"></script>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	  <script src="assets/custom/js/respond.min.js"></script>
+ 	<script src="assets/js/register.min.js"></script>
+ 	<!--[if lt IE 9]>
+	 	 <script src="assets/js/ltIE9.min.js"></script>
 	<![endif]-->
-	<!--[if lte IE 6]>
-    <script type="text/javascript" src="assets/custom/js/bootstrap-ie.js"></script>
-    <![endif]-->
+
+
+
+ 	 
 </body>
 </html>
