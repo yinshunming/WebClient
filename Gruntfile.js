@@ -57,51 +57,35 @@ module.exports = function(grunt) {
 	 
 	  prod:{
 		files: {
-			"release/<%= pkg.version %>/assets/js/mainFrame.js":[
+			"release/<%= pkg.version %>/assets/js/common.js":[
 												"source/assets/js/jquery-1.10.2.min.js",
 												"source/assets/js/jquery.validate.min.js",
 												"source/assets/js/jquery.placeholder.js",
 												"source/assets/js/bootstrap.min.js",
+												"source/assets/js/alertify.min.js",
+												"source/assets/js/custom.navigation.js",
+											 ],
+			"release/<%= pkg.version %>/assets/js/mainFrame.js":[
 												"source/assets/js/jquery.dataTables.js",
 												"source/assets/js/jquery.dataTables.editable.js",
 												"source/assets/js/jquery.jeditable.js",
 												"source/assets/js/jquery.dataTables.rowGrouping.js",
 												"source/assets/js/jquery.dataTables.colReorderWithResize.js",
-												"source/assets/js/alertify.min.js",
-												"source/assets/js/custom.navigation.js",
 												"source/assets/js/custom.mainFrame.js"
 											 ],
 						
 			"release/<%= pkg.version %>/assets/js/historyBugs.js":[
-												"source/assets/js/jquery-1.10.2.min.js",
-												"source/assets/js/jquery.validate.min.js",
-												"source/assets/js/jquery.placeholder.js",
-												"source/assets/js/bootstrap.min.js",
 												"source/assets/js/jquery.dataTables.js",
 												"source/assets/js/jquery.dataTables.rowGrouping.js",
 												"source/assets/js/jquery.dataTables.colReorderWithResize.js",
-												"source/assets/js/alertify.min.js",
-												"source/assets/js/custom.navigation.js",
 												"source/assets/js/custom.historyBugs.js"
 											 ],
 	
 			"release/<%= pkg.version %>/assets/js/logout.js":[
-												"source/assets/js/jquery-1.10.2.min.js",
-												"source/assets/js/jquery.validate.min.js",
-												"source/assets/js/jquery.placeholder.js",
-												"source/assets/js/bootstrap.min.js",
-												"source/assets/js/alertify.min.js",
-												"source/assets/js/custom.navigation.js",
 												"source/assets/js/custom.logout.js"
 											 ],
 
 			"release/<%= pkg.version %>/assets/js/register.js":[
-												"source/assets/js/jquery-1.10.2.min.js",
-												"source/assets/js/jquery.validate.min.js",
-												"source/assets/js/jquery.placeholder.js",
-												"source/assets/js/bootstrap.min.js",
-												"source/assets/js/alertify.min.js",
-												"source/assets/js/custom.navigation.js",
 												"source/assets/js/custom.register.js"
 											 ],
 											 
@@ -109,42 +93,19 @@ module.exports = function(grunt) {
 												"source/assets/js/custom.html5.js",
 												"source/assets/js/custom.respond.min.js"
 											 ],		
-											 
-			"release/<%= pkg.version %>/assets/css/mainFrame.css":[
+			"release/<%= pkg.version %>/assets/css/common.css":[
 												"source/assets/css/bootstrap.min.css",
 												"source/assets/css/bootstrap.validation.css",
+												"source/assets/css/custom.placeholder.css",
+												"source/assets/css/alertify.core.css",
+												"source/assets/css/alertify.default.css",
+											 ],										 
+			"release/<%= pkg.version %>/assets/css/datatable.css":[
 												"source/assets/css/jquery.dataTables.demo_page.css",
 												"source/assets/css/jquery.dataTables.demo_table_jui.css",
 												"source/assets/css/jquery.ui-1.8.4.custom.css",
-												"source/assets/css/custom.placeholder.css",
-												"source/assets/css/alertify.core.css",
-												"source/assets/css/alertify.default.css",
 											 ],		
-			"release/<%= pkg.version %>/assets/css/historyBugs.css":[
-												"source/assets/css/bootstrap.min.css",
-												"source/assets/css/bootstrap.validation.css",
-												"source/assets/css/jquery.dataTables.demo_page.css",
-												"source/assets/css/jquery.dataTables.demo_table_jui.css",
-												"source/assets/css/jquery.ui-1.8.4.custom.css",
-												"source/assets/css/custom.placeholder.css",
-												"source/assets/css/alertify.core.css",
-												"source/assets/css/alertify.default.css",
-											 ],		
-			"release/<%= pkg.version %>/assets/css/logout.css":[
-												"source/assets/css/bootstrap.min.css",
-												"source/assets/css/bootstrap.validation.css",
-												"source/assets/css/custom.placeholder.css",
-												"source/assets/css/alertify.core.css",
-												"source/assets/css/alertify.default.css",
-											 ],	
-			"release/<%= pkg.version %>/assets/css/register.css":[
-												"source/assets/css/bootstrap.min.css",
-												"source/assets/css/bootstrap.responsive.min.css",
-												"source/assets/css/bootstrap.validation.css",
-												"source/assets/css/custom.placeholder.css",
-												"source/assets/css/alertify.core.css",
-												"source/assets/css/alertify.default.css",
-											 ],													
+												
 		}
 	  },
 
@@ -156,6 +117,7 @@ module.exports = function(grunt) {
 
 	  prod:{
         files: {
+		  'release/<%= pkg.version %>/assets/js/common.min.js': ['release/<%= pkg.version %>/assets/js/common.js'], 
           'release/<%= pkg.version %>/assets/js/mainFrame.min.js': ['release/<%= pkg.version %>/assets/js/mainFrame.js'],  
 		  'release/<%= pkg.version %>/assets/js/historyBugs.min.js': ['release/<%= pkg.version %>/assets/js/historyBugs.js'],
 		  'release/<%= pkg.version %>/assets/js/logout.min.js': ['release/<%= pkg.version %>/assets/js/logout.js'],
@@ -173,10 +135,8 @@ module.exports = function(grunt) {
 
 	  prod:{
         files: {		  
-		  'release/<%= pkg.version %>/assets/css/mainFrame.min.css': ['release/<%= pkg.version %>/assets/css/mainFrame.css'],
-		  'release/<%= pkg.version %>/assets/css/historyBugs.min.css': ['release/<%= pkg.version %>/assets/css/historyBugs.css'],
-		  'release/<%= pkg.version %>/assets/css/logout.min.css': ['release/<%= pkg.version %>/assets/css/logout.css'],
-		  'release/<%= pkg.version %>/assets/css/register.min.css': ['release/<%= pkg.version %>/assets/css/register.css'],
+		  'release/<%= pkg.version %>/assets/css/common.min.css': ['release/<%= pkg.version %>/assets/css/common.css'],
+		  'release/<%= pkg.version %>/assets/css/datatable.min.css': ['release/<%= pkg.version %>/assets/css/datatable.css'],
         }
 	  },
 	  

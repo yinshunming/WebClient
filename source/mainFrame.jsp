@@ -21,7 +21,8 @@
 <!-- @endif -->
 
 <!-- @if NODE_ENV == 'PRODUCTION' -->
-	<link rel="stylesheet" href="assets/css/mainFrame.min.css" />
+	<link rel="stylesheet" href="assets/css/common.min.css" />
+	<link rel="stylesheet" href="assets/css/datatable.min.css" />
 <!-- @endif -->
 
 
@@ -163,6 +164,7 @@
 <!-- @endif -->
 
 <!-- @if NODE_ENV == 'PRODUCTION' -->
+	<script src="assets/js/common.min.js"></script>
 	<script src="assets/js/mainFrame.min.js"></script>
 	<!--[if lt IE 9]>
 	 	 <script src="assets/js/ltIE9.min.js"></script>

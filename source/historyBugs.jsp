@@ -21,7 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="assets/css/alertify.default.css" />
 <!-- @endif -->
 <!-- @if NODE_ENV == 'PRODUCTION' -->
-	<link rel="stylesheet" href="assets/css/historyBugs.min.css" />
+	<link rel="stylesheet" href="assets/css/common.min.css" />
+	<link rel="stylesheet" href="assets/css/datatable.min.css" />
 <!-- @endif -->
   </head>
   
@@ -115,6 +116,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- @endif -->
 
 <!-- @if NODE_ENV == 'PRODUCTION' -->
+	<script src="assets/js/common.min.js"></script>
 	<script src="assets/js/historyBugs.min.js"></script>
 	<!--[if lt IE 9]>
 	 	 <script src="assets/js/ltIE9.min.js"></script>
