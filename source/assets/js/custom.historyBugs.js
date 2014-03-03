@@ -42,8 +42,8 @@
    		operateManagedBtn.button('loading');
    		
    		$.ajax({
-			type: "post",
-			url: "/BugTrackingSystem/api/managed?method=put&operate=" +  operate + "&managedBugId=" + managedBugId + "&id=" + id,
+			type: "put",
+			url: "/BugTrackingSystem/api/managed?operate=" +  operate + "&managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
 			cache : false,
 			success: function (data) {
@@ -83,8 +83,8 @@
 		}
 		operateOwnerBtn.button('loading');
 		$.ajax({
-			type: "post",
-			url: "/BugTrackingSystem/api/owner?method=put&operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
+			type: "put",
+			url: "/BugTrackingSystem/api/owner?operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
 			data: "",
 			cache : false,
 			success: function (data) {

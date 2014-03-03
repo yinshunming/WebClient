@@ -15964,7 +15964,7 @@ else
 							else
 							{
 								//Open this row
-								this.src = "/details_close.png";
+								this.src = "assets/images/details_close.png";
 								$.ajax({
 									type: "get",
 									url: "/BugTrackingSystem/api/bug?id=" + id,

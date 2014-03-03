@@ -172,8 +172,8 @@
 						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
 						                                		
 						                                		$.ajax({
-																	type : "post",
-																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	type : "put",
+																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
 																			 alertify.log(data,"success");
    																    		 //alert(data) ; 
@@ -308,8 +308,8 @@
 						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
 						                                		
 						                                		$.ajax({
-																	type : "post",
-																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	type : "put",
+																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
 																			 alertify.log(data,"success");
    																    		 //alert(data) ;  
@@ -428,8 +428,8 @@
 						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
 						                                		
 						                                		$.ajax({
-																	type : "post",
-																	url : "/BugTrackingSystem/api/bug?method=put&id="+id+"&bugId="+bugId+"&component="+value,
+																	type : "put",
+																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 																	success : function(data) {
 																			 alertify.log(data,"success");
    																    		// alert(data) ;  
