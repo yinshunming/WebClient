@@ -136,7 +136,11 @@
 									            { sWidth: '10%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%',"bSearchable": false  }
-									            ]
+									            ],
+									       /* "bAutoWidth": false,
+								            "sScrollY": "35em",
+								            "sScrollX": "100%",
+								            "bScrollCollapse": true*/
 										});	
 										managerBugDataTable.rowGrouping({
 											iGroupingColumnIndex:3,
@@ -815,7 +819,14 @@
 					        
 						} );
 
+				
 						
+					/*$(window).resize(function() {
+						ownerBugDataTable.fnDraw(false);
+						managerBugDataTable.fnDraw(false);
+						differentBugDataTable.fnDraw(false);
+						
+					});*/
 			});
 	
 	

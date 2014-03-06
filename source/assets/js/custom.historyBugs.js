@@ -1,6 +1,7 @@
 	var ownerBugDataTable;
 	var managerBugDataTable;
-	
+	var ownerBugTimer;
+	var historyBugTimer;
 	function ellipsis(text, n) {
 	    if(text.length>n)
 	        return text.substring(0,n)+"...";
@@ -334,6 +335,44 @@
 									});
 							}							
 		} );
+		
+		$(document).delegate('#ownerBugsTable_filter input','keyup',function () {
+			 
+			clearInterval(ownerBugTimer);  
+			if($('#ownerBugsTableBody tr').find('td:not(:last)').hasHightlight()){
+				  $('#ownerBugsTableBody  tr').find('td:not(:last)').removeHighlight();
+			 }
+			
+	        if ($(this).val() != "") {
+	            $('#ownerBugsTableBody   tr').find('td:not(:last)').highlight($(this).val());
+	        }else {
+	        	$('#ownerBugsTableBody  tr').find('td:not(:last)').removeHighlight();
+	        }
+	        
+	        ownerBugTimer = setTimeout(function(){
+	            $('#ownerBugsTableBody  tr ').find('td:not(:last)').removeHighlight();}, 1000);
+	        
+		} );
+	
+	$(document).delegate('#historyBugsTable_filter input','keyup',function () {
+		 
+		clearInterval(historyBugTimer);  
+		if($('#historyBugsTableBody  tr').find('td:not(:last)').hasHightlight()){
+			  $('#historyBugsTableBody  tr').find('td:not(:last)').removeHighlight();
+		 }
+		
+        if ($(this).val() != "") {
+            $('#historyBugsTableBody tr').find('td:not(:last)').highlight($(this).val());
+        }else {
+        	$('#historyBugsTableBody  tr').find('td:not(:last)').removeHighlight();
+        }
+        
+        historyBugTimer = setTimeout(function(){
+            $('#historyBugsTableBody  tr').find('td:not(:last)').removeHighlight();}, 1000);
+        
+	} );
+		
+		
 		function  getBugInfoTable(bugInfo){
 			var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
 			sOut += '<tr><td>Component:</td><td>'+bugInfo.component+'</td></tr>';
@@ -410,5 +449,11 @@
 							}
 						});
 				       				
-		} );			
+		} );	
+		
+		/*$(window).resize(function() {
+			ownerBugDataTable.fnDraw(false);
+			managerBugDataTable.fnDraw(false);
+			
+		});*/
 	});

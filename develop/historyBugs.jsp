@@ -94,6 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	<script src="assets/js/jquery.validate.min.js" ></script>
 	<script src="assets/js/jquery.placeholder.js" ></script>
 	<script src="assets/js/bootstrap.min.js" ></script>
+	<script src="assets/js/jquery.highlight-4.js"></script>
 	<script src="assets/js/jquery.dataTables.js"></script>
 	<script src="assets/js/jquery.dataTables.rowGrouping.js"></script>
 	<script src="assets/js/jquery.dataTables.colReorderWithResize.js"></script>
