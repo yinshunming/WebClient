@@ -31,6 +31,13 @@
         return nRow;
     }
 	
+    var update_size = function() {
+        $(ownerBugDataTable).css({ width: $(ownerBugDataTable).parent().width() });
+        ownerBugDataTable.fnAdjustColumnSizing();  
+        $(managerBugDataTable).css({ width: $(managerBugDataTable).parent().width() });
+        managerBugDataTable.fnAdjustColumnSizing();  
+      }
+
     
     
    	function operateManagedBugs(managedBugId, id, operate) {
@@ -451,9 +458,9 @@
 				       				
 		} );	
 		
-		/*$(window).resize(function() {
-			ownerBugDataTable.fnDraw(false);
-			managerBugDataTable.fnDraw(false);
+		$(window).resize(function() {
+			 clearTimeout(window.refresh_size);
+			 window.refresh_size = setTimeout(function() { update_size(); }, 50);
 			
-		});*/
+		});
 	});

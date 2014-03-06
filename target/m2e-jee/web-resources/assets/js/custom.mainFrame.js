@@ -60,11 +60,15 @@
     }
     
     
-    
-    
-    
+    var update_size = function() {
+        $(ownerBugDataTable).css({ width: $(ownerBugDataTable).parent().width() });
+        ownerBugDataTable.fnAdjustColumnSizing();  
+        $(managerBugDataTable).css({ width: $(managerBugDataTable).parent().width() });
+        managerBugDataTable.fnAdjustColumnSizing();  
+        $(differentBugDataTable).css({ width: $(differentBugDataTable).parent().width() });
+        differentBugDataTable.fnAdjustColumnSizing(); 
+      }
 
-    
 	$(document)
 			.ready(
 					function() {
@@ -137,10 +141,10 @@
 									            { sWidth: '10%' },
 									            { sWidth: '10%',"bSearchable": false  }
 									            ],
-									        "bAutoWidth": false,
+									       /* "bAutoWidth": false,
 								            "sScrollY": "35em",
 								            "sScrollX": "100%",
-								            "bScrollCollapse": true
+								            "bScrollCollapse": true*/
 										});	
 										managerBugDataTable.rowGrouping({
 											iGroupingColumnIndex:3,
@@ -822,9 +826,8 @@
 				
 						
 					$(window).resize(function() {
-						ownerBugDataTable.fnDraw(false);
-						managerBugDataTable.fnDraw(false);
-						differentBugDataTable.fnDraw(false);
+						 clearTimeout(window.refresh_size);
+						 window.refresh_size = setTimeout(function() { update_size(); }, 150);
 						
 					});
 			});
