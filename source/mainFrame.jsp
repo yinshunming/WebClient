@@ -147,6 +147,7 @@
 	<script src="assets/js/jquery.validate.min.js" ></script>
 	<script src="assets/js/jquery.placeholder.js" ></script>
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/jquery.highlight-4.js"></script>
 	<script src="assets/js/jquery.dataTables.js"></script>
 	<script src="assets/js/jquery.dataTables.editable.js"></script>
 	<script src="assets/js/jquery.jeditable.js"></script>
