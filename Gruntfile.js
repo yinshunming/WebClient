@@ -66,6 +66,7 @@ module.exports = function(grunt) {
 												"source/assets/js/custom.navigation.js",
 											 ],
 			"release/<%= pkg.version %>/assets/js/mainFrame.js":[
+			                                    "source/assets/js/jquery.highlight-4.js",                
 												"source/assets/js/jquery.dataTables.js",
 												"source/assets/js/jquery.dataTables.editable.js",
 												"source/assets/js/jquery.jeditable.js",
@@ -75,6 +76,7 @@ module.exports = function(grunt) {
 											 ],
 						
 			"release/<%= pkg.version %>/assets/js/historyBugs.js":[
+			                                    "source/assets/js/jquery.highlight-4.js",
 												"source/assets/js/jquery.dataTables.js",
 												"source/assets/js/jquery.dataTables.rowGrouping.js",
 												"source/assets/js/jquery.dataTables.colReorderWithResize.js",

@@ -1,4 +1,4 @@
-$.validator.addMethod(
+	$.validator.addMethod(
         "regex",
         function(value, element, regexp) {
             var re = new RegExp(regexp);
@@ -7,9 +7,12 @@ $.validator.addMethod(
         "Please check your input."
 	);
 		
+	
+	
 	 $(document).ready(function(){
 	    // Invoke the placeholder plugin
-		$('input, textarea').placeholder();	   
+		$('input, textarea').placeholder();	 
+		
 		var addForm = $("#addForm");
 		var addFormButton = $("#addFormSb");
 		

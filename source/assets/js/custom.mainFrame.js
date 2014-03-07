@@ -4,8 +4,7 @@
 	var ownerBugTimer;
 	var managedBugTimer;
 	var differentBugTimer;
-   
-    
+	
 	function updateStatus(id, bugId) {
 		var updateBtn = $("#status_" + id);
 		updateBtn.button('loading');
@@ -18,6 +17,7 @@
 			cache : false,
 			success : function(data) {
 				$("#label_status_" + id).text(data);
+				alertify.log( "update succeed! " ,"success");
 			},
 
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -69,768 +69,744 @@
         differentBugDataTable.fnAdjustColumnSizing(); 
       }
 
-	$(document)
-			.ready(
-					function() {
-												
+    function  loadManagedTable(managedList){
+    	var  managedRecordList=[];
+		$.each(managedList,
+						function(i, buginfo) {
+							var record = [];
+							record.push("<img src='assets/images/details_open.png' >");
+							record.push("<a data-id="
+													+ buginfo.id
+													+ " style='text-decoration : none ' onclick='return false'>"
+													+ buginfo.bugId
+													+ "</a>");
+							record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+													+ buginfo.bugId
+													+ "&Template=view&TableId=1000' target='view_window' title='"
+													+buginfo.title+"'>"
+													+ buginfo.title
+													+ "</a>");
+							record.push(buginfo.project);
+							record.push(buginfo.component);
+							record.push(buginfo.owner);
+							record.push("<label id=label_status_" + buginfo.id + ">"
+													+ buginfo.status
+													+ "</label>");
+							record.push("<button id=status_"
+													+ buginfo.id
+													+ " onclick= "
+													+ "javascript:updateStatus('"
+													+ buginfo.id
+													+ "','"
+													+ buginfo.bugId
+													+ "') class='btn btn-default'>update</button>"
+													);
+							 managedRecordList.push(record);
+						});
 					
-						$("#mainFrameJSPNav").addClass("active");
-
-						$.ajax({
-									type : "get",
-									url : "/BugTrackingSystem/api/mainFrame",
-									data : "",
-									cache :false,
+		managerBugDataTable = $('#managedBugTable').dataTable( {
+			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
+			"bProcessing": true,
+			/* "bLengthChange":false,
+			"bPaginate":false, */
+			"fnRowCallback":  truncatTextReder,
+			"aoColumnDefs": [
+				{ "bSortable": false, "aTargets": [ 0 ] }
+			], 
+			"aaSorting": [[1, 'asc']],
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaData": managedRecordList,
+			"aoColumns": [
+	            { sWidth: '5%' ,"bSearchable": false  },
+	            { sWidth: '10%' },
+	            { sWidth: '39%' ,"sType": 'html'},
+	            { sWidth: '1%' ,
+	            "bVisible":    false },
+	            { sWidth: '15%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%',"bSearchable": false  }
+	            ]
+	       /* "bAutoWidth": false,
+            "sScrollY": "35em",
+            "sScrollX": "100%",
+            "bScrollCollapse": true*/
+		});	
+		managerBugDataTable.rowGrouping({
+			iGroupingColumnIndex:3,
+			bExpandableGrouping: true,
+		});		
+		 managerBugDataTable.makeEditable({
+			sUpdateURL: function(value, settings)
+			{
+     			return(value); //Simulation of server-side response using a callback function
+			},
+			"aoColumns": 
+			[
+			  null,
+			  null,
+			  null,
+			  {
+			    cssclass:"required",
+			  	indicator: 'Saving component...',
+			  	tooltip: 'Double click to modify component',
+			  	loadtext: 'loading...',
+			  	 type: 'select',
+			  	 onblur: 'submit',
+			  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+			  	 sUpdateURL:  function(value, settings)
+                        {
+                        		var heads=$("#managedBugTable th");
+							    var index;
+							    $.each(heads,function(n,value){
+							      
+							      if(value.childNodes[0].childNodes[0].data=="BugId"){
+							        index=n;
+							        return false;
+							      }
+							      else 
+							         return true;
+							    });
+							   
+								var nTr = $(this).parents('tr')[0];
+							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+                        		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+                        		
+                        		$.ajax({
+									type : "put",
+									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-										var dataObj = data;
-										var  managedRecordList=[];
-										$.each(dataObj.managedList,
-														function(i, buginfo) {
-															var record = [];
-															record.push("<img src='assets/images/details_open.png' >");
-															record.push("<a data-id="
-																					+ buginfo.id
-																					+ " style='text-decoration : none ' onclick='return false'>"
-																					+ buginfo.bugId
-																					+ "</a>");
-															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
-																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000' target='view_window' title='"
-																					+buginfo.title+"'>"
-																					+ buginfo.title
-																					+ "</a>");
-															record.push(buginfo.project);
-															record.push(buginfo.component);
-															record.push(buginfo.owner);
-															record.push("<label id=label_status_" + buginfo.id + ">"
-																					+ buginfo.status
-																					+ "</label>");
-															record.push("<button id=status_"
-																					+ buginfo.id
-																					+ " onclick= "
-																					+ "javascript:updateStatus('"
-																					+ buginfo.id
-																					+ "','"
-																					+ buginfo.bugId
-																					+ "') class='btn btn-default'>update</button>"
-																					);
-															 managedRecordList.push(record);
-														});
-													
-										managerBugDataTable = $('#managedBugTable').dataTable( {
-											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
-											"bProcessing": true,
-											/* "bLengthChange":false,
-											"bPaginate":false, */
-											"fnRowCallback":  truncatTextReder,
-											"aoColumnDefs": [
-												{ "bSortable": false, "aTargets": [ 0 ] }
-											], 
-											"aaSorting": [[1, 'asc']],
-											"bJQueryUI": true,
-											"sPaginationType": "full_numbers",
-											"aaData": managedRecordList,
-											"aoColumns": [
-									            { sWidth: '5%' ,"bSearchable": false  },
-									            { sWidth: '10%' },
-									            { sWidth: '39%' ,"sType": 'html'},
-									            { sWidth: '1%' ,
-									            "bVisible":    false },
-									            { sWidth: '15%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%',"bSearchable": false  }
-									            ],
-									       /* "bAutoWidth": false,
-								            "sScrollY": "35em",
-								            "sScrollX": "100%",
-								            "bScrollCollapse": true*/
-										});	
-										managerBugDataTable.rowGrouping({
-											iGroupingColumnIndex:3,
-											bExpandableGrouping: true,
-										});		
-										 managerBugDataTable.makeEditable({
-											sUpdateURL: function(value, settings)
-											{
-		                             			return(value); //Simulation of server-side response using a callback function
-											},
-											"aoColumns": 
-											[
-											  null,
-											  null,
-											  null,
-											  {
-											    cssclass:"required",
-											  	indicator: 'Saving component...',
-											  	tooltip: 'Double click to modify component',
-											  	loadtext: 'loading...',
-											  	 type: 'select',
-											  	 onblur: 'submit',
-											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
-											  	 sUpdateURL:  function(value, settings)
-						                                {
-						                                		var heads=$("#managedBugTable th");
-															    var index;
-															    $.each(heads,function(n,value){
-															      
-															      if(value.childNodes[0].childNodes[0].data=="BugId"){
-															        index=n;
-															        return false;
-															      }
-															      else 
-															         return true;
-															    
-															    });
-															   
-																var nTr = $(this).parents('tr')[0];
-															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-						                                		
-						                                		$.ajax({
-																	type : "put",
-																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
-																	success : function(data) {
-																			 alertify.log(data,"success");
-   																    		 //alert(data) ; 
-   																    		  }
-																	});
-						                                        return(value);
-						                                }
-												
-											  },
-											  null,
-											  null,
-											  null
-											]
-										
-										}); 
-										$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
-										$(".managedButtonPlaceholder").css("width","10%");
-										$(".managedButtonPlaceholder").css("float","right");
-										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#managedBugTable");
-																			
-										var  ownerRecordList=[];
-										$.each(
-														dataObj.ownerList,
-														function(i, buginfo) {
-															var record = [];
-															record.push("<img src='assets/images/details_open.png' >");
-															record.push("<a data-id="
-																					+ buginfo.id
-																					+ " style='text-decoration : none ' onclick='return false'>"
-																					+ buginfo.bugId
-																					+ "</a>");
-														    record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
-																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000'  target='view_window' title='"
-																					+buginfo.title+"'>"
-																					+ buginfo.title
-																					+ "</a>");
-														    record.push(buginfo.project);
-														    record.push(buginfo.component);
-														    record.push( buginfo.owner);
-														    record.push(
-																				   "<label id=label_status_" + buginfo.id + ">"
-																					+ buginfo.status
-																					+ "</label>");
-															record.push("<button id=status_"
-																					+ buginfo.id
-																					+ " onclick= "
-																					+ "javascript:updateStatus('"
-																					+ buginfo.id
-																					+ "','"
-																					+ buginfo.bugId
-																					+ "') class='btn btn-default'>update</button>");
-														    ownerRecordList.push(record);
-																														
-														});
-														
-										
-										
-
-										/*
-										 * Initialse DataTables, with no sorting on the 'details' column
-										 */
-										ownerBugDataTable = $('#ownerBugTable').dataTable( {
-											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"ownerButtonPlaceholder">p>',
-											//"sDom": 'R<C><"ownerButtonPlaceholder">H<"clear">',
-											"bProcessing": true,
-											/* "bLengthChange":false,
-											"bPaginate":false, */
-											"fnRowCallback":  truncatTextReder,
-											"aoColumnDefs": [
-												{ "bSortable": false, "aTargets": [ 0 ] }
-											], 
-											"aaSorting": [[1, 'asc']],
-											"bJQueryUI": true,
-											"sPaginationType": "full_numbers",
-											"aaData": ownerRecordList,
-											"aoColumns": [
-									            { sWidth: '5%' ,"bSearchable": false },
-									            { sWidth: '10%' },
-									            { sWidth: '39%' },
-									            { sWidth: '1%',
-									            "bVisible":    false  },
-									            { sWidth: '15%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%',"bSearchable": false  }
-									            ]
-										});
-										
-										
-										
-										ownerBugDataTable.rowGrouping({
-											iGroupingColumnIndex:3,
-											bExpandableGrouping: true,
-										});
-										
-										ownerBugDataTable.makeEditable({
-											sUpdateURL: function(value, settings)
-											{
-		                             			return(value); //Simulation of server-side response using a callback function
-											},
-											"aoColumns": 
-											[
-											  null,
-											  null,
-											  null,
-											  {
-											    cssclass:"required",
-											  	indicator: 'Saving component...',
-											  	tooltip: 'Double click to modify component',
-											  	loadtext: 'loading...',
-											  	 type: 'select',
-											  	 onblur: 'submit',
-											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
-											  	 sUpdateURL:  function(value, settings)
-						                                {
-						                                		var heads=$("#ownerBugTable th");
-															    var index;
-															    $.each(heads,function(n,value){
-															      
-															      if(value.childNodes[0].childNodes[0].data=="BugId"){
-															        index=n;
-															        return false;
-															      }
-															      else 
-															         return true;
-															    
-															    });
-															   
-																var nTr = $(this).parents('tr')[0];
-															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-						                                		
-						                                		$.ajax({
-																	type : "put",
-																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
-																	success : function(data) {
-																			 alertify.log(data,"success");
-   																    		 //alert(data) ;  
-   																    		}
-																	});
-						                                        return(value);
-						                                }
-												
-											  },
-											  null,
-											  null,
-											  null
-											]
-										
-										}); 
-										
-										$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
-										$(".ownerButtonPlaceholder").css("width","10%");
-										$(".ownerButtonPlaceholder").css("float","right");
-										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#ownerBugTable");
-										var  differentRecordList=[];				
-										$.each(
-														dataObj.changedList,
-														function(i,
-																warppedBuginfo) {
-															var buginfo = warppedBuginfo.buginfo;
-															var record=[];
-															record.push("<img src='assets/images/details_open.png' >");
-															record.push("<a data-id="
-																					+ buginfo.id																				
-																					+ " style='text-decoration : none ' onclick='return false'>"
-																					+ buginfo.bugId
-																					+ "</a>");
-															record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
-																					+ buginfo.bugId
-																					+ "&Template=view&TableId=1000'  target='view_window' title='"
-																					+buginfo.title+"'>"
-																					+ buginfo.title
-																					+ "</a>");
-															record.push(buginfo.project);
-															record.push(buginfo.component);
-															record.push(warppedBuginfo.newOwner);
-															record.push(buginfo.status);
-															record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
-																					+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
-															
-															differentRecordList.push(record);
-															
-														});
-										differentBugDataTable = $('#differentBugTable').dataTable( {
-											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
-											"bProcessing": true,
-											/* "bLengthChange":false,
-											"bPaginate":false, */
-											"fnRowCallback":  truncatTextReder,
-											"aoColumnDefs": [
-												{ "bSortable": false, "aTargets": [ 0 ] }
-											], 
-											"aaSorting": [[1, 'asc']],
-											"bJQueryUI": true,
-											"sPaginationType": "full_numbers",
-											"aaData": differentRecordList,
-											"aoColumns": [
-									            { sWidth: '5%' ,"bSearchable": false },
-									            { sWidth: '10%' },
-									            { sWidth: '39%' },
-									            { sWidth: '1%',
-									            "bVisible":    false  },
-									            { sWidth: '15%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' ,"bSearchable": false  }
-									            ]
-										});
-										
-										differentBugDataTable.rowGrouping({
-											iGroupingColumnIndex:3,
-											bExpandableGrouping: true,
-										});
-										
-										differentBugDataTable.makeEditable({
-											sUpdateURL: function(value, settings)
-											{
-		                             			return(value); //Simulation of server-side response using a callback function
-											},
-											"aoColumns": 
-											[
-											  null,
-											  null,
-											  null,
-											  {
-											    cssclass:"required",
-											  	indicator: 'Saving component...',
-											  	tooltip: 'Double click to modify component',
-											  	loadtext: 'loading...',
-											  	 type: 'select',
-											  	 onblur: 'submit',
-											  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
-											  	 sUpdateURL:  function(value, settings)
-						                                {
-						                                		var heads=$("#differentBugTable th");
-															    var index;
-															    $.each(heads,function(n,value){
-															      
-															      if(value.childNodes[0].childNodes[0].data=="BugId"){
-															        index=n;
-															        return false;
-															      }
-															      else 
-															         return true;
-															    
-															    });
-															   
-																var nTr = $(this).parents('tr')[0];
-															  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						                                		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-						                                		
-						                                		$.ajax({
-																	type : "put",
-																	url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
-																	success : function(data) {
-																			 alertify.log(data,"success");
-   																    		// alert(data) ;  
-   																    		}
-																	});
-						                                        return(value);
-						                                }
-												
-											  },
-											  null,
-											  null,
-											  null
-											]
-										
-										}); 
-										
-										$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
-										$(".diffentButtonPlaceholder").css("width","10%");
-										$(".diffentButtonPlaceholder").css("float","right");
-										//if ($.isFunction($.bootstrapIE6)) $.bootstrapIE6("#differentBugTable");
-
-									},
-
-									error : function(XMLHttpRequest,
-											textStatus, errorThrown) {
-
-									},
-
-									complete : function(XMLHttpRequest,
-											textStatus) {
-
-									}
-								});
-
-						var updateAllOwnerListBtn = $("#updateAllOwnerListBtn");
-						$(document).delegate('#updateAllOwnerListBtn','click',function () {
-									updateAllOwnerListBtn.button('loading');
-									var table = $("#ownerBugTableBody");
-									var _map = new Object();
-
-									var i = 0;
-
-									table.find('tr').each(
-													function(index, row) {
-														var allCells = $(row)
-																.find('td');
-													    // ignore the group row which only has one row data
-														if(allCells.length>1){
-															var anchor = allCells[1]
-																.getElementsByTagName("a")[0];
-															var bugId = anchor.innerHTML;
-															var id = anchor
-																	.getAttribute(
-																			"data-id");
-
-	
-															var btn = $("#status_"
-																	+ id);
-															btn.button('loading');
-	
-															_map[id] = bugId;
-															i++;
-
-														}
-														
-													});
-
-									$.ajax({
-												type : "post",
-												url : "/BugTrackingSystem/api/bugStatus",
-												data : _map,
-												cache : false,
-												success : function(data) {
-													var dataObj = data;
-													$.each(
-																	dataObj,
-																	function(i,
-																			obj) {
-																		for ( var id in obj) {
-																			var newStatus = obj[id];
-																			var btn = $("#status_"
-																					+ id);
-																			btn
-																					.button('reset');
-																			$(
-																					"#label_status_"
-																							+ id)
-																					.text(
-																							newStatus);
-																		}
-																	});
-
-												},
-
-												error : function(
-														XMLHttpRequest,
-														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again","error");
-													//alert("updating error! Please try again");
-												},
-
-												complete : function(
-														XMLHttpRequest,
-														textStatus) {
-													updateAllOwnerListBtn
-															.button('reset');
-												}
-											});
-
-								});
-
-						var updateAllManagedListBtn = $("#updateAllManagedListBtn");
-						$(document).delegate('#updateAllManagedListBtn','click',function () {
-									updateAllManagedListBtn.button('loading');
-									var table = $("#managedBugTableBody");
-									var _map = new Object();
-
-									var i = 0;
-
-									table
-											.find('tr')
-											.each(
-													function(index, row) {
-														var allCells = $(row)
-																.find('td');
-														if(allCells.length>1){
-															var anchor = allCells[1]
-																.getElementsByTagName("a")[0];
-															var bugId = anchor.innerHTML;
-															var id = anchor
-																	.getAttribute(
-																			"data-id");
-	
-															var btn = $("#status_"
-																	+ id);
-															btn.button('loading');
-	
-															_map[id] = bugId;
-															i++;
-															
-														
-														}
-														
-													});
-
-									$.ajax({
-												type : "post",
-												url : "/BugTrackingSystem/api/bugStatus",
-												data : _map,
-												cache : false,
-												success : function(data) {
-													var dataObj = data;
-													$
-															.each(
-																	dataObj,
-																	function(i,
-																			obj) {
-																		for ( var id in obj) {
-																			var newStatus = obj[id];
-																			var btn = $("#status_"
-																					+ id);
-																			btn
-																					.button('reset');
-																			$(
-																					"#label_status_"
-																							+ id)
-																					.text(
-																							newStatus);
-																		}
-																	});
-
-												},
-
-												error : function(
-														XMLHttpRequest,
-														textStatus, errorThrown) {
-													alertify.log("updating error! Please try again","error");
-													//alert("updating error! Please try again");
-												},
-
-												complete : function(
-														XMLHttpRequest,
-														textStatus) {
-													updateAllManagedListBtn
-															.button('reset');
-												}
-											});
-
-								});
-
-
-					$(document).delegate('#ownerBugTable tbody td img','click',function () {
-					    var heads=$("#ownerBugTable th");
-					    var index;
-					    $.each(heads,function(n,value){
-					      
-					      if(value.childNodes[0].childNodes[0].data=="BugId"){
-					        index=n;
-					        return false;
-					      }
-					      else 
-					         return true;
-					    
-					    });
-					   
-						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						
-				       		//alert("hello");
-							if ( ownerBugDataTable.fnIsOpen(nTr) )
-							{
-								//This row is already open - close it
-								this.src = "assets/images/details_open.png";
-								ownerBugDataTable.fnClose( nTr );
-							}
-							else
-							{
-								//Open this row
-								this.src = "assets/images/details_close.png";
-								$.ajax({
-									type: "get",
-									url: "/BugTrackingSystem/api/bug?id=" + id,
-									data: "",
-									cache: false,
-									success: function (data) {
-										bugInfo = data;
-									    var sOut= getBugInfoTable(bugInfo);										
-										ownerBugDataTable.fnOpen( nTr, sOut, 'details' );
-										
-										}
+											 alertify.log(data,"success");
+									    		 //alert(data) ; 
+									    		  }
 									});
-							}							
-						} );
+                                return(value);
+                        }
+			  },
+			  null,
+			  null,
+			  null
+			]
+		
+		}); 
+		$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
+		$(".managedButtonPlaceholder").css("width","10%");
+		$(".managedButtonPlaceholder").css("float","right");
+    }
+    
+    function loadOwnerTable(ownerList){
+    	var  ownerRecordList=[];
+		$.each(
+						ownerList,
+						function(i, buginfo) {
+							var record = [];
+							record.push("<img src='assets/images/details_open.png' >");
+							record.push("<a data-id="
+													+ buginfo.id
+													+ " style='text-decoration : none ' onclick='return false'>"
+													+ buginfo.bugId
+													+ "</a>");
+						    record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+													+ buginfo.bugId
+													+ "&Template=view&TableId=1000'  target='view_window' title='"
+													+buginfo.title+"'>"
+													+ buginfo.title
+													+ "</a>");
+						    record.push(buginfo.project);
+						    record.push(buginfo.component);
+						    record.push( buginfo.owner);
+						    record.push(
+												   "<label id=label_status_" + buginfo.id + ">"
+													+ buginfo.status
+													+ "</label>");
+							record.push("<button id=status_"
+													+ buginfo.id
+													+ " onclick= "
+													+ "javascript:updateStatus('"
+													+ buginfo.id
+													+ "','"
+													+ buginfo.bugId
+													+ "') class='btn btn-default'>update</button>");
+						    ownerRecordList.push(record);
+																						
+						});
 						
-					
+		
+		
+
+		/*
+		 * Initialse DataTables, with no sorting on the 'details' column
+		 */
+		ownerBugDataTable = $('#ownerBugTable').dataTable( {
+			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"ownerButtonPlaceholder">p>',
+			//"sDom": 'R<C><"ownerButtonPlaceholder">H<"clear">',
+			"bProcessing": true,
+			/* "bLengthChange":false,
+			"bPaginate":false, */
+			"fnRowCallback":  truncatTextReder,
+			"aoColumnDefs": [
+				{ "bSortable": false, "aTargets": [ 0 ] }
+			], 
+			"aaSorting": [[1, 'asc']],
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaData": ownerRecordList,
+			"aoColumns": [
+	            { sWidth: '5%' ,"bSearchable": false },
+	            { sWidth: '10%' },
+	            { sWidth: '39%' },
+	            { sWidth: '1%',
+	            "bVisible":    false  },
+	            { sWidth: '15%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%',"bSearchable": false  }
+	            ]
+		});
+		
+		ownerBugDataTable.rowGrouping({
+			iGroupingColumnIndex:3,
+			bExpandableGrouping: true,
+		});
+		
+		ownerBugDataTable.makeEditable({
+			sUpdateURL: function(value, settings)
+			{
+     			return(value); //Simulation of server-side response using a callback function
+			},
+			"aoColumns": 
+			[
+			  null,
+			  null,
+			  null,
+			  {
+			    cssclass:"required",
+			  	indicator: 'Saving component...',
+			  	tooltip: 'Double click to modify component',
+			  	loadtext: 'loading...',
+			  	 type: 'select',
+			  	 onblur: 'submit',
+			  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+			  	 sUpdateURL:  function(value, settings)
+                        {
+                        		var heads=$("#ownerBugTable th");
+							    var index;
+							    $.each(heads,function(n,value){
+							      
+							      if(value.childNodes[0].childNodes[0].data=="BugId"){
+							        index=n;
+							        return false;
+							      }
+							      else 
+							         return true;
+							    });
+								var nTr = $(this).parents('tr')[0];
+							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+                        		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+                        		
+                        		$.ajax({
+									type : "put",
+									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
+									success : function(data) {
+											 alertify.log(data,"success");
+									    		 //alert(data) ;  
+									    		}
+									});
+                                return(value);
+                        }
+			  },
+			  null,
+			  null,
+			  null
+			]
+		}); 
+		
+		$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>updateall</button>");
+		$(".ownerButtonPlaceholder").css("width","10%");
+		$(".ownerButtonPlaceholder").css("float","right");
+    }
+    
+    function loadDifferentTable(changedList){
+		var  differentRecordList=[];				
+		$.each(changedList,
+						function(i,
+								warppedBuginfo) {
+							var buginfo = warppedBuginfo.buginfo;
+							var record=[];
+							record.push("<img src='assets/images/details_open.png' >");
+							record.push("<a data-id="
+													+ buginfo.id																				
+													+ " style='text-decoration : none ' onclick='return false'>"
+													+ buginfo.bugId
+													+ "</a>");
+							record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+													+ buginfo.bugId
+													+ "&Template=view&TableId=1000'  target='view_window' title='"
+													+buginfo.title+"'>"
+													+ buginfo.title
+													+ "</a>");
+							record.push(buginfo.project);
+							record.push(buginfo.component);
+							record.push(warppedBuginfo.newOwner);
+							record.push(buginfo.status);
+							record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
+													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
+							
+							differentRecordList.push(record);
+							
+						});
+		differentBugDataTable = $('#differentBugTable').dataTable( {
+			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
+			"bProcessing": true,
+			/* "bLengthChange":false,
+			"bPaginate":false, */
+			"fnRowCallback":  truncatTextReder,
+			"aoColumnDefs": [
+				{ "bSortable": false, "aTargets": [ 0 ] }
+			], 
+			"aaSorting": [[1, 'asc']],
+			"bJQueryUI": true,
+			"sPaginationType": "full_numbers",
+			"aaData": differentRecordList,
+			"aoColumns": [
+	            { sWidth: '5%' ,"bSearchable": false },
+	            { sWidth: '10%' },
+	            { sWidth: '39%' },
+	            { sWidth: '1%',
+	            "bVisible":    false  },
+	            { sWidth: '15%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%' },
+	            { sWidth: '10%' ,"bSearchable": false  }
+	            ]
+		});
+		
+		differentBugDataTable.rowGrouping({
+			iGroupingColumnIndex:3,
+			bExpandableGrouping: true,
+		});
+		
+		differentBugDataTable.makeEditable({
+			sUpdateURL: function(value, settings)
+			{
+     			return(value); //Simulation of server-side response using a callback function
+			},
+			"aoColumns": 
+			[
+			  null,
+			  null,
+			  null,
+			  {
+			    cssclass:"required",
+			  	indicator: 'Saving component...',
+			  	tooltip: 'Double click to modify component',
+			  	loadtext: 'loading...',
+			  	 type: 'select',
+			  	 onblur: 'submit',
+			  	 data: "{'':'Please select...', 'None':'None','DDC-ADIdentity Service':'DDC-ADIdentity Service','DDC-Broker Service':'DDC-Broker Service','DDC-Configuration Service':'DDC-Configuration Service','DDC-Configuration Logging Service':'DDC-Configuration Logging Service','DDC-Delegated Admin Service':'DDC-Delegated Admin Service','DDC-Event Test Service':'DDC-Event Test Service','DDC-Host Service':'DDC-Host Service','DDC-Machine Creation Service':'DDC-Machine Creation Service','DDC-Scout(Taas)':'DDC-Scout(Taas)','VDA-Broker Agent(VDA)':'VDA-Broker Agent(VDA)','VDA-Machine Identity Service Agent':'VDA-Machine Identity Service Agent','HDX-ICA HostCore':'HDX-ICA HostCore','HDX-ICA Graphics':'HDX-ICA Graphics','HDX-ICA Integration':'HDX-ICA Integration','HDX-ICA IO':'HDX-ICA IO','HDX-ICA Multimedia':'HDX-ICA Multimedia','HDX-ICA Printing':'HDX-ICA Printing','HDX-ICA Packaging':'HDX-ICA Packaging','Director':'Director','Group Policy':'Group Policy','Studio':'Studio','Licensing':'Licensing','Monitoring Service':'Monitoring Service','StoreFront':'StoreFront','MetaInstaller':'MetaInstaller','AppV':'AppV','PVD':'PVD','PVS':'PVS'}",
+			  	 sUpdateURL:  function(value, settings)
+                        {
+                        		var heads=$("#differentBugTable th");
+							    var index;
+							    $.each(heads,function(n,value){
+							      
+							      if(value.childNodes[0].childNodes[0].data=="BugId"){
+							        index=n;
+							        return false;
+							      }
+							      else 
+							         return true;
+							    });
+							   
+								var nTr = $(this).parents('tr')[0];
+							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+                        		var bugId=nTr.childNodes[index].childNodes[0].innerText;
+                        		
+                        		$.ajax({
+									type : "put",
+									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
+									success : function(data) {
+											 alertify.log(data,"success");
+									    		// alert(data) ;  
+									    		}
+									});
+                                return(value);
+                        }
+			  },
+			  null,
+			  null,
+			  null
+			]
+		
+		}); 
+		
+		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
+		$(".diffentButtonPlaceholder").css("width","10%");
+		$(".diffentButtonPlaceholder").css("float","right");
+    }
+    
+    function loadMainFrame(){
+		$("#mainFrameJSPNav").addClass("active");
+
+		$.ajax({
+					type : "get",
+					url : "/BugTrackingSystem/api/mainFrame",
+					data : "",
+					cache :false,
+					success : function(data) {
+						var dataObj = data;
+						loadManagedTable(dataObj.managedList)
+						loadOwnerTable(dataObj.ownerList);									
+						loadDifferentTable(dataObj.changedList);
+					},
+					error : function(XMLHttpRequest,
+							textStatus, errorThrown) {
+					},
+
+					complete : function(XMLHttpRequest,
+							textStatus) {
+					}
+				});
+    }
+    
+    
+    function updateAllOwnerListClick(){
+    	var updateAllOwnerListBtn = $("#updateAllOwnerListBtn");
+		updateAllOwnerListBtn.button('loading');
+		var table = $("#ownerBugTableBody");
+		var _map = new Object();
+
+		var i = 0;
+		table.find('tr').each(
+						function(index, row) {
+							var allCells = $(row)
+									.find('td');
+						    // ignore the group row which only has one row data
+							if(allCells.length>1){
+								var anchor = allCells[1]
+									.getElementsByTagName("a")[0];
+								var bugId = anchor.text;
+								var id = anchor
+										.getAttribute(
+												"data-id");
+								var btn = $("#status_"
+										+ id);
+								btn.button('loading');
+
+								_map[id] = bugId;
+								i++;
+
+							}
+							
+						});
+
+		$.ajax({
+					type : "post",
+					url : "/BugTrackingSystem/api/bugStatus",
+					data : _map,
+					cache : false,
+					success : function(data) {
+						var dataObj = data;
+						$.each(dataObj,function(i,obj) {
+											for ( var id in obj) {
+												var newStatus = obj[id];
+												var btn = $("#status_"
+														+ id);
+												btn.button('reset');
+												$(
+														"#label_status_"
+																+ id)
+														.text(
+																newStatus);
+											}
+										});
+						alertify.log("update succeed!","success");
+
+					},
+
+					error : function(
+							XMLHttpRequest,
+							textStatus, errorThrown) {
+						alertify.log("updating error! Please try again","error");
+						//alert("updating error! Please try again");
+					},
+
+					complete : function(
+							XMLHttpRequest,
+							textStatus) {
+						updateAllOwnerListBtn
+								.button('reset');
+					}
+				});
+
 	
-					$(document).delegate('#managedBugTable tbody td img','click',function () {
-					 var heads=$("#managedBugTable th");
-					    var index;
-					    $.each(heads,function(n,value){
-					      
-					      if(value.childNodes[0].childNodes[0].data=="BugId"){
-					        index=n;
-					        return false;
-					      }
-					      else 
-					         return true;
-					    
-					    });
-						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						
-				       		
-							if ( managerBugDataTable.fnIsOpen(nTr) )
-							{
-								//alert("hello");
-								//This row is already open - close it
-								this.src = "assets/images/details_open.png";
-								managerBugDataTable.fnClose( nTr );
-							}
-							else
-							{
-								//Open this row
-								this.src = "assets/images/details_close.png";
-								$.ajax({
-									type: "get",
-									url: "/BugTrackingSystem/api/bug?id=" + id,
-									data: "",
-									cache : false,
-									success: function (data) {
-										bugInfo = data;
-									    var sOut= getBugInfoTable(bugInfo);										
-										managerBugDataTable.fnOpen( nTr, sOut, 'details' );
-										
-										}
-									});
-							}							
-						} );
-						
-						
-						$(document).delegate('#differentBugTable tbody td img','click',function () {
-						var heads=$("#differentBugTable th");
-					    var index;
-					    $.each(heads,function(n,value){
-					      
-					      if(value.childNodes[0].childNodes[0].data=="BugId"){
-					        index=n;
-					        return false;
-					      }
-					      else 
-					         return true;
-					    
-					    });
-						var nTr = $(this).parents('tr')[0];
-					  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
-						
-				       		//alert("hello");
-							if ( differentBugDataTable.fnIsOpen(nTr) )
-							{
-								//This row is already open - close it
-								this.src = "assets/images/details_open.png";
-								differentBugDataTable.fnClose( nTr );
-							}
-							else
-							{
-								//Open this row
-								this.src = "assets/images/details_close.png";
-								$.ajax({
-									type: "get",
-									url: "/BugTrackingSystem/api/bug?id=" + id,
-									data: "",
-									cache : false,
-									success: function (data) {
-										bugInfo = data;
-									    var sOut= getBugInfoTable(bugInfo);										
-										differentBugDataTable.fnOpen( nTr, sOut, 'details' );
-										
-										}
-									});
-							}							
-						} );
-						
-						
-						$(document).delegate('#ownerBugTable_filter input','keyup',function () {
-							 
-								clearInterval(ownerBugTimer);  
-								if($('#ownerBugTableBody tr').find('td:not(:last)').hasHightlight()){
-									  $('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
-								 }
+    }
+    
+    function updateAllManagedListBtn(){
+    	var updateAllManagedListBtn = $("#updateAllManagedListBtn");
+		updateAllManagedListBtn.button('loading');
+		var table = $("#managedBugTableBody");
+		var _map = new Object();
+
+		var i = 0;
+
+		table
+				.find('tr')
+				.each(
+						function(index, row) {
+							var allCells = $(row)
+									.find('td');
+							if(allCells.length>1){
+								var anchor = allCells[1]
+									.getElementsByTagName("a")[0];
+								var bugId = anchor.text;
+								var id = anchor
+										.getAttribute(
+												"data-id");
+
+								var btn = $("#status_"
+										+ id);
+								btn.button('loading');
+
+								_map[id] = bugId;
+								i++;
 								
-						        if ($(this).val() != "") {
-						            $('#ownerBugTableBody   tr').find('td:not(:last)').highlight($(this).val());
-						        }else {
-						        	$('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
-						        }
-						        
-						        ownerBugTimer = setTimeout(function(){
-						            $('#ownerBugTableBody  tr ').find('td:not(:last)').removeHighlight();}, 1000);
-						        
-							} );
-						
-						$(document).delegate('#managedBugTable_filter input','keyup',function () {
-							 
-							clearInterval(managedBugTimer);  
-							if($('#managedBugTableBody  tr').find('td:not(:last)').hasHightlight()){
-								  $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
-							 }
 							
-					        if ($(this).val() != "") {
-					            $('#managedBugTableBody tr').find('td:not(:last)').highlight($(this).val());
-					        }else {
-					        	$('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
-					        }
-					        
-					        managedBugTimer = setTimeout(function(){
-					            $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();}, 1000);
-					        
-						} );
-						
-						$(document).delegate('#differentBugTable_filter input','keyup',function () {
-							 
-							clearInterval(differentBugTimer);  
-							if($('#differentBugTableBody  tr ').find('td:not(:last)').hasHightlight()){
-								  $('#differentBugTableBody  tr ').find('td:not(:last)').removeHighlight();
-							 }
+							}
 							
-					        if ($(this).val() != "") {
-					            $('#differentBugTableBody  tr ').find('td:not(:last)').highlight($(this).val());
-					        }else {
-					        	$('#differentBugTableBody  tr').find('td:not(:last)').removeHighlight();
-					        }
-					        
-					        differentBugTimer = setTimeout(function(){
-					            $('#differentBugTableBody tr ').find('td:not(:last)').removeHighlight();}, 1000);
-					        
-						} );
+						});
 
-				
+		$.ajax({
+					type : "post",
+					url : "/BugTrackingSystem/api/bugStatus",
+					data : _map,
+					cache : false,
+					success : function(data) {
+						var dataObj = data;
+						$.each(dataObj,function(i,
+												obj) {
+											for ( var id in obj) {
+												var newStatus = obj[id];
+												//alertify.log("update status!");
+												var btn = $("#status_"
+														+ id);
+												btn.button('reset');
+												$("#label_status_"+ id).text(newStatus);
+											}
+										});
+						alertify.log("update succeed!","success");
+					},
+
+					error : function(
+							XMLHttpRequest,
+							textStatus, errorThrown) {
+						alertify.log("updating error! Please try again","error");
+						//alert("updating error! Please try again");
+					},
+
+					complete : function(
+							XMLHttpRequest,
+							textStatus) {
+						updateAllManagedListBtn
+								.button('reset');
+					}
+				});
+
+	
+    }
+    
+    function  ownerTableDetail(){
+
+	    var heads=$("#ownerBugTable th");
+	    var index;
+	    $.each(heads,function(n,value){
+	      
+	      if(value.childNodes[0].childNodes[0].data=="BugId"){
+	        index=n;
+	        return false;
+	      }
+	      else 
+	         return true;
+	    
+	    });
+	   
+		var nTr = $(this).parents('tr')[0];
+	  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+		
+       		//alert("hello");
+			if ( ownerBugDataTable.fnIsOpen(nTr) )
+			{
+				//This row is already open - close it
+				this.src = "assets/images/details_open.png";
+				ownerBugDataTable.fnClose( nTr );
+			}
+			else
+			{
+				//Open this row
+				this.src = "assets/images/details_close.png";
+				$.ajax({
+					type: "get",
+					url: "/BugTrackingSystem/api/bug?id=" + id,
+					data: "",
+					cache: false,
+					success: function (data) {
+						bugInfo = data;
+					    var sOut= getBugInfoTable(bugInfo);										
+						ownerBugDataTable.fnOpen( nTr, sOut, 'details' );
 						
-					$(window).resize(function() {
-						 clearTimeout(window.refresh_size);
-						 window.refresh_size = setTimeout(function() { update_size(); }, 150);
-						
+						}
 					});
-			});
+			}							
+		
+    }
+	
+    function managedTableDetail(){
+
+		 var heads=$("#managedBugTable th");
+		    var index;
+		    $.each(heads,function(n,value){
+		      
+		      if(value.childNodes[0].childNodes[0].data=="BugId"){
+		        index=n;
+		        return false;
+		      }
+		      else 
+		         return true;
+		    
+		    });
+			var nTr = $(this).parents('tr')[0];
+		  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+			
+	       		
+				if ( managerBugDataTable.fnIsOpen(nTr) )
+				{
+					//alert("hello");
+					//This row is already open - close it
+					this.src = "assets/images/details_open.png";
+					managerBugDataTable.fnClose( nTr );
+				}
+				else
+				{
+					//Open this row
+					this.src = "assets/images/details_close.png";
+					$.ajax({
+						type: "get",
+						url: "/BugTrackingSystem/api/bug?id=" + id,
+						data: "",
+						cache : false,
+						success: function (data) {
+							bugInfo = data;
+						    var sOut= getBugInfoTable(bugInfo);										
+							managerBugDataTable.fnOpen( nTr, sOut, 'details' );
+							
+							}
+						});
+				}							
+			
+    }
+    
+    function differentTableDetail(){
+
+		var heads=$("#differentBugTable th");
+	    var index;
+	    $.each(heads,function(n,value){
+	      
+	      if(value.childNodes[0].childNodes[0].data=="BugId"){
+	        index=n;
+	        return false;
+	      }
+	      else 
+	         return true;
+	    
+	    });
+		var nTr = $(this).parents('tr')[0];
+	  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
+		
+       		//alert("hello");
+			if ( differentBugDataTable.fnIsOpen(nTr) )
+			{
+				//This row is already open - close it
+				this.src = "assets/images/details_open.png";
+				differentBugDataTable.fnClose( nTr );
+			}
+			else
+			{
+				//Open this row
+				this.src = "assets/images/details_close.png";
+				$.ajax({
+					type: "get",
+					url: "/BugTrackingSystem/api/bug?id=" + id,
+					data: "",
+					cache : false,
+					success: function (data) {
+						bugInfo = data;
+					    var sOut= getBugInfoTable(bugInfo);										
+						differentBugDataTable.fnOpen( nTr, sOut, 'details' );
+						
+						}
+					});
+			}							
+		
+    }
+    
+    function ownerTableSearchHighlight(){
+		clearInterval(ownerBugTimer);  
+		if($('#ownerBugTableBody tr').find('td:not(:last)').hasHightlight()){
+			  $('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
+		 }
+		
+        if ($(this).val() != "") {
+            $('#ownerBugTableBody   tr').find('td:not(:last)').highlight($(this).val());
+        }else {
+        	$('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
+        }
+        
+        ownerBugTimer = setTimeout(function(){
+            $('#ownerBugTableBody  tr ').find('td:not(:last)').removeHighlight();}, 1000);
+        
+	
+    }
+   
+    function managedTableSearchHighlight(){
+		clearInterval(managedBugTimer);  
+		if($('#managedBugTableBody  tr').find('td:not(:last)').hasHightlight()){
+			  $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
+		 }
+		
+        if ($(this).val() != "") {
+            $('#managedBugTableBody tr').find('td:not(:last)').highlight($(this).val());
+        }else {
+        	$('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
+        }
+        
+        managedBugTimer = setTimeout(function(){
+            $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();}, 1000);
+        
+	
+    }
+    
+    function differentTableSearchHighlight(){
+		clearInterval(differentBugTimer);  
+		if($('#differentBugTableBody  tr ').find('td:not(:last)').hasHightlight()){
+			  $('#differentBugTableBody  tr ').find('td:not(:last)').removeHighlight();
+		 }
+		
+        if ($(this).val() != "") {
+            $('#differentBugTableBody  tr ').find('td:not(:last)').highlight($(this).val());
+        }else {
+        	$('#differentBugTableBody  tr').find('td:not(:last)').removeHighlight();
+        }
+        
+        differentBugTimer = setTimeout(function(){
+            $('#differentBugTableBody tr ').find('td:not(:last)').removeHighlight();}, 1000);
+    }
+    
+    function windowResize(){
+		 clearTimeout(window.refresh_size);
+		 window.refresh_size = setTimeout(function() { update_size(); }, 150);
+    }
+   
 	
 	
 		function  getBugInfoTable(bugInfo){
@@ -877,3 +853,20 @@
 			}
 		});
 	}
+	
+	 $(document)
+		.ready(
+				function() {
+											
+					loadMainFrame();
+					$(document).delegate('#updateAllOwnerListBtn','click',updateAllOwnerListClick);
+					$(document).delegate('#updateAllManagedListBtn','click',updateAllManagedListBtn);
+					$(document).delegate('#ownerBugTable tbody td img','click',ownerTableDetail);
+					$(document).delegate('#managedBugTable tbody td img','click',managedTableDetail);
+					$(document).delegate('#differentBugTable tbody td img','click',differentTableDetail );
+					$(document).delegate('#ownerBugTable_filter input','keyup',ownerTableSearchHighlight);
+					$(document).delegate('#managedBugTable_filter input','keyup',managedTableSearchHighlight);
+					$(document).delegate('#differentBugTable_filter input','keyup',differentTableSearchHighlight );
+					$(window).resize(windowResize);
+		});
+	
