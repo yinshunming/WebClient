@@ -2,7 +2,7 @@
 	var managerBugDataTable;
 	var ownerBugTimer;
 	var historyBugTimer;
-	var ingoreCmd = "ingore";
+	var ignoreCmd = "Ignore";
 	var restoreCmd = "restore";
 	var managedText = "managed";
 	var notManagedText = "not-managed";
@@ -49,7 +49,7 @@
    		var operateManagedBtn = $("#operateManagedBtn_" + managedBugId);
 		var buttonStr=operateManagedBtn.html();
 		if(buttonStr=='Ignore'){
-			operate=ingoreCmd;
+			operate=ignoreCmd;
 		}
 		else if (buttonStr=='Restore'){
 			operate=restoreCmd;
@@ -71,7 +71,7 @@
 				
 			complete: function (XMLHttpRequest, textStatus) {
 					 operateManagedBtn.button("reset");
-					 if(operate==ingoreCmd){				
+					 if(operate==ignoreCmd){				
 						operateManagedBtn.html('Restore');
 					 }
 					else if(operate==restoreCmd){
@@ -91,7 +91,7 @@
 		var operateOwnerBtn = $("#operateOwnerBtn_" + managedBugId);
 		var buttonStr=operateOwnerBtn.html();
 		if(buttonStr=='Ignore'){
-			operate=ingoreCmd;
+			operate=ignoreCmd;
 		}
 		else if (buttonStr=='Restore'){
 			operate=restoreCmd;
@@ -114,7 +114,7 @@
 				
 			complete: function (XMLHttpRequest, textStatus) {
 				operateOwnerBtn.button('reset');
-				 if(operate==ingoreCmd){				
+				 if(operate==ignoreCmd){				
 					operateOwnerBtn.html('Restore');
 				 }
 				else if(operate==restoreCmd){
@@ -141,7 +141,7 @@
 					var managedDisplay = "";
 					
 					if (warppedBuginfo.status == 0) {
-						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
+						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
 						managedDisplay = managedText;
 					} else {
 						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
@@ -209,7 +209,7 @@
 					var managedDisplay = "";
 					
 					if (warppedBuginfo.status == 0) {
-						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ingoreCmd +"')>Ingore</button>";
+						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
 						managedDisplay = managedText;
 					} else {
 						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" +  restoreCmd + "')>Restore</button>";
@@ -449,7 +449,7 @@
 			success: function (data) {
 				alertify.log(data,"success");
 				//alert(data);
-				//window.location.reload();
+				window.location.reload();
 			},
 			
 			error : function(XMLHttpRequest, textStatus, errorThrown) {

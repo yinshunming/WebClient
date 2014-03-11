@@ -15290,7 +15290,7 @@ else
 	var ownerBugTimer;
 	var managedBugTimer;
 	var differentBugTimer;
-	
+	var changedBugIDList=[];
 	function updateStatus(id, bugId) {
 		var updateBtn = $("#status_" + id);
 		updateBtn.button('loading');
@@ -15548,7 +15548,19 @@ else
 	            { sWidth: '10%' },
 	            { sWidth: '10%' },
 	            { sWidth: '10%',"bSearchable": false  }
-	            ]
+	            ],
+	            fnInitComplete: function ( oSettings )
+	            {
+	  	            	
+	                for ( var i=0, iLen=oSettings.aoData.length ; i<iLen ; i++ )
+	                {
+	                	var bugId = oSettings.aoData[i].nTr.childNodes[1].childNodes[0].textContent;
+	                	if ($.inArray(bugId,changedBugIDList) != -1){
+	                		oSettings.aoData[i].nTr.className += " gradeX";
+	                	}
+	                    
+	                }
+	            }
 		});
 		
 		ownerBugDataTable.rowGrouping({
@@ -15613,8 +15625,10 @@ else
 		$(".ownerButtonPlaceholder").css("float","right");
     }
     
+    
     function loadDifferentTable(changedList){
-		var  differentRecordList=[];				
+		var  differentRecordList=[];
+		
 		$.each(changedList,
 						function(i,
 								warppedBuginfo) {
@@ -15637,11 +15651,12 @@ else
 							record.push(warppedBuginfo.newOwner);
 							record.push(buginfo.status);
 							record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
-													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ingore' \/\>ingore </label>");
-							
+													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ignore' \/\>ignore </label>");
+							changedBugIDList.push(buginfo.bugId);
 							differentRecordList.push(record);
 							
 						});
+		
 		differentBugDataTable = $('#differentBugTable').dataTable( {
 			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
 			"bProcessing": true,
@@ -15743,8 +15758,8 @@ else
 					success : function(data) {
 						var dataObj = data;
 						loadManagedTable(dataObj.managedList)
-						loadOwnerTable(dataObj.ownerList);									
 						loadDifferentTable(dataObj.changedList);
+						loadOwnerTable(dataObj.ownerList);			
 					},
 					error : function(XMLHttpRequest,
 							textStatus, errorThrown) {
@@ -15772,7 +15787,7 @@ else
 							if(allCells.length>1){
 								var anchor = allCells[1]
 									.getElementsByTagName("a")[0];
-								var bugId = anchor.text;
+								var bugId = anchor.textContent;
 								var id = anchor
 										.getAttribute(
 												"data-id");
@@ -15846,7 +15861,7 @@ else
 							if(allCells.length>1){
 								var anchor = allCells[1]
 									.getElementsByTagName("a")[0];
-								var bugId = anchor.text;
+								var bugId = anchor.textContent;
 								var id = anchor
 										.getAttribute(
 												"data-id");
@@ -16128,7 +16143,7 @@ else
 			success : function(data) {
 			    alertify.log(data,"success");
 				//alert(data);
-				window.location.reload();
+				//window.location.reload();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 
