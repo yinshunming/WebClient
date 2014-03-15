@@ -8,8 +8,15 @@
 <title>Main Frame</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link rel="stylesheet" href="assets/css/common.min.css" />
-	<link rel="stylesheet" href="assets/css/datatable.min.css" />
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="assets/css/bootstrap.validation.css"/>
+	<link rel="stylesheet" href="assets/css/jquery.dataTables.demo_page.css" />
+	<link rel="stylesheet" href="assets/css/jquery.dataTables.demo_table_jui.css" />
+	<link rel="stylesheet" href="assets/css/jquery.ui-1.8.4.custom.css" />
+	<link rel="stylesheet" href="assets/css/custom.placeholder.css" />
+	<link rel="stylesheet" href="assets/css/alertify.core.css" />
+	<link rel="stylesheet" href="assets/css/alertify.default.css" />
+
 </head>
 
 <body>
@@ -31,14 +38,14 @@
 
 						<thead>
 							<tr>
-								<th>Detail</th>
+								<th><!-- Detail --></th>
 								<th>BugId</th>
 								<th>Title</th>
 								<th>Project</th>
 								<th>Component</th>
 								<th>Owner</th>
 								<th>Status</th>
-								<th>Operation</th>
+								<!-- <th>Operation</th> -->
 							</tr>
 						</thead>
 						<tbody id="ownerBugTableBody">
@@ -70,7 +77,7 @@
 								<th>Component</th>
 								<th>Owner</th>
 								<th>Status</th>
-								<th>Operation</th>
+								<!-- <th>Operation</th> -->
 							</tr>
 						</thead>
 						<tbody id="managedBugTableBody">
@@ -126,12 +133,24 @@
 		</div>
 	</div>
 
-	<script src="assets/js/common.min.js"></script>
-	<script src="assets/js/mainFrame.min.js"></script>
+	<script src="assets/js/jquery-1.10.2.min.js"></script>
+	<script src="assets/js/jquery.validate.min.js" ></script>
+	<script src="assets/js/jquery.placeholder.js" ></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/jquery.highlight-4.js"></script>
+	<script src="assets/js/jquery.dataTables.js"></script>
+	<script src="assets/js/jquery.dataTables.editable.js"></script>
+	<script src="assets/js/jquery.jeditable.js"></script>
+	<script src="assets/js/jquery.dataTables.rowGrouping.js"></script>
+	<script src="assets/js/jquery.dataTables.colReorderWithResize.js"></script>
+	<script src="assets/js/alertify.min.js"></script>
+	<script src="assets/js/custom.navigation.js"></script>
+	<script src="assets/js/custom.mainFrame.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	 	 <script src="assets/js/ltIE9.min.js"></script>
+	 	 <script src="assets/js/custom.html5.js"></script>
+	 	 <script src="assets/js/custom.respond.min.js"></script>
 	<![endif]-->
-	 	 
- 	 
+
 </body>
 </html>

@@ -47,14 +47,14 @@
 
 						<thead>
 							<tr>
-								<th>Detail</th>
+								<th><!-- Detail --></th>
 								<th>BugId</th>
 								<th>Title</th>
 								<th>Project</th>
 								<th>Component</th>
 								<th>Owner</th>
 								<th>Status</th>
-								<th>Operation</th>
+								<!-- <th>Operation</th> -->
 							</tr>
 						</thead>
 						<tbody id="ownerBugTableBody">
@@ -86,7 +86,7 @@
 								<th>Component</th>
 								<th>Owner</th>
 								<th>Status</th>
-								<th>Operation</th>
+								<!-- <th>Operation</th> -->
 							</tr>
 						</thead>
 						<tbody id="managedBugTableBody">
