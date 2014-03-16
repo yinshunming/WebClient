@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						cellspacing="0" border="0">
 				        <thead>
 				          <tr>
-				          	<th>Detail</th>
+				          	<th><!-- Detail --></th>
 				            <th>BugId</th>
 				            <th>Title</th>
 				            <th>Project</th>
@@ -71,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						cellspacing="0" border="0">
 				        <thead>
 				          <tr>
-				          	<th>Detail</th>
+				          	<th><!-- Detail --></th>
 				            <th>BugId</th>
 				            <th>Title</th>
 				            <th>Project</th>

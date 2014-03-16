@@ -19,11 +19,21 @@
 }
 
 .dataTable.display td {
-	padding: 2px 10px;
+	padding: 3px 10px;
 }
 .btn-nested {
 	padding: 2px 10px;
 }
+.btn-action {
+	font-weight: bold;
+	padding: 2px 10px;
+}
+.dropdown-menu .divider {
+	margin: 0px 0;
+}
 .dataTables_filter label {
 	margin-bottom: 0px; 
+}
+.dropdown-menu  {
+	 min-width: 0px; 
 }

@@ -147,6 +147,7 @@
 	<script src="assets/js/alertify.min.js"></script>
 	<script src="assets/js/custom.navigation.js"></script>
 	<script src="assets/js/custom.mainFrame.js"></script>
+	<!-- <script src="assets/js/custom.multiTooltip.js"></script> -->
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	 	 <script src="assets/js/custom.html5.js"></script>

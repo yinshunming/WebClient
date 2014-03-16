@@ -55,7 +55,7 @@
 			operate=restoreCmd;
 		}
    		operateManagedBtn.button('loading');
-   		
+   		var nTr = $('#operateManagedBtn_'+managedBugId).parents('tr')[0];
    		$.ajax({
 			type: "put",
 			url: "/BugTrackingSystem/api/managed?operate=" +  operate + "&managedBugId=" + managedBugId + "&id=" + id,
@@ -73,9 +73,11 @@
 					 operateManagedBtn.button("reset");
 					 if(operate==ignoreCmd){				
 						operateManagedBtn.html('Restore');
+						nTr.className +=' gradeU'
 					 }
 					else if(operate==restoreCmd){
 						operateManagedBtn.html('Ignore');	
+						nTr.className=nTr.className.replace('gradeU',"")
 					}
 					//operateManagedBtn.enable();
 				}
@@ -97,6 +99,7 @@
 			operate=restoreCmd;
 		}
 		operateOwnerBtn.button('loading');
+		var nTr = $('#operateOwnerBtn_'+managedBugId).parents('tr')[0];
 		$.ajax({
 			type: "put",
 			url: "/BugTrackingSystem/api/owner?operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
@@ -116,9 +119,11 @@
 				operateOwnerBtn.button('reset');
 				 if(operate==ignoreCmd){				
 					operateOwnerBtn.html('Restore');
+					nTr.className +=' gradeU'
 				 }
 				else if(operate==restoreCmd){
 					operateOwnerBtn.html('Ignore');	
+					nTr.className=nTr.className.replace('gradeU',"")
 				}
 			}
 		});
@@ -140,22 +145,30 @@
 					var operationBtn = "";
 					var managedDisplay = "";
 					
+					
+					var dropDownMenu = '<div class="btn-group"><button class="btn btn-default btn-sm dropdown-toggle btn-action" type="button" data-toggle="dropdown"> Action <span class="caret"></span></button><ul class="dropdown-menu">';
+					var endTag = '</ul></div>';
+					var seperateLine = '<li class="divider"></li>';
 					if (warppedBuginfo.status == 0) {
-						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
+						//operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
+						operationBtn = "<li><a href='javascript:void(0)' id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</a></li>";
 						managedDisplay = managedText;
 					} else {
-						operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
+						//operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
+						operationBtn = "<li><a href='javascript:void(0)' id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd +"')>Restore</a></li>";
 						managedDisplay = notManagedText;
 					} 
-					record.push("<img src='assets/images/details_open.png' >");
+					deleteBtn = "<li><a href='javascript:void(0)' class='owernerDelete 'id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"'  " + ")>Delete</a></li>"
+					record.push("<img src='assets/images/details_open.png'  >");
 					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
 					record.push("<div class='outer'> <div class='inner'><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title  + "</a></div> </div>");
 					record.push(buginfo.project);
 					record.push("<div class='outer'> <div class='inner component' >"+buginfo.owner+" </div> </div>");
 					record.push("<div class='outer'> <div class='inner'>"+buginfo.status+" </div> </div>");
 					record.push("<div class='outer'> <div class='inner'>"+managedDisplay+" </div> </div>");
-					//record.push(operationBtn + "<button class='btn btn-default ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>");
-					record.push(operationBtn + "<button class='btn btn-default owernerDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					//record.push(operationBtn + "<button class='btn btn-default owernerDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					record.push(dropDownMenu+operationBtn+seperateLine+deleteBtn+endTag);
+					
 					ownerRecordList.push(record);
 					
 				});
@@ -174,14 +187,14 @@
 											"aaData": ownerRecordList,
 											"aoColumns": [
 									            { sWidth: '5%',"bSearchable": false  },
-									            { sWidth: '10%' },
-									            { sWidth: '30%' },
-									            { sWidth: '10%' ,
+									            { sWidth: '5%' },
+									            { sWidth: '44%' },
+									            { sWidth: '1%' ,
 									            "bVisible":    false },
+									            { sWidth: '13%' },
+									            { sWidth: '12%' },
 									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '15%',"bSearchable": false  }
+									            { sWidth: '10%',"bSearchable": false  }
 									            ]
 										});		
 				ownerBugDataTable.rowGrouping({
@@ -207,12 +220,16 @@
 					var buginfo = warppedBuginfo.buginfo;
 					var operationBtn = "";
 					var managedDisplay = "";
-					
+					var dropDownMenu = '<div class="btn-group"><button class="btn btn-default btn-sm dropdown-toggle btn-action" type="button" data-toggle="dropdown"> Action <span class="caret"></span></button><ul class="dropdown-menu">';
+					var endTag = '</ul></div>';
+					var seperateLine = '<li class="divider"></li>';
 					if (warppedBuginfo.status == 0) {
-						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
+						//operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</button>";
+						operationBtn = "<li><a href='javascript:void(0)' id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateManagedBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + ignoreCmd +"')>Ignore</a></li>";
 						managedDisplay = managedText;
 					} else {
-						operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" +  restoreCmd + "')>Restore</button>";
+						//operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" +  restoreCmd + "')>Restore</button>";
+						operationBtn = "<li><a href='javascript:void(0)' id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateManagedBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd +"')>Restore</a></li>";
 						managedDisplay = notManagedText;
 					}
 					var record = [];
@@ -223,7 +240,8 @@
 					record.push("<div class='outer'> <div class='inner component' >"+buginfo.owner+" </div> </div>");
 					record.push("<div class='outer'> <div class='inner component' >"+buginfo.status+" </div> </div>");
 					record.push("<div class='outer'> <div class='inner component' >"+managedDisplay+" </div> </div>");
-					record.push(operationBtn + "<button class='btn btn-default historyDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					//record.push(operationBtn + "<button class='btn btn-default historyDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					record.push(dropDownMenu+operationBtn+seperateLine+deleteBtn+endTag);
 					managedRecordList.push(record);
 					
 					
@@ -243,14 +261,14 @@
 											"aaData": managedRecordList,
 											"aoColumns": [
 									            { sWidth: '5%',"bSearchable": false  },
-									            { sWidth: '10%' },
-									            { sWidth: '30%' },
-									            { sWidth: '10%' ,
+									            { sWidth: '5%' },
+									            { sWidth: '44%' },
+									            { sWidth: '1%' ,
 									            "bVisible":    false },
+									            { sWidth: '13%' },
+									            { sWidth: '12%' },
 									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '10%' },
-									            { sWidth: '15%',"bSearchable": false  }
+									            { sWidth: '10%',"bSearchable": false  }
 									            ]
 										});		
 				managerBugDataTable.rowGrouping({
