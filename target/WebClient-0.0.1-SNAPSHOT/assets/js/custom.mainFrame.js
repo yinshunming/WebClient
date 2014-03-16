@@ -5,7 +5,6 @@
 	var managedBugTimer;
 	var differentBugTimer;
 	var changedBugIDList=[];
-	var modifyTd;
 	function updateStatus(id, bugId) {
 		var updateBtn = $("#status_" + id);
 		updateBtn.button('loading');
@@ -88,7 +87,7 @@
 													+ buginfo.title
 													+ "</a> </div> </div>");
 							record.push(buginfo.project);
-							record.push("<div class='outer'> <div class='inner component' >"+buginfo.component+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'>"+buginfo.component+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'>"+buginfo.owner+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'><label id=label_status_" + buginfo.id + ">"
 													+ buginfo.status
@@ -120,8 +119,8 @@
 			"aaData": managedRecordList,
 			"aoColumns": [
 	            { sWidth: '5%' ,"bSearchable": false  },
-	            { sWidth: '5%' },
-	            { sWidth: '44%' ,"sType": 'html'},
+	            { sWidth: '10%' },
+	            { sWidth: '49%' ,"sType": 'html'},
 	            { sWidth: '1%' ,
 	            "bVisible":    false },
 	            { sWidth: '15%' },
@@ -173,18 +172,15 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		modifyTd=$(this);
+                        		
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-										var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
-											modifyTd.html(html);
-											alertify.log(data,"success");
+											 alertify.log(data,"success");
 									    		 //alert(data) ; 
 									    		  }
 									});
-                        		//value ="<div class='outer'> <div class='inner component' >"+value+" </div> </div>"
                                 return(value);
                         }
 			  },
@@ -194,7 +190,7 @@
 			]
 		
 		}); 
-		$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default btn-nested' data-loading-text='Loading'>Update</button>");
+		$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>Update</button>");
 		$(".managedButtonPlaceholder").css("width","10%");
 		$(".managedButtonPlaceholder").css("float","right");
     }
@@ -218,7 +214,7 @@
 													+ buginfo.title
 													+ "</a></div> </div>");
 						    record.push(buginfo.project);
-						    record.push("<div class='outer'> <div class='inner component'>"+buginfo.component+" </div> </div>");
+						    record.push("<div class='outer'> <div class='inner'>"+buginfo.component+" </div> </div>");
 						    record.push("<div class='outer'> <div class='inner'>"+buginfo.owner+" </div> </div>");
 						    record.push(
 												   "<div class='outer'> <div class='inner'><label id=label_status_" + buginfo.id + ">"
@@ -258,8 +254,8 @@
 			"aaData": ownerRecordList,
 			"aoColumns": [
 	            { sWidth: '5%' ,"bSearchable": false },
-	            { sWidth: '5%' },
-	            { sWidth: '44%' },
+	            { sWidth: '10%' },
+	            { sWidth: '39%' },
 	            /*null,*/
 	            { sWidth: '1%',
 	            "bVisible":    false  },
@@ -321,14 +317,12 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		modifyTd=$(this);
+                        		
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-										var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
-											modifyTd.html(html);
-											alertify.log(data,"success");
+											 alertify.log(data,"success");
 									    		 //alert(data) ;  
 									    		}
 									});
@@ -341,7 +335,7 @@
 			]
 		}); 
 		
-		$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default btn-nested' data-loading-text='Loading'>Update</button>");
+		$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default btn-sm' data-loading-text='Loading'>Update</button>");
 		$(".ownerButtonPlaceholder").css("width","10%");
 		$(".ownerButtonPlaceholder").css("float","right");
     }
@@ -368,13 +362,11 @@
 													+ buginfo.title
 													+ "</a></div> </div>");
 							record.push(buginfo.project);
-							record.push("<div class='outer'> <div class='inner component'>"+buginfo.component+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'>"+buginfo.component+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'>"+warppedBuginfo.newOwner+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'>"+buginfo.status+" </div> </div>");
 							record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
 													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ignore' \/\>ignore </label>");
-							
-							
 							changedBugIDList.push(buginfo.bugId);
 							differentRecordList.push(record);
 							
@@ -395,12 +387,12 @@
 			"aaData": differentRecordList,
 			"aoColumns": [
 	            { sWidth: '5%' ,"bSearchable": false },
-	            { sWidth: '5%' },
+	            { sWidth: '10%' },
 	            { sWidth: '39%' },
 	            { sWidth: '1%',
 	            "bVisible":    false  },
 	            { sWidth: '15%' },
-	            { sWidth: '15%' },
+	            { sWidth: '10%' },
 	            { sWidth: '10%' },
 	            { sWidth: '10%' ,"bSearchable": false  }
 	            ]
@@ -446,14 +438,11 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		modifyTd=$(this);
+                        		
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-										    
-											var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
-											modifyTd.html(html);
 											 alertify.log(data,"success");
 									    		// alert(data) ;  
 									    		}
@@ -468,7 +457,7 @@
 		
 		}); 
 		
-		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default btn-nested' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>Modify</button>");
+		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
 		$(".diffentButtonPlaceholder").css("width","10%");
 		$(".diffentButtonPlaceholder").css("float","right");
     }
@@ -493,31 +482,13 @@
 
 					complete : function(XMLHttpRequest,
 							textStatus) {
-						 $('.dataTable tbody td div.inner').each(function(index){
+						 $('.dataTable tbody td').each(function(index){
 							    $this = $(this);
 							    var titleVal = $this.text();
 							    if (titleVal != '') {
 							      $this.attr('title', titleVal);
 							    }
 							  });
-						 $('.dataTable tbody td .component').each(function(index){
-							    $this = $(this);
-							    var titleVal = $this.text();
-							    
-							    if (titleVal != '') {
-							      $this.attr('title', titleVal+'\n'+'Double click to modify!');
-							    }
-							  });
-						/* $('.compoment').tooltip({
-							 placement: 'top',
-							  trigger: 'hover',
-							  title: 'some title 1'
-							}, 'tooltip1');*/
-						 /*$('.compoment').tooltip({
-							  placement: 'bottom',
-							  trigger: 'hover',
-							  title: 'some title 2'
-							}, 'tooltip2');*/
 					}
 				});
     }

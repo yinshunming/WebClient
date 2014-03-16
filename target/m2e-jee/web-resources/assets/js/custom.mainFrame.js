@@ -5,6 +5,7 @@
 	var managedBugTimer;
 	var differentBugTimer;
 	var changedBugIDList=[];
+	var modifyTd;
 	function updateStatus(id, bugId) {
 		var updateBtn = $("#status_" + id);
 		updateBtn.button('loading');
@@ -41,7 +42,7 @@
     function truncatTextReder( nRow, aData, iDisplayIndex) 
     {
         var $cell=$('td:eq(2)', nRow);
-        var text=ellipsis($cell.text(),100);
+        var text=ellipsis($cell.text(),1000);
         var srcText =$cell.text().replace(/&/g, '&amp;')
            .replace(/"/g, '&quot;')
            .replace(/'/g, '&#39;')
@@ -74,24 +75,24 @@
 		$.each(managedList,
 						function(i, buginfo) {
 							var record = [];
-							record.push("<img src='assets/images/details_open.png' >");
+							record.push("<img src='assets/images/details_open.png' > ");
 							record.push("<a data-id="
 													+ buginfo.id
 													+ " style='text-decoration : none ' onclick='return false'>"
 													+ buginfo.bugId
-													+ "</a>");
-							record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+													+ "</a> ");
+							record.push("<div class='outer'> <div class='inner'> <a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 													+ buginfo.bugId
 													+ "&Template=view&TableId=1000' target='view_window' title='"
 													+buginfo.title+"'>"
 													+ buginfo.title
-													+ "</a>");
+													+ "</a> </div> </div>");
 							record.push(buginfo.project);
-							record.push(buginfo.component);
-							record.push(buginfo.owner);
-							record.push("<label id=label_status_" + buginfo.id + ">"
+							record.push("<div class='outer'> <div class='inner component' >"+buginfo.component+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'>"+buginfo.owner+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'><label id=label_status_" + buginfo.id + ">"
 													+ buginfo.status
-													+ "</label>");
+													+ "</label></div> </div>");
 							/*record.push("<button id=status_"
 													+ buginfo.id
 													+ " onclick= "
@@ -119,8 +120,8 @@
 			"aaData": managedRecordList,
 			"aoColumns": [
 	            { sWidth: '5%' ,"bSearchable": false  },
-	            { sWidth: '10%' },
-	            { sWidth: '49%' ,"sType": 'html'},
+	            { sWidth: '5%' },
+	            { sWidth: '44%' ,"sType": 'html'},
 	            { sWidth: '1%' ,
 	            "bVisible":    false },
 	            { sWidth: '15%' },
@@ -172,15 +173,18 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		
+                        		modifyTd=$(this);
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-											 alertify.log(data,"success");
+										var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
+											modifyTd.html(html);
+											alertify.log(data,"success");
 									    		 //alert(data) ; 
 									    		  }
 									});
+                        		//value ="<div class='outer'> <div class='inner component' >"+value+" </div> </div>"
                                 return(value);
                         }
 			  },
@@ -190,7 +194,7 @@
 			]
 		
 		}); 
-		$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default' data-loading-text='Loading'>Update</button>");
+		$(".managedButtonPlaceholder").html("<button id='updateAllManagedListBtn' name='updateAllManagedListBtn' style='margin-left : 15px' class='btn btn-default btn-nested' data-loading-text='Loading'>Update</button>");
 		$(".managedButtonPlaceholder").css("width","10%");
 		$(".managedButtonPlaceholder").css("float","right");
     }
@@ -207,19 +211,19 @@
 													+ " style='text-decoration : none ' onclick='return false'>"
 													+ buginfo.bugId
 													+ "</a>");
-						    record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+						    record.push("<div class='outer'> <div class='inner'><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 													+ buginfo.bugId
 													+ "&Template=view&TableId=1000'  target='view_window' title='"
 													+buginfo.title+"'>"
 													+ buginfo.title
-													+ "</a>");
+													+ "</a></div> </div>");
 						    record.push(buginfo.project);
-						    record.push(buginfo.component);
-						    record.push( buginfo.owner);
+						    record.push("<div class='outer'> <div class='inner component'>"+buginfo.component+" </div> </div>");
+						    record.push("<div class='outer'> <div class='inner'>"+buginfo.owner+" </div> </div>");
 						    record.push(
-												   "<label id=label_status_" + buginfo.id + ">"
+												   "<div class='outer'> <div class='inner'><label id=label_status_" + buginfo.id + ">"
 													+ buginfo.status
-													+ "</label>");
+													+ "</label></div> </div>");
 							/*record.push("<button id=status_"
 													+ buginfo.id
 													+ " onclick= "
@@ -253,14 +257,14 @@
 			"sPaginationType": "full_numbers",
 			"aaData": ownerRecordList,
 			"aoColumns": [
-	            { sWidth: '2%' ,"bSearchable": false },
-	            { sWidth: '8%' },
-	           /* { sWidth: '49%' },*/
-	            null,
+	            { sWidth: '5%' ,"bSearchable": false },
+	            { sWidth: '5%' },
+	            { sWidth: '44%' },
+	            /*null,*/
 	            { sWidth: '1%',
 	            "bVisible":    false  },
 	            { sWidth: '15%' },
-	            { sWidth: '15%' },
+	            { sWidth: '10%' },
 	            { sWidth: '10%' },
 	           /* { sWidth: '10%',"bSearchable": false  }*/
 	            ],
@@ -317,12 +321,14 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		
+                        		modifyTd=$(this);
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
-											 alertify.log(data,"success");
+										var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
+											modifyTd.html(html);
+											alertify.log(data,"success");
 									    		 //alert(data) ;  
 									    		}
 									});
@@ -335,7 +341,7 @@
 			]
 		}); 
 		
-		$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default btn-sm' data-loading-text='Loading'>Update</button>");
+		$(".ownerButtonPlaceholder").html("<button id='updateAllOwnerListBtn' name='updateAllOwnerListBtn' style='margin-left : 15px' class='btn btn-default btn-nested' data-loading-text='Loading'>Update</button>");
 		$(".ownerButtonPlaceholder").css("width","10%");
 		$(".ownerButtonPlaceholder").css("float","right");
     }
@@ -355,18 +361,20 @@
 													+ " style='text-decoration : none ' onclick='return false'>"
 													+ buginfo.bugId
 													+ "</a>");
-							record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
+							record.push("<div class='outer'> <div class='inner'><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId="
 													+ buginfo.bugId
 													+ "&Template=view&TableId=1000'  target='view_window' title='"
 													+buginfo.title+"'>"
 													+ buginfo.title
-													+ "</a>");
+													+ "</a></div> </div>");
 							record.push(buginfo.project);
-							record.push(buginfo.component);
-							record.push(warppedBuginfo.newOwner);
-							record.push(buginfo.status);
+							record.push("<div class='outer'> <div class='inner component'>"+buginfo.component+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'>"+warppedBuginfo.newOwner+" </div> </div>");
+							record.push("<div class='outer'> <div class='inner'>"+buginfo.status+" </div> </div>");
 							record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
 													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ignore' \/\>ignore </label>");
+							
+							
 							changedBugIDList.push(buginfo.bugId);
 							differentRecordList.push(record);
 							
@@ -387,12 +395,12 @@
 			"aaData": differentRecordList,
 			"aoColumns": [
 	            { sWidth: '5%' ,"bSearchable": false },
-	            { sWidth: '10%' },
+	            { sWidth: '5%' },
 	            { sWidth: '39%' },
 	            { sWidth: '1%',
 	            "bVisible":    false  },
 	            { sWidth: '15%' },
-	            { sWidth: '10%' },
+	            { sWidth: '15%' },
 	            { sWidth: '10%' },
 	            { sWidth: '10%' ,"bSearchable": false  }
 	            ]
@@ -438,11 +446,14 @@
 								var nTr = $(this).parents('tr')[0];
 							  	var id = nTr.childNodes[index].childNodes[0].attributes['data-id'].value;
                         		var bugId=nTr.childNodes[index].childNodes[0].innerText;
-                        		
+                        		modifyTd=$(this);
                         		$.ajax({
 									type : "put",
 									url : "/BugTrackingSystem/api/bug?id="+id+"&bugId="+bugId+"&component="+value,
 									success : function(data) {
+										    
+											var html ="<div class='outer'> <div class='inner component' title='"+modifyTd.html()+"\nDouble click to modify!' >"+modifyTd.html()+" </div> </div>"
+											modifyTd.html(html);
 											 alertify.log(data,"success");
 									    		// alert(data) ;  
 									    		}
@@ -457,7 +468,7 @@
 		
 		}); 
 		
-		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>modify</button>");
+		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default btn-nested' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>Modify</button>");
 		$(".diffentButtonPlaceholder").css("width","10%");
 		$(".diffentButtonPlaceholder").css("float","right");
     }
@@ -482,6 +493,31 @@
 
 					complete : function(XMLHttpRequest,
 							textStatus) {
+						 $('.dataTable tbody td div.inner').each(function(index){
+							    $this = $(this);
+							    var titleVal = $this.text();
+							    if (titleVal != '') {
+							      $this.attr('title', titleVal);
+							    }
+							  });
+						 $('.dataTable tbody td .component').each(function(index){
+							    $this = $(this);
+							    var titleVal = $this.text();
+							    
+							    if (titleVal != '') {
+							      $this.attr('title', titleVal+'\n'+'Double click to modify!');
+							    }
+							  });
+						/* $('.compoment').tooltip({
+							 placement: 'top',
+							  trigger: 'hover',
+							  title: 'some title 1'
+							}, 'tooltip1');*/
+						 /*$('.compoment').tooltip({
+							  placement: 'bottom',
+							  trigger: 'hover',
+							  title: 'some title 2'
+							}, 'tooltip2');*/
 					}
 				});
     }
@@ -884,5 +920,6 @@
 					$(document).delegate('#managedBugTable_filter input','keyup',managedTableSearchHighlight);
 					$(document).delegate('#differentBugTable_filter input','keyup',differentTableSearchHighlight );
 					$(window).resize(windowResize);
+					
 		});
 	

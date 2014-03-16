@@ -9,11 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="assets/css/custom.placeholder.css" />
 	<link rel="stylesheet" href="assets/css/bootstrap.validation.css"/>
 	<link rel="stylesheet" href="assets/css/jquery.dataTables.demo_page.css" />
 	<link rel="stylesheet" href="assets/css/jquery.dataTables.demo_table_jui.css" />
 	<link rel="stylesheet" href="assets/css/jquery.ui-1.8.4.custom.css" />
-	<link rel="stylesheet" href="assets/css/custom.placeholder.css" />
+	
 	<link rel="stylesheet" href="assets/css/alertify.core.css" />
 	<link rel="stylesheet" href="assets/css/alertify.default.css" />
 
@@ -70,7 +71,7 @@
 						cellspacing="0" border="0">
 						<thead>
 							<tr>
-								<th>Detail</th>
+								<th><!-- Detail --></th>
 								<th>BugId</th>
 								<th>Title</th>
 								<th>Project</th>
@@ -108,7 +109,7 @@
 
 							<thead>
 								<tr>
-									<th>Detail</th>
+									<th><!-- Detail --></th>
 									<th>BugId</th>
 									<th>Title</th>
 									<th>Project</th>
@@ -146,6 +147,7 @@
 	<script src="assets/js/alertify.min.js"></script>
 	<script src="assets/js/custom.navigation.js"></script>
 	<script src="assets/js/custom.mainFrame.js"></script>
+	<!-- <script src="assets/js/custom.multiTooltip.js"></script> -->
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	 	 <script src="assets/js/custom.html5.js"></script>

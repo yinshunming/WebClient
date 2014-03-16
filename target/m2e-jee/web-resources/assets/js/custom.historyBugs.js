@@ -6,7 +6,7 @@
 	var restoreCmd = "restore";
 	var managedText = "managed";
 	var notManagedText = "not-managed";
-	
+	var modifyTd;
 	function ellipsis(text, n) {
 	    if(text.length>n)
 	        return text.substring(0,n)+"...";
@@ -18,7 +18,7 @@
     {
         var $cell=$('td:eq(2)', nRow);
         // truncated text
-        var text=ellipsis($cell.text(),100);
+        var text=ellipsis($cell.text(),1000);
         var srcText =$cell.text().replace(/&/g, '&amp;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;')
@@ -149,13 +149,13 @@
 					} 
 					record.push("<img src='assets/images/details_open.png' >");
 					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
-					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title  + "</a>");
+					record.push("<div class='outer'> <div class='inner'><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title  + "</a></div> </div>");
 					record.push(buginfo.project);
-					record.push(buginfo.owner);
-					record.push(buginfo.status);
-					record.push(managedDisplay);
+					record.push("<div class='outer'> <div class='inner component' >"+buginfo.owner+" </div> </div>");
+					record.push("<div class='outer'> <div class='inner'>"+buginfo.status+" </div> </div>");
+					record.push("<div class='outer'> <div class='inner'>"+managedDisplay+" </div> </div>");
 					//record.push(operationBtn + "<button class='btn btn-default ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId +  "' data-loading-text='Loading...' onclick= " + "javascript:deleteManagedBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "')>Delete</button>");
-					record.push(operationBtn + "<button class='btn btn-default owernerDelete' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					record.push(operationBtn + "<button class='btn btn-default owernerDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
 					ownerRecordList.push(record);
 					
 				});
@@ -218,12 +218,12 @@
 					var record = [];
 					record.push("<img src='assets/images/details_open.png' >");
 					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
-					record.push("<a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title + "</a>");
+					record.push("<div class='outer'> <div class='inner'> <a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title + "</a></div> </div>");
 					record.push(buginfo.project);
-					record.push(buginfo.owner);
-					record.push(buginfo.status);
-					record.push(managedDisplay);
-					record.push(operationBtn + "<button class='btn btn-default historyDelete' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
+					record.push("<div class='outer'> <div class='inner component' >"+buginfo.owner+" </div> </div>");
+					record.push("<div class='outer'> <div class='inner component' >"+buginfo.status+" </div> </div>");
+					record.push("<div class='outer'> <div class='inner component' >"+managedDisplay+" </div> </div>");
+					record.push(operationBtn + "<button class='btn btn-default historyDelete ' type='button' id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"' data-loading-text='Loading...' " + ")>Delete</button>");
 					managedRecordList.push(record);
 					
 					
