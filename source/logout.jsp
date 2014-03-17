@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Add New Bug</title>
+    <title>Log Out</title>
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="assets/css/bootstrap.validation.css"/>

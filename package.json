@@ -1,6 +1,6 @@
 {
   "name": "WebClient",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "The web  client of bug trace system",
   "main": "index.js",
   "scripts": {

@@ -109,9 +109,9 @@
 
 				<div id="differentDiv">
 
-					<form id="differentForm" name="differentForm"
+					<!-- <form id="differentForm" name="differentForm"
 								action="/BugTrackingSystem/api/bugs?method=put" method="post">
-					</form>
+					</form> -->
 						<br />
 						<table id="differentBugTable"  class="table display" cellpadding="0"
 						cellspacing="0" border="0">

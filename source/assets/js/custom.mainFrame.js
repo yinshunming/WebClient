@@ -70,6 +70,26 @@
         differentBugDataTable.fnAdjustColumnSizing(); 
       }
 
+    /*function updateAllTables(){
+    	
+    }
+    
+    function updateManagedTable(managedList){
+    	ownerBugDataTable.fnClearTable();
+    	ownerBugDataTable.fnDraw();
+    	
+    }
+    
+    function updateOwnerTable(ownerList){
+    	managerBugDataTable.fnClearTable();
+    	managerBugDataTable.fnDraw();
+    }
+    
+    function updateDifferentTable(changedList){
+    	differentBugDataTable.fnClearTable();
+    	differentBugDataTable.fnDraw();
+    }*/
+    
     function  loadManagedTable(managedList){
     	var  managedRecordList=[];
 		$.each(managedList,
@@ -104,7 +124,11 @@
 													);*/
 							 managedRecordList.push(record);
 						});
-					
+		if(managerBugDataTable != null){
+			managerBugDataTable.fnDestroy();
+			$('#managedBugTable_wrapper').empty();		
+		}
+		
 		managerBugDataTable = $('#managedBugTable').dataTable( {
 			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"managedButtonPlaceholder">p>',
 			"bProcessing": true,
@@ -199,6 +223,8 @@
 		$(".managedButtonPlaceholder").css("float","right");
     }
     
+    
+    
     function loadOwnerTable(ownerList){
     	var  ownerRecordList=[];
 		$.each(
@@ -236,7 +262,10 @@
 																						
 						});
 						
-		
+		if(ownerBugDataTable != null){
+			ownerBugDataTable.fnDestroy();
+			$('#ownerBugTable_wrapper').empty();		
+		}
 		
 
 		/*
@@ -355,6 +384,16 @@
 								warppedBuginfo) {
 							var buginfo = warppedBuginfo.buginfo;
 							var record=[];
+							var dropDownMenu = '<div class="btn-group"><button class="btn btn-default btn-sm dropdown-toggle btn-action" type="button" data-toggle="dropdown"> Action <span class="caret"></span></button><ul class="dropdown-menu">';
+							var endTag = '</ul></div>';
+							var seperateLine = '<li class="divider"></li>';
+							var radioName = "radio_"+buginfo.id + "_" + warppedBuginfo.managedBugId;
+							var radioValueManage = "manage";
+							var radioValueIgnore = "ignore";
+							
+							
+							manageBtn = "<li><a href='javascript:void(0)'  name='"+radioName+"' value='"+radioValueManage+"'>Manage</a></li>";
+							ignoreBtn = "<li><a href='javascript:void(0)'  name='"+radioName+"' value='"+radioValueIgnore+"'>Ignore</a></li>";
 							record.push("<img src='assets/images/details_open.png' >");
 							record.push("<a data-id="
 													+ buginfo.id																				
@@ -371,14 +410,19 @@
 							record.push("<div class='outer'> <div class='inner component'>"+buginfo.component+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'>"+warppedBuginfo.newOwner+" </div> </div>");
 							record.push("<div class='outer'> <div class='inner'>"+buginfo.status+" </div> </div>");
-							record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
-													+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ignore' \/\>ignore </label>");
-							
+							//record.push("<label class='radio'><input type='radio' form='differentForm' name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='manage' \/\>manage</label>"
+							//						+ "<label class='radio'><input type='radio' form='differentForm'  name='radio_" + buginfo.id + "_" + warppedBuginfo.managedBugId + "' value='ignore' \/\>ignore </label>");
+							record.push(dropDownMenu+manageBtn+seperateLine+ignoreBtn+endTag);
 							
 							changedBugIDList.push(buginfo.bugId);
 							differentRecordList.push(record);
 							
 						});
+		
+		if(differentBugDataTable != null){
+			differentBugDataTable.fnDestroy();
+			$('#differentBugTable_wrapper').empty();		
+		}
 		
 		differentBugDataTable = $('#differentBugTable').dataTable( {
 			"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"i<"diffentButtonPlaceholder">p>',
@@ -468,9 +512,9 @@
 		
 		}); 
 		
-		$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default btn-nested' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>Modify</button>");
-		$(".diffentButtonPlaceholder").css("width","10%");
-		$(".diffentButtonPlaceholder").css("float","right");
+		//$(".diffentButtonPlaceholder").html("<button id='modifyBtn' name='modifyBtn' class='btn btn-default btn-nested' style='margin-left : 15px' onclick='javascript:modifyBtnClick()' type='button' data-loading-text='Loading'>Modify</button>");
+		//$(".diffentButtonPlaceholder").css("width","10%");
+		//$(".diffentButtonPlaceholder").css("float","right");
     }
     
     function loadMainFrame(){
@@ -804,36 +848,37 @@
     
     function ownerTableSearchHighlight(){
 		clearInterval(ownerBugTimer);  
-		if($('#ownerBugTableBody tr').find('td:not(:last)').hasHightlight()){
-			  $('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
-		 }
+        
+       if($('#ownerBugTableBody tr').find('td').hasHightlight()){
+			  $('#ownerBugTableBody  tr').find('td').removeHighlight();
+		}
 		
-        if ($(this).val() != "") {
-            $('#ownerBugTableBody   tr').find('td:not(:last)').highlight($(this).val());
-        }else {
-        	$('#ownerBugTableBody  tr').find('td:not(:last)').removeHighlight();
-        }
-        
-        ownerBugTimer = setTimeout(function(){
-            $('#ownerBugTableBody  tr ').find('td:not(:last)').removeHighlight();}, 1000);
-        
+       if ($(this).val() != "") {
+          $('#ownerBugTableBody   tr').find('td').highlight($(this).val());
+       }else {
+    	   $('#ownerBugTableBody  tr').find('td').removeHighlight();
+       }
+      
+       ownerBugTimer = setTimeout(function(){
+	   $('#ownerBugTableBody  tr ').find('td').removeHighlight();}, 1000);
+      
 	
     }
    
     function managedTableSearchHighlight(){
 		clearInterval(managedBugTimer);  
-		if($('#managedBugTableBody  tr').find('td:not(:last)').hasHightlight()){
-			  $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
+		if($('#managedBugTableBody  tr').find('td').hasHightlight()){
+			  $('#managedBugTableBody  tr').find('td').removeHighlight();
 		 }
 		
         if ($(this).val() != "") {
-            $('#managedBugTableBody tr').find('td:not(:last)').highlight($(this).val());
+            $('#managedBugTableBody tr').find('td').highlight($(this).val());
         }else {
-        	$('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();
+        	$('#managedBugTableBody  tr').find('td').removeHighlight();
         }
         
         managedBugTimer = setTimeout(function(){
-            $('#managedBugTableBody  tr').find('td:not(:last)').removeHighlight();}, 1000);
+            $('#managedBugTableBody  tr').find('td').removeHighlight();}, 1000);
         
 	
     }
@@ -881,7 +926,7 @@
 	}
 
 				       
-	function modifyBtnClick() {
+	/*function modifyBtnClick() {
 		var modifyBtn = $("#modifyBtn");
 		var differentFrame = $("#differentForm");
 
@@ -894,7 +939,7 @@
 			success : function(data) {
 			    alertify.log(data,"success");
 				//alert(data);
-				//window.location.reload();
+				window.location.reload();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 
@@ -902,6 +947,45 @@
 
 			complete : function(XMLHttpRequest, textStatus) {
 				modifyBtn.button('reset');
+			}
+		});
+	}*/
+	
+	function operateDifferntbugs (){
+		var radioName=this.children[0].attributes['name'].value;
+		var value=this.children[0].attributes['value'].value;
+		var differentFrame = $("<form></form>");
+		differentFrame.attr('action',"/BugTrackingSystem/api/bugs?method=put");
+		differentFrame.attr('method','post');
+		differentFrame.attr('name','differentForm');
+		differentFrame.attr('id','differentForm');
+		var input =  $("<input type='hidden' />");
+		input.attr('name',radioName);
+		input.attr('value',value);
+		differentFrame.append(input);
+		if(value=='manage'){
+			alertify.log("loading,please wait","success");
+		}
+		$.ajax({
+			method : differentFrame.attr('method'),
+			url : differentFrame.attr('action'),
+			data : differentFrame.serialize(),
+			cache : false,
+			success : function(data) {
+				loadMainFrame();
+			    alertify.log(data,"success");
+			    
+			    
+			    
+				//alert(data);
+				//window.location.reload();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+			},
+
+			complete : function(XMLHttpRequest, textStatus) {
+				
 			}
 		});
 	}
@@ -919,6 +1003,7 @@
 					$(document).delegate('#ownerBugTable_filter input','keyup',ownerTableSearchHighlight);
 					$(document).delegate('#managedBugTable_filter input','keyup',managedTableSearchHighlight);
 					$(document).delegate('#differentBugTable_filter input','keyup',differentTableSearchHighlight );
+					$(document).delegate('.dataTable .dropdown-menu li','click',operateDifferntbugs );
 					$(window).resize(windowResize);
 					
 		});
