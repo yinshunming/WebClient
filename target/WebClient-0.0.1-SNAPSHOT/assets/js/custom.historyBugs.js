@@ -2,11 +2,13 @@
 	var managerBugDataTable;
 	var ownerBugTimer;
 	var historyBugTimer;
-	var ignoreCmd = "Ignore";
+	var ignoreCmd = "ignore";
 	var restoreCmd = "restore";
 	var managedText = "managed";
 	var notManagedText = "not-managed";
 	var modifyTd;
+	var ownerRestoreList=[];
+	var managedRestoreList=[];
 	function ellipsis(text, n) {
 	    if(text.length>n)
 	        return text.substring(0,n)+"...";
@@ -55,7 +57,7 @@
 			operate=restoreCmd;
 		}
    		operateManagedBtn.button('loading');
-   		
+   		var nTr = $('#operateManagedBtn_'+managedBugId).parents('tr')[0];
    		$.ajax({
 			type: "put",
 			url: "/BugTrackingSystem/api/managed?operate=" +  operate + "&managedBugId=" + managedBugId + "&id=" + id,
@@ -73,9 +75,11 @@
 					 operateManagedBtn.button("reset");
 					 if(operate==ignoreCmd){				
 						operateManagedBtn.html('Restore');
+						nTr.className +=' gradeU'
 					 }
 					else if(operate==restoreCmd){
 						operateManagedBtn.html('Ignore');	
+						nTr.className=nTr.className.replace('gradeU',"")
 					}
 					//operateManagedBtn.enable();
 				}
@@ -97,6 +101,7 @@
 			operate=restoreCmd;
 		}
 		operateOwnerBtn.button('loading');
+		var nTr = $('#operateOwnerBtn_'+managedBugId).parents('tr')[0];
 		$.ajax({
 			type: "put",
 			url: "/BugTrackingSystem/api/owner?operate=" + operate + "&managedBugId=" + managedBugId + "&id=" + id,
@@ -116,9 +121,11 @@
 				operateOwnerBtn.button('reset');
 				 if(operate==ignoreCmd){				
 					operateOwnerBtn.html('Restore');
+					nTr.className +=' gradeU'
 				 }
 				else if(operate==restoreCmd){
 					operateOwnerBtn.html('Ignore');	
+					nTr.className=nTr.className.replace('gradeU',"")
 				}
 			}
 		});
@@ -151,10 +158,11 @@
 					} else {
 						//operationBtn = "<button id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateOwnerBugs('" + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd + "')>Restore</button>";
 						operationBtn = "<li><a href='javascript:void(0)' id = 'operateOwnerBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateOwnerBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd +"')>Restore</a></li>";
+						ownerRestoreList.push(buginfo.bugId);
 						managedDisplay = notManagedText;
 					} 
-					deleteBtn = "<li><a href='javascript:void(0)' class='owernerDelete 'id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"'  " + ")>Delete</a></li>"
-					record.push("<img src='assets/images/details_open.png' >");
+					deleteBtn = "<li><a href='javascript:void(0)' class='owernerDelete 'id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"'  " + ")>Delete</a></li>";
+					record.push("<img src='assets/images/details_open.png'  >");
 					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
 					record.push("<div class='outer'> <div class='inner'><a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title  + "</a></div> </div>");
 					record.push(buginfo.project);
@@ -190,7 +198,25 @@
 									            { sWidth: '12%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%',"bSearchable": false  }
-									            ]
+									            ],
+											 fnInitComplete: function ( oSettings )
+									            {
+									                for ( var i=0, iLen=oSettings.aoData.length ; i<iLen ; i++ )
+									                {
+									                	var bugId = oSettings.aoData[i].nTr.childNodes[1].childNodes[0].textContent;
+									                	if ($.inArray(bugId,ownerRestoreList) != -1){
+									                		oSettings.aoData[i].nTr.className += " gradeU";
+									                	}
+									                    
+									                }
+												 $('#ownerBugsTable tbody td div.inner').each(function(index){
+													    $this = $(this);
+													    var titleVal = $this.text();
+													    if (titleVal != '') {
+													      $this.attr('title', titleVal);
+													    }
+													  });	
+									            }
 										});		
 				ownerBugDataTable.rowGrouping({
 					iGroupingColumnIndex:3,
@@ -226,8 +252,10 @@
 						//operationBtn = "<button id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' class='btn btn-default' type='button' data-loading-text='Loading...' onclick= " + "javascript:operateManagedBugs('"   + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" +  restoreCmd + "')>Restore</button>";
 						operationBtn = "<li><a href='javascript:void(0)' id = 'operateManagedBtn_" +  warppedBuginfo.managedBugId + "' onclick= " + "javascript:operateManagedBugs('"  + warppedBuginfo.managedBugId + "','" + buginfo.id + "','" + restoreCmd +"')>Restore</a></li>";
 						managedDisplay = notManagedText;
+						managedRestoreList.push(buginfo.bugId);
 					}
 					var record = [];
+					deleteBtn = "<li><a href='javascript:void(0)' class='historyDelete 'id='deleteManagedBtn_" + warppedBuginfo.managedBugId + "' data-bugId='"+buginfo.id+"'data-manageId='"+warppedBuginfo.managedBugId+"'  " + ")>Delete</a></li>";
 					record.push("<img src='assets/images/details_open.png' >");
 					record.push("<td><a data-id=" + buginfo.id + " style='text-decoration : none ' onclick='return false'>" + buginfo.bugId + "</a>");
 					record.push("<div class='outer'> <div class='inner'> <a href='http://onebug.citrite.net/tmtrack/tmtrack.dll?IssuePage&RecordId=" + buginfo.bugId + "&Template=view&TableId=1000' target='view_window' title='"+buginfo.title+"'>" + buginfo.title + "</a></div> </div>");
@@ -264,7 +292,25 @@
 									            { sWidth: '12%' },
 									            { sWidth: '10%' },
 									            { sWidth: '10%',"bSearchable": false  }
-									            ]
+									            ],
+											 fnInitComplete: function ( oSettings )
+									            {
+									                for ( var i=0, iLen=oSettings.aoData.length ; i<iLen ; i++ )
+									                {
+									                	var bugId = oSettings.aoData[i].nTr.childNodes[1].childNodes[0].textContent;
+									                	if ($.inArray(bugId,managedRestoreList) != -1){
+									                		oSettings.aoData[i].nTr.className += " gradeU";
+									                	}
+									                }
+												 
+												 $('#historyBugsTable tbody td div.inner').each(function(index){
+													    $this = $(this);
+													    var titleVal = $this.text();
+													    if (titleVal != '') {
+													      $this.attr('title', titleVal);
+													    }
+													  });	
+									            }
 										});		
 				managerBugDataTable.rowGrouping({
 					iGroupingColumnIndex:3,
@@ -400,8 +446,8 @@
 	}
 	
 	function  getBugInfoTable(bugInfo){
-		var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-		sOut += '<tr><td>Component:</td><td>'+bugInfo.component+'</td></tr>';
+		var sOut = '<table class="detailTable col-lg-12" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+		sOut += '<tr><td class="col-lg-1">Component:</td><td class="col-lg-11">'+bugInfo.component+'</td></tr>';
 		sOut += '<tr><td>BugId:</td><td>'+bugInfo.bugId+'</td></tr>';
 		sOut += '<tr><td>Title:</td><td>'+bugInfo.title+'</td></tr>';
 		sOut += '<tr><td>Project:</td><td>'+bugInfo.project+'</td></tr>';
@@ -462,7 +508,7 @@
 			success: function (data) {
 				alertify.log(data,"success");
 				//alert(data);
-				window.location.reload();
+				//window.location.reload();
 			},
 			
 			error : function(XMLHttpRequest, textStatus, errorThrown) {

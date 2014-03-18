@@ -24,6 +24,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li id="logout"><a href="logout.jsp">Logout</a></li>
 				<li id="registerJSPNav"><a href="register.jsp">Register</a></li>
+				<li id="feedbackNav"><a href='http://10.158.2.124:8050/feedback/' >Feedback</a></li>
 			</ul>
 			
 			<form id="addForm" name="addForm" action="/BugTrackingSystem/api/bugs" method="get" class="navbar-form navbar-left" role="Search" style="margin-left:50px;height:34px">

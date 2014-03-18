@@ -211,7 +211,53 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap requires jQuery");+func
         "Please check your input."
 	);
 		
-	
+	function feedBackClick(){
+		alert("click");
+		var loginForm = $("<form></form>");
+		loginForm.attr('action',"http://localhost:8050/feedback/");
+		loginForm.attr('method','post');
+		
+		var csrfInput =  $("<input type='hidden' />");
+		csrfInput.attr('name',"csrfmiddlewaretoken");
+		csrfInput.attr('value',"0hZt8uSSGUd1jD6Ma9Qf1vom9O2Ki2bF");
+		
+		var userNameInput =  $("<input type='hidden' />");
+		userNameInput.attr('name',"username");
+		userNameInput.attr('value',"gsnj_dev");
+		
+		var passwordInput =  $("<input type='hidden' />");
+		passwordInput.attr('name',"password");
+		passwordInput.attr('value',"citrix");
+		
+		var makeSureInput =  $("<input type='hidden' />");
+		makeSureInput.attr('name',"this_is_the_login_form");
+		makeSureInput.attr('value',"1");
+		
+		var nextInput =  $("<input type='hidden' />");
+		nextInput.attr('name',"next");
+		nextInput.attr('value',"http://localhost:8050/feedback/");
+		
+		loginForm.append(csrfInput);
+		loginForm.append(userNameInput);
+		loginForm.append(passwordInput);
+		loginForm.append(nextInput);
+		
+		$.ajax({
+			method : loginForm.attr('method'),
+			url : loginForm.attr('action'),
+			data : loginForm.serialize(),
+			cache : false,
+			success : function(data) {
+			    alertify.log("login ok","success");
+			    
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			},
+
+			complete : function(XMLHttpRequest, textStatus) {
+			}
+		});
+	}
 	
 	 $(document).ready(function(){
 	    // Invoke the placeholder plugin
@@ -351,4 +397,8 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap requires jQuery");+func
 				}
 			});		
 		});  
+		
+		
+		//$(document).delegate("#feedbackNav",'click',feedBackClick);
+		
 	});
