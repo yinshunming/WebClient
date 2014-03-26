@@ -5,7 +5,7 @@
 <html>
 <head>
 
-<title>Main Frame</title>
+<title>Bug Tracker - Dashboard</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->

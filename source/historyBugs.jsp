@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>History Bugs</title>
+    <title>Bug Tracker - History Bugs</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>

@@ -4,11 +4,7 @@
 <html>
   <head>
     <title>Log Out</title>
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="assets/css/bootstrap.validation.css"/>
-	<link rel="stylesheet" href="assets/css/custom.placeholder.css" />
-	<link rel="stylesheet" href="assets/css/alertify.core.css" />
-	<link rel="stylesheet" href="assets/css/alertify.default.css" />
+	<link rel="stylesheet" href="assets/css/common.min.css" />
   </head>
  	
   <body>	
@@ -37,18 +33,13 @@
 			</div>
        	</div>
 	</div>
-	<script src="assets/js/jquery-1.10.2.min.js"></script>
-	<script src="assets/js/jquery.validate.min.js" ></script>
-	<script src="assets/js/jquery.placeholder.js" ></script>
-	<script src="assets/js/bootstrap.min.js" ></script>
-	<script src="assets/js/alertify.min.js"></script>
-	<script src="assets/js/custom.navigation.js"></script>
-	<script src="assets/js/custom.logout.js"></script>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	 <script src="assets/js/common.min.js"></script>
+	 <script src="assets/js/logout.min.js"></script>
 	<!--[if lt IE 9]>
-	  	<script src="assets/js/custom.html5.js"></script>
-	 	<script src="assets/js/custom.respond.min.js"></script>
+	 	 <script src="assets/js/ltIE9.min.js"></script>
 	<![endif]-->
+	
+
   </body>
   
 </html>

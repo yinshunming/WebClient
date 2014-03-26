@@ -72,14 +72,31 @@
 				},
 				
 			complete: function (XMLHttpRequest, textStatus) {
+				var heads=$("#historyBugsTable th");
+			    var index;
+			    $.each(heads,function(n,value){
+			      
+			      if(value.childNodes[0].childNodes[0].data=="Managed"){
+			        index=n;
+			        return false;
+			      }
+			      else 
+			         return true;
+			    
+			    });
+			    var innerDiv= operateManagedBtn.parents('tr').children()[index].firstChild.firstElementChild;
 					 operateManagedBtn.button("reset");
 					 if(operate==ignoreCmd){				
 						operateManagedBtn.html('Restore');
 						nTr.className +=' gradeU'
+						innerDiv.attributes['title'].value='not-managed';
+						innerDiv.innerText='not-managed';	
 					 }
 					else if(operate==restoreCmd){
 						operateManagedBtn.html('Ignore');	
-						nTr.className=nTr.className.replace('gradeU',"")
+						nTr.className=nTr.className.replace('gradeU',"");
+						innerDiv.attributes['title'].value='managed';
+						innerDiv.innerText='managed';
 					}
 					//operateManagedBtn.enable();
 				}
@@ -118,14 +135,32 @@
 			},
 				
 			complete: function (XMLHttpRequest, textStatus) {
+				var heads=$("#ownerBugsTable th");
+			    var index;
+			    $.each(heads,function(n,value){
+			      
+			      if(value.childNodes[0].childNodes[0].data=="Managed"){
+			        index=n;
+			        return false;
+			      }
+			      else 
+			         return true;
+			    
+			    });
+			    
+			   var innerDiv= operateOwnerBtn.parents('tr').children()[index].firstChild.firstElementChild;
 				operateOwnerBtn.button('reset');
 				 if(operate==ignoreCmd){				
 					operateOwnerBtn.html('Restore');
 					nTr.className +=' gradeU'
+					innerDiv.attributes['title'].value='not-managed';
+					innerDiv.innerText='not-managed';
 				 }
 				else if(operate==restoreCmd){
 					operateOwnerBtn.html('Ignore');	
-					nTr.className=nTr.className.replace('gradeU',"")
+					nTr.className=nTr.className.replace('gradeU',"");
+					innerDiv.attributes['title'].value='managed';
+					innerDiv.innerText='managed';
 				}
 			}
 		});
@@ -179,7 +214,7 @@
 											"bProcessing": true,
 											/* "bLengthChange":false,
 											"bPaginate":false, */
-											"fnRowCallback":  truncatTextReder,
+											//"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -273,7 +308,7 @@
 											"bProcessing": true,
 											/* "bLengthChange":false,
 											"bPaginate":false, */
-											"fnRowCallback":  truncatTextReder,
+											//"fnRowCallback":  truncatTextReder,
 											"sDom": 'R<C>H<"clear"><"ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix"lfr>t<"ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
 											"aoColumnDefs": [
 												{ "bSortable": false, "aTargets": [ 0 ] }
@@ -447,19 +482,19 @@
 	
 	function  getBugInfoTable(bugInfo){
 		var sOut = '<table class="detailTable col-lg-12" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
-		sOut += '<tr><td class="col-lg-1">Component:</td><td class="col-lg-11">'+bugInfo.component+'</td></tr>';
-		sOut += '<tr><td>BugId:</td><td>'+bugInfo.bugId+'</td></tr>';
-		sOut += '<tr><td>Title:</td><td>'+bugInfo.title+'</td></tr>';
-		sOut += '<tr><td>Project:</td><td>'+bugInfo.project+'</td></tr>';
-		sOut += '<tr><td>Type:</td><td>'+bugInfo.type+'</td></tr>';
-		sOut += '<tr><td>Status:</td><td>'+bugInfo.status+'</td></tr>';
-		sOut += '<tr><td>Description:</td><td>'+bugInfo.description+'</td></tr>';
-		sOut += '<tr><td>Owner:</td><td>'+bugInfo.owner+'</td></tr>';
-		sOut += '<tr><td>Submitter:</td><td>'+bugInfo.submitter+'</td></tr>';
-		sOut += '<tr><td>SubmitData:</td><td>'+bugInfo.submitData+'</td></tr>';
-		sOut += '<tr><td>Severity:</td><td>'+bugInfo.severity+'</td></tr>';
-		sOut += '<tr><td>Tags:</td><td>'+bugInfo.tags+'</td></tr>';
-		sOut += '<tr><td>Regression:</td><td>'+bugInfo.regression+'</td></tr>';									
+		sOut += '<tr><td class="col-lg-1 detailFirstTd">Component:</td><td class="col-lg-11">'+bugInfo.component+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">BugId:</td><td >'+bugInfo.bugId+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Title:</td><td>'+bugInfo.title+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Project:</td><td>'+bugInfo.project+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Type:</td><td>'+bugInfo.type+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Status:</td><td>'+bugInfo.status+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Description:</td><td>'+bugInfo.description+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Owner:</td><td>'+bugInfo.owner+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Submitter:</td><td>'+bugInfo.submitter+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">SubmitData:</td><td>'+bugInfo.submitData+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Severity:</td><td>'+bugInfo.severity+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Tags:</td><td>'+bugInfo.tags+'</td></tr>';
+		sOut += '<tr><td class="detailFirstTd">Regression:</td><td>'+bugInfo.regression+'</td></tr>';									
 		sOut += '</table>';
 		return sOut;
 	}
