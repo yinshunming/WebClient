@@ -134,7 +134,7 @@
 			"bProcessing": true,
 			/* "bLengthChange":false,
 			"bPaginate":false, */
-			"fnRowCallback":  truncatTextReder,
+			//"fnRowCallback":  truncatTextReder,
 			"aoColumnDefs": [
 				{ "bSortable": false, "aTargets": [ 0 ] }
 			], 
@@ -277,7 +277,7 @@
 			"bProcessing": true,
 			/* "bLengthChange":false,
 			"bPaginate":false, */
-			"fnRowCallback":  truncatTextReder,
+			//"fnRowCallback":  truncatTextReder,
 			"aoColumnDefs": [
 				{ "bSortable": false, "aTargets": [ 0 ] }
 			], 
@@ -429,7 +429,7 @@
 			"bProcessing": true,
 			/* "bLengthChange":false,
 			"bPaginate":false, */
-			"fnRowCallback":  truncatTextReder,
+			//"fnRowCallback":  truncatTextReder,
 			"aoColumnDefs": [
 				{ "bSortable": false, "aTargets": [ 0 ] }
 			], 
@@ -914,7 +914,7 @@
 			sOut += '<tr><td class="detailFirstTd">Project:</td><td>'+bugInfo.project+'</td></tr>';
 			sOut += '<tr><td class="detailFirstTd">Type:</td><td>'+bugInfo.type+'</td></tr>';
 			sOut += '<tr><td class="detailFirstTd">Status:</td><td>'+bugInfo.status+'</td></tr>';
-			//sOut += '<tr><td class="detailFirstTd">Description:</td><td>'+bugInfo.description+'</td></tr>';
+			sOut += '<tr><td class="detailFirstTd">Description:</td><td>'+bugInfo.description+'</td></tr>';
 			sOut += '<tr><td class="detailFirstTd">Owner:</td><td>'+bugInfo.owner+'</td></tr>';
 			sOut += '<tr><td class="detailFirstTd">Submitter:</td><td>'+bugInfo.submitter+'</td></tr>';
 			sOut += '<tr><td class="detailFirstTd">SubmitData:</td><td>'+bugInfo.submitData+'</td></tr>';
